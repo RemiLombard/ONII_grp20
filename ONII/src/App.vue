@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
-import Header from './components/HeaderPage.vue'
-import Footer from './components/FooterPage.vue'
+  import { RouterView } from 'vue-router'
+  import HeaderPage from './components/HeaderPage.vue'
 </script>
 
 <template>
-  <Header />
+  <HeaderPage />
 
   <main>
     <RouterView />
   </main>
 
-  <Footer />
 </template>

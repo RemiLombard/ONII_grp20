@@ -1,5 +1,9 @@
+<script setup lang="ts">
+import CardDiary from '@/components/CardDiary.vue';
+
+</script>
 <template>
-    <div>
-        <h1>Home</h1>
+    <div class="mx-5">
+        <CardDiary/>
     </div>
 </template>
