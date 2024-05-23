@@ -1,9 +1,18 @@
 /** @type {import('tailwindcss').Config} */
+
 export default {
-  content: [],
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend:{
+    colors: {
+      nightblue: '#190936'
+    }
   },
-  plugins: [],
-}
+  fontFamily: {
+    'Passion One': ['Passion One', 'sans-serif'],
+    'Lato': ['Lato', 'sans-serif'],
+  },
+},
+  plugins: []
+} 
 
