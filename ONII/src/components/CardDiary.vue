@@ -5,64 +5,53 @@
 </script>
 
 <template>
+  <div class="flex flex-col items-end space-y-[-20px]">
+    <div class="flex flex-col justify-start items-start w-full gap-5 px-2.5 py-2.5 rounded-[15px] bg-violet-950">
+      <!-- Titre de l'article avec les points d'icônes -->
+      <div class="flex justify-between items-center w-full">
+        <p class="text-lg font-bold text-left text-white">
+          Balade au centre de l’univers
+        </p>
+        <div>
+          <IconPoints />
+        </div>
+      </div>
 
-<div class="flex flex-col justify-start items-end self-stretch flex-grow-0 flex-shrink-0 space-y-[-20px]">
-  <div class="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-5 px-2.5 py-3.5 rounded-[15px] bg-[#2e1065]">
-    <div class="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 relative">
-      <p class="flex-grow-0 flex-shrink-0 w-[283px] h-4 text-lg font-bold text-left text-white">
-        Balade au centre de l’univers
-      </p>
-      <div>
-        <IconPoints />
+      <!-- Contenu de l'article -->
+      <div class="w-full">
+        <p class="text-base text-left text-white">
+          Je me suis retrouvé flottant au milieu de l'espace infini. Des milliers d'étoiles scintillaient autour de moi, formant des constellations inconnues. Soudain, une lumière éblouissante a surgi, révélant un astre éclatant
+          <span class="text-base font-light">... </span>
+          <span class="text-base font-bold text-yellow-200">Voir plus</span>
+        </p>
+      </div>
+
+      <!-- Tags -->
+      <ul class="flex justify-between items-start w-full gap-2.5">
+        <li class="p-2.5 rounded-[50px] border-[0.5px] border-white">
+          <p class="text-sm italic text-left text-white">Fantastique</p>
+        </li>
+        <li class="p-2.5 rounded-[50px] border-[0.5px] border-white">
+          <p class="text-sm italic text-left text-white">Exploration</p>
+        </li>
+        <li class="p-2.5 rounded-[50px] border-[0.5px] border-white">
+          <p class="text-sm italic text-left text-white">Spiritualité</p>
+        </li>
+      </ul>
+
+      <!-- Date -->
+      <div class="w-full gap-2.5">
+        <p class="text-sm italic font-light text-left text-white">04/03/2024</p>
       </div>
     </div>
-    <div
-      class="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2.5"
-    >
-      <p class="flex-grow w-[315px] text-base text-left">
-        <span class="flex-grow w-[315px] text-base text-left text-white"
-          >Je me suis retrouvé flottant au milieu de l'espace infini. Des milliers d'étoiles
-          scintillaient autour de moi, formant des constellations inconnues. Soudain, une lumière
-          éblouissante a surgi, révélant un astre éclatant</span
-        ><span class="flex-grow w-[315px] text-sm font-light text-left text-white">... </span
-        ><span class="flex-grow w-[315px] text-sm font-bold text-left text-yellow-200"
-          >Voir plus</span
-        >
-      </p>
-    </div>
-    <ul class="flex justify-between items-start self-stretch flex-grow-0 flex-shrink-0">
-    <li
-        class="flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-2.5 p-2.5 rounded-[50px] border-[0.5px] border-white"
-    >
-        <p class="flex-grow-0 flex-shrink-0 text-sm italic text-left text-white">Fantastique</p>
-    </li>
-    <li
-        class="flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-2.5 p-2.5 rounded-[50px] border-[0.5px] border-white"
-    >
-        <p class="flex-grow-0 flex-shrink-0 text-sm italic text-left text-white">Exploration</p>
-    </li>
-    <li
-        class="flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-2.5 p-2.5 rounded-[50px] border-[0.5px] border-white"
-    >
-        <p class="flex-grow-0 flex-shrink-0 text-sm italic text-left text-white">Spiritualité</p>
-    </li>
-    </ul>
-    <div
-      class="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-2.5"
-    >
-      <p class="flex-grow text-sm italic font-light text-left text-white">04/03/2024</p>
-    </div>
-  </div>
-  <div
-    class="flex flex-col justify-between items-end flex-grow-0 flex-shrink-0 h-10 relative pr-2.5"
-  >
-    <div class="flex justify-center items-center relative text-sm gap-2.5 px-3.5 py-2.5 rounded-[50px] bg-fuchsia-700">
-      
-      <RouterLink to="/" class="">
-        Analyser ce rêve avec l’IA
-      </RouterLink>
-    </div>
-  </div>
-</div>
 
+    <!-- Bouton d'analyse -->
+    <div class="flex flex-col items-end h-10 pr-2.5">
+      <div class="flex justify-center items-center text-sm gap-2.5 px-3.5 py-2.5 rounded-[50px] bg-fuchsia-700">
+        <RouterLink to="/" class="text-white">
+          Analyser ce rêve avec l’IA
+        </RouterLink>
+      </div>
+    </div>
+  </div>
 </template>

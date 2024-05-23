@@ -25,7 +25,7 @@ import IconSettings from './icons/IconSettings.vue';
             </div>
         </div>
         <nav class="flex px-5 justify-center space-x-28 lg:space-x-96">
-            <RouterLink to="/" class="text-white border-b-2 border-transparent" active-class="text-yellow-200 pb-2 border-yellow-200">Journal</RouterLink>
+            <RouterLink to="/journal" class="text-white border-b-2 border-transparent" active-class="text-yellow-200 pb-2 border-yellow-200">Journal</RouterLink>
             <RouterLink to="/reseau" class="text-white border-b-2 border-transparent" active-class="text-yellow-200 pb-2 border-yellow-200">Réseau</RouterLink>
         </nav>
     </div>

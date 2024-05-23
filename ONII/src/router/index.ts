@@ -5,20 +5,22 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      redirect: '/journal'
+    },
+    {
+      path: '/journal',
       component: () => import('../pages/journal/index.vue')
     },
     {
       path: '/reseau',
       name: 'reseau',
-      component: () => import('../pages/reseau.vue/index.vue')
+      component: () => import('../pages/reseau/index.vue')
     },
     {
-      path: '/reseau/caca',
-      name: 'caca',
-      component: () => import('../pages/reseau.vue/caca.vue')
+      path: '/stats',
+      name: 'stats',
+      component: () => import('../pages/journal/stats.vue')
     }
-
   ]
 })
 
