@@ -1,5 +1,5 @@
 <script setup lang="ts">
 </script>
 <template>
-    reseau
+    <RouterLink to="/reseau/test">test</RouterLink>
 </template>
