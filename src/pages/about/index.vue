@@ -27,7 +27,7 @@ const goBack = () => {
           class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 border-b border-white border-opacity-50 pb-3.5"
         >
           <IconCondition />
-          <p class="flex-grow w-64 text-base font-bold text-left text-white">
+          <p class="flex-grow w-64 text-lg font-bold text-left text-white">
             Conditions d'utilisation
           </p>
           <IconTo />
@@ -37,7 +37,7 @@ const goBack = () => {
           class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 border-b border-white border-opacity-50 py-3.5"
         >
           <IconShield />
-          <p class="flex-grow w-64 text-base font-bold text-left text-white">
+          <p class="flex-grow w-64 text-lg font-bold text-left text-white">
             Politique de confidentialité
           </p>
           <IconTo />
@@ -47,7 +47,7 @@ const goBack = () => {
           class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 pt-3.5"
         >
           <IconCookie />
-          <p class="flex-grow w-64 text-base font-bold text-left text-white">
+          <p class="flex-grow w-64 text-lg font-bold text-left text-white">
             Politique des cookies
           </p>
           <IconTo />
@@ -59,7 +59,7 @@ const goBack = () => {
           class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2"
         >
           <IconTeam />
-          <p class="flex-grow w-64 text-base font-bold text-left text-white">À propos de nous</p>
+          <p class="flex-grow w-64 text-lg font-bold text-left text-white">À propos de nous</p>
           <IconTo />
         </RouterLink>
       </div>

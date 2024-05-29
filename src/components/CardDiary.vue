@@ -9,7 +9,7 @@
     <div class="flex flex-col justify-start items-start w-full gap-5 px-2.5 py-2.5 rounded-[15px] bg-violet-950">
       <!-- Titre de l'article avec les points d'icônes -->
       <div class="flex justify-between items-center w-full">
-        <p class="text-lg font-bold text-left text-white">
+        <p class="text-lg font-bold font-Quicksand text-left text-white">
           Balade au centre de l’univers
         </p>
         <div>
@@ -29,13 +29,13 @@
       <!-- Tags -->
       <ul class="flex justify-between items-start w-full gap-2.5">
         <li class="p-2.5 rounded-[50px] border-[0.5px] border-white">
-          <p class="text-sm italic text-left text-white">Fantastique</p>
+          <p class="text-sm font-light italic text-left text-white">Fantastique</p>
         </li>
         <li class="p-2.5 rounded-[50px] border-[0.5px] border-white">
-          <p class="text-sm italic text-left text-white">Exploration</p>
+          <p class="text-sm font-light italic text-left text-white">Exploration</p>
         </li>
         <li class="p-2.5 rounded-[50px] border-[0.5px] border-white">
-          <p class="text-sm italic text-left text-white">Spiritualité</p>
+          <p class="text-sm font-light italic text-left text-white">Spiritualité</p>
         </li>
       </ul>
 

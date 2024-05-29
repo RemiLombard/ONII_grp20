@@ -9,8 +9,9 @@ export default {
     }
   },
   fontFamily: {
-    'Passion One': ['Passion One', 'sans-serif'],
+    'Caveat Brush': ['Caveat Brush', 'cursive'],
     'Lato': ['Lato', 'sans-serif'],
+    'Quicksand': ['Quicksand', 'sans-serif'],
   },
 },
   plugins: []

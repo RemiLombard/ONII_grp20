@@ -61,7 +61,7 @@ const route = useRoute()
                     class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 border-b border-white border-opacity-50 pb-3.5"
                   >
                     <IconGroupuser />
-                    <p class="flex-grow w-64 text-base font-bold text-left text-white">
+                    <p class="flex-grow w-64 font-bold text-left text-white">
                       Profil public
                     </p>
                     <IconTo />
@@ -70,7 +70,7 @@ const route = useRoute()
                     class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 border-b border-white border-opacity-50 py-3.5"
                   >
                     <IconAccountSmall />
-                    <p class="flex-grow w-64 text-base font-bold text-left text-white">
+                    <p class="flex-grow w-64 font-bold text-left text-white">
                       Votre compte
                     </p>
                     <IconTo />
@@ -79,7 +79,7 @@ const route = useRoute()
                     class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 pt-3.5"
                   >
                     <IconNewsletter />
-                    <p class="flex-grow w-64 text-base font-bold text-left text-white">
+                    <p class="flex-grow w-64 font-bold text-left text-white">
                       S'abonner à la Newslater
                     </p>
                     <IconTo />
@@ -92,14 +92,14 @@ const route = useRoute()
                     @click="closeMenu"
                   >
                     <IconAbout />
-                    <p class="flex-grow w-64 text-base font-bold text-left text-white">À propos</p>
+                    <p class="flex-grow w-64 font-bold text-left text-white">À propos</p>
                     <IconTo />
                   </RouterLink>
                   <div
                     class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 pt-3.5"
                   >
                     <IconContact />
-                    <p class="flex-grow w-64 text-base font-bold text-left text-white">
+                    <p class="flex-grow w-64 font-bold text-left text-white">
                       Nous contacter
                     </p>
                     <IconTo />
