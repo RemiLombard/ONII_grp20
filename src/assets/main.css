@@ -28,11 +28,11 @@ h1 {
     font-family: 'Caveat Brush', cursive;
     margin-top: 40px;
     margin-bottom: 40px;
-    @apply text-4xl;
+    @apply text-4xl
 }
 
 nav {
   font-family: 'Quicksand', sans-serif;
   font-weight: bold
-    @apply text-lg,;
+    @apply text-lg
 }
