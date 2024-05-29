@@ -5,10 +5,17 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/journal'
+      name: 'login',
+      component: () => import('../pages/login.vue')
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('../pages/signup.vue')
     },
     {
       path: '/journal',
+      name: 'journal',
       component: () => import('../pages/journal/index.vue')
     },
     {
