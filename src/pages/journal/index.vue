@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router';
 import CardDiary from '@/components/CardDiary.vue';
 import ButtonStat from '@/components/ButtonStat.vue';
 
@@ -7,7 +8,7 @@ import ButtonStat from '@/components/ButtonStat.vue';
     <section>
         <div class="flex justify-between w-full items-center">
             <h1 class="text-4xl">Vos rêves</h1>
-             <RouterLink to="/stats" class="text-white">  
+             <RouterLink to="/journal/stats" class="text-white">  
                 <ButtonStat/>
             </RouterLink>
         </div>
@@ -22,6 +23,15 @@ import ButtonStat from '@/components/ButtonStat.vue';
         </div>
         <section class="mb-8">
 
+            <article class="">
+                <CardDiary/>
+            </article>
+            <article class="">
+                <CardDiary/>
+            </article>
+            <article class="">
+                <CardDiary/>
+            </article>
             <article class="">
                 <CardDiary/>
             </article>

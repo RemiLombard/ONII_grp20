@@ -2,5 +2,5 @@
 </script>
 
 <template>
-    
+    <RouterLink to="/parametre">Stats</RouterLink>
 </template>
