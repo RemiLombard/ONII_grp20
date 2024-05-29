@@ -34,7 +34,7 @@ const route = useRoute()
           </RouterLink>
         </div>
         <div class="flex items-center space-x-4">
-          <RouterLink to="/" @click="closeMenu">
+          <RouterLink to="/journal" @click="closeMenu">
             <IconLogo />
           </RouterLink>
         </div>

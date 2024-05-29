@@ -1,58 +1,80 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import PocketBase from 'pocketbase'
+import { ref } from 'vue';
+import { userSignup } from '@/assets/backend';
 
-const email = ref('')
-const password = ref('')
-
-const register = async () => {
-  const pb = new PocketBase('http://127.0.0.1:8090') // URL de votre instance PocketBase
-
-  try {
-    const newUser = await pb.collection('users').create({
-      email: email.value,
-      password: password.value,
-      passwordConfirm: password.value // PocketBase demande une confirmation du mot de passe
-    })
-    console.log('User registered successfully', newUser)
-    // Redirection ou traitement après inscription réussie
-  } catch (error) {
-    console.error('Registration failed', error)
-    // Gestion des erreurs d'inscription
-  }
+interface FormData {
+  username: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+  firstName: string;
+  name: string;
+  avatar?: File;
 }
+
+const formData = ref<FormData>({
+  username: '',
+  email: '',
+  password: '',
+  passwordConfirm: '',
+  firstName: '',
+  name: '',
+});
+
+const errorMessage = ref('');
+
+const onFileChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files[0]) {
+    formData.value.avatar = target.files[0];
+  }
+};
+
+const signup = async () => {
+  try {
+    await userSignup(formData.value);
+    // Redirection après l'inscription réussie
+    window.location.href = '/welcome';
+  } catch (error: any) {
+    errorMessage.value = error.message;
+  }
+};
 </script>
 
-<template class="bg-linear">
-    <div class="flex items-center justify-center min-h-screen">
-      <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 class="text-2xl font-bold text-center mb-6">Register</h2>
-        <form @submit.prevent="register">
-          <div class="mb-4">
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              v-model="email"
-              class="mt-1 block w-full px-3 py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              required
-            />
-          </div>
-          <div class="mb-6">
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              v-model="password"
-              class="mt-1 block w-full text-black px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            class="w-full bg-indigo-500 text-white py-2 px-4 rounded-md shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Register
-          </button>
-        </form>
-      </div>
+<template>
+    <div>
+      <h1>Inscription</h1>
+      <form @submit.prevent="signup">
+        <div>
+          <label for="username">Nom d'utilisateur:</label>
+          <input class="text-black" type="text" v-model="formData.username" required />
+        </div>
+        <div>
+          <label for="email">Email:</label>
+          <input class="text-black" type="email" v-model="formData.email" required />
+        </div>
+        <div>
+          <label for="firstName">Prénom:</label>
+          <input class="text-black" type="text" v-model="formData.firstName" required />
+        </div>
+        <div>
+          <label for="lastName">Nom:</label>
+          <input class="text-black" type="text" v-model="formData.name" required />
+        </div>
+        <div>
+          <label for="password">Mot de passe:</label>
+          <input class="text-black" type="password" v-model="formData.password" required />
+        </div>
+        <div>
+          <label for="confirmPassword">Confirmer le mot de passe:</label>
+          <input class="text-black" type="password" v-model="formData.passwordConfirm" required />
+        </div>
+        <div>
+          <label for="avatar">Avatar (optionnel):</label>
+          <input type="file" @change="onFileChange" />
+        </div>
+        <button type="submit">S'inscrire</button>
+      </form>
+      <div v-if="errorMessage">{{ errorMessage }}</div>
     </div>
   </template>
