@@ -1,9 +1,27 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
-import CardDiary from '@/components/CardDiary.vue'
-import ButtonStat from '@/components/ButtonStat.vue'
-import IconNew from '@/components/icons/IconNew.vue'
+import { ref, onMounted } from 'vue';
+import { RouterLink } from 'vue-router';
+import CardDiary from '@/components/CardDiary.vue';
+import ButtonStat from '@/components/ButtonStat.vue';
+import IconNew from '@/components/icons/IconNew.vue';
+import { getUserDreams } from '@/assets/backend';
+
+const dreams = ref([]);
+
+const fetchDreams = async () => {
+    try {
+        const userDreams = await getUserDreams();
+        dreams.value = userDreams;
+    } catch (error) {
+        console.error('Erreur lors de la récupération des rêves:', error);
+    }
+};
+
+onMounted(() => {
+    fetchDreams();
+});
 </script>
+
 <template>
   <div class="flex justify-between w-full items-center">
     <h1 class="text-4xl">Vos rêves</h1>
@@ -25,17 +43,8 @@ import IconNew from '@/components/icons/IconNew.vue'
     </button>
   </div>
   <section class="mb-8 flex flex-col gap-4">
-    <article class="">
-      <CardDiary />
-    </article>
-    <article class="">
-      <CardDiary />
-    </article>
-    <article class="">
-      <CardDiary />
-    </article>
-    <article class="">
-      <CardDiary />
+    <article v-for="dream in dreams" :key="dream.id">
+      <CardDiary :title="dream.title" :excerpt="dream.excerpt" :date="dream.date" :categorie="dream.categorie" />
     </article>
   </section>
   <RouterLink to="/journal/create">
