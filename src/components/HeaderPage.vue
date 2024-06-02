@@ -61,20 +61,19 @@ const route = useRoute()
                     class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 border-b border-white border-opacity-50 pb-3.5"
                   >
                     <IconGroupuser />
-                    <p class="flex-grow w-64 font-bold text-left text-white">
-                      Profil public
-                    </p>
+                    <p class="flex-grow w-64 font-bold text-left text-white">Profil public</p>
                     <IconTo />
                   </div>
-                  <div
+
+                  <RouterLink
+                    to="/account"
                     class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 border-b border-white border-opacity-50 py-3.5"
+                    @click="closeMenu"
                   >
                     <IconAccountSmall />
-                    <p class="flex-grow w-64 font-bold text-left text-white">
-                      Votre compte
-                    </p>
+                    <p class="flex-grow w-64 font-bold text-left text-white">Votre compte</p>
                     <IconTo />
-                  </div>
+                  </RouterLink>
                   <div
                     class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 pt-3.5"
                   >
@@ -99,9 +98,7 @@ const route = useRoute()
                     class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 pt-3.5"
                   >
                     <IconContact />
-                    <p class="flex-grow w-64 font-bold text-left text-white">
-                      Nous contacter
-                    </p>
+                    <p class="flex-grow w-64 font-bold text-left text-white">Nous contacter</p>
                     <IconTo />
                   </div>
                 </div>
