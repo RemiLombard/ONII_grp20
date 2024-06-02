@@ -38,7 +38,9 @@ import IconNew from '@/components/icons/IconNew.vue'
       <CardDiary />
     </article>
   </section>
-  <button class="fixed bottom-4 right-4 p-3 bg-gradient-to-r from-blue-100 to-blue-300 text-black rounded-[500px]">
-    <IconNew/>
-  </button>
+  <RouterLink to="/journal/create">
+    <button class="fixed bottom-4 right-4 p-3 bg-gradient-to-r from-blue-100 to-blue-300 text-black rounded-[500px]">
+      <IconNew />
+    </button>
+  </RouterLink>
 </template>

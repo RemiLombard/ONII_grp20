@@ -1,80 +1,51 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { userSignup } from '@/assets/backend';
+import { addUser } from '@/assets/backend';
 
-interface FormData {
-  username: string;
-  email: string;
-  password: string;
-  passwordConfirm: string;
-  firstName: string;
-  name: string;
-  avatar?: File;
-}
-
-const formData = ref<FormData>({
-  username: '',
-  email: '',
-  password: '',
-  passwordConfirm: '',
-  firstName: '',
-  name: '',
-});
-
+const email = ref('');
+const password = ref('');
+const passwordConfirm = ref('');
+const isLoading = ref(false);
 const errorMessage = ref('');
 
-const onFileChange = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  if (target.files && target.files[0]) {
-    formData.value.avatar = target.files[0];
-  }
-};
-
-const signup = async () => {
-  try {
-    await userSignup(formData.value);
-    // Redirection après l'inscription réussie
-    window.location.href = '/welcome';
-  } catch (error: any) {
-    errorMessage.value = error.message;
-  }
+const handleSignUp = async () => {
+    isLoading.value = true;
+    errorMessage.value = '';
+    try {
+        await addUser({
+            email: email.value,
+            password: password.value,
+            passwordConfirm: passwordConfirm.value
+        });
+        // Redirection ou mise à jour de l'état après l'inscription réussie
+    } catch (error) {
+        errorMessage.value = "Erreur lors de l'inscription: " + (error as Error).message;
+    } finally {
+        isLoading.value = false;
+    }
 };
 </script>
 
 <template>
-    <div>
-      <h1>Inscription</h1>
-      <form @submit.prevent="signup">
+    <form @submit.prevent="handleSignUp">
         <div>
-          <label for="username">Nom d'utilisateur:</label>
-          <input class="text-black" type="text" v-model="formData.username" required />
+            <label for="email">Email:</label>
+            <input class="text-black" type="email" id="email" v-model="email" required>
         </div>
         <div>
-          <label for="email">Email:</label>
-          <input class="text-black" type="email" v-model="formData.email" required />
+            <label for="password">Mot de passe:</label>
+            <input class="text-black" type="password" id="password" v-model="password" required>
         </div>
         <div>
-          <label for="firstName">Prénom:</label>
-          <input class="text-black" type="text" v-model="formData.firstName" required />
+            <label for="passwordConfirm">Confirmez le mot de passe:</label>
+            <input class="text-black" type="password" id="passwordConfirm" v-model="passwordConfirm" required>
         </div>
-        <div>
-          <label for="lastName">Nom:</label>
-          <input class="text-black" type="text" v-model="formData.name" required />
+        <div v-if="password !== passwordConfirm" class="error-message">
+            Les mots de passe ne correspondent pas
         </div>
-        <div>
-          <label for="password">Mot de passe:</label>
-          <input class="text-black" type="password" v-model="formData.password" required />
+        <div v-if="errorMessage" class="error-message">
+            {{ errorMessage }}
         </div>
-        <div>
-          <label for="confirmPassword">Confirmer le mot de passe:</label>
-          <input class="text-black" type="password" v-model="formData.passwordConfirm" required />
-        </div>
-        <div>
-          <label for="avatar">Avatar (optionnel):</label>
-          <input type="file" @change="onFileChange" />
-        </div>
-        <button type="submit">S'inscrire</button>
-      </form>
-      <div v-if="errorMessage">{{ errorMessage }}</div>
-    </div>
-  </template>
+        <button type="submit" :disabled="isLoading">S'inscrire</button>
+    </form>
+</template>
