@@ -1,61 +1,48 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import PocketBase from 'pocketbase';
 import { useRouter } from 'vue-router';
+import { logIn } from '@/assets/backend';
 
+const router = useRouter();
 const email = ref('');
 const password = ref('');
-const router = useRouter();
+const isLoading = ref(false);
+const errorMessage = ref('');
 
-const login = async () => {
-  const pb = new PocketBase('http://127.0.0.1:8090'); // URL de votre instance PocketBase
-
-  try {
-    const authData = await pb.collection('users').authWithPassword(email.value, password.value);
-    console.log('Logged in successfully', authData);
-    // Redirection après connexion réussie, par exemple vers une page d'accueil
-    router.push('/home');
-  } catch (error) {
-    console.error('Login failed', error);
-    // Gestion des erreurs de connexion, par exemple afficher un message d'erreur
-    alert('Login failed: ' + error.message);
-  }
+const handleSignIn = async () => {
+    isLoading.value = true;
+    errorMessage.value = '';
+    try {
+        const authData = await logIn(email.value, password.value);
+        console.log('authData:', authData); // Ajout de log pour diagnostiquer le problème
+        if (authData && authData.token) {
+            localStorage.setItem('authToken', authData.token);
+            localStorage.setItem('userId', authData.record.id); // Utilisez authData.record.id
+            router.push('/journal');
+        } else {
+            throw new Error('Les données de session sont manquantes.');
+        }
+    } catch (error) {
+        errorMessage.value = "Erreur lors de la connexion: " + (error as Error).message;
+    } finally {
+        isLoading.value = false;
+    }
 };
 </script>
 
-
 <template>
-    <div class="flex items-center justify-center min-h-screen bg-gray-100">
-      <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
-        <form @submit.prevent="login">
-          <div class="mb-4">
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              v-model="email"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              required
-            />
-          </div>
-          <div class="mb-6">
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              v-model="password"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            class="w-full bg-indigo-500 text-white py-2 px-4 rounded-md shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Login
-          </button>
-        </form>
-        <RouterLink to="/signup" class="text-indigo-500 mt-4 inline-block text-center w-full">Sign up</RouterLink>
-      </div>
-    </div>
-  </template>
-  
+    <form @submit.prevent="handleSignIn">
+        <div>
+            <label for="email">Email:</label>
+            <input class="text-black" type="email" id="email" v-model="email" required>
+        </div>
+        <div>
+            <label for="password">Mot de passe:</label>
+            <input class="text-black" type="password" id="password" v-model="password" required>
+        </div>
+        <div v-if="errorMessage" class="error-message">
+            {{ errorMessage }}
+        </div>
+        <button type="submit" :disabled="isLoading">Se connecter</button>
+    </form>
+</template>

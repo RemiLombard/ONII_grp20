@@ -1,58 +1,51 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import PocketBase from 'pocketbase'
+import { ref } from 'vue';
+import { addUser } from '@/assets/backend';
 
-const email = ref('')
-const password = ref('')
+const email = ref('');
+const password = ref('');
+const passwordConfirm = ref('');
+const isLoading = ref(false);
+const errorMessage = ref('');
 
-const register = async () => {
-  const pb = new PocketBase('http://127.0.0.1:8090') // URL de votre instance PocketBase
-
-  try {
-    const newUser = await pb.collection('users').create({
-      email: email.value,
-      password: password.value,
-      passwordConfirm: password.value // PocketBase demande une confirmation du mot de passe
-    })
-    console.log('User registered successfully', newUser)
-    // Redirection ou traitement après inscription réussie
-  } catch (error) {
-    console.error('Registration failed', error)
-    // Gestion des erreurs d'inscription
-  }
-}
+const handleSignUp = async () => {
+    isLoading.value = true;
+    errorMessage.value = '';
+    try {
+        await addUser({
+            email: email.value,
+            password: password.value,
+            passwordConfirm: passwordConfirm.value
+        });
+        // Redirection ou mise à jour de l'état après l'inscription réussie
+    } catch (error) {
+        errorMessage.value = "Erreur lors de l'inscription: " + (error as Error).message;
+    } finally {
+        isLoading.value = false;
+    }
+};
 </script>
 
-<template class="bg-linear">
-    <div class="flex items-center justify-center min-h-screen">
-      <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 class="text-2xl font-bold text-center mb-6">Register</h2>
-        <form @submit.prevent="register">
-          <div class="mb-4">
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              v-model="email"
-              class="mt-1 block w-full px-3 py-2 text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              required
-            />
-          </div>
-          <div class="mb-6">
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              v-model="password"
-              class="mt-1 block w-full text-black px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            class="w-full bg-indigo-500 text-white py-2 px-4 rounded-md shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Register
-          </button>
-        </form>
-      </div>
-    </div>
-  </template>
+<template>
+    <form @submit.prevent="handleSignUp">
+        <div>
+            <label for="email">Email:</label>
+            <input class="text-black" type="email" id="email" v-model="email" required>
+        </div>
+        <div>
+            <label for="password">Mot de passe:</label>
+            <input class="text-black" type="password" id="password" v-model="password" required>
+        </div>
+        <div>
+            <label for="passwordConfirm">Confirmez le mot de passe:</label>
+            <input class="text-black" type="password" id="passwordConfirm" v-model="passwordConfirm" required>
+        </div>
+        <div v-if="password !== passwordConfirm" class="error-message">
+            Les mots de passe ne correspondent pas
+        </div>
+        <div v-if="errorMessage" class="error-message">
+            {{ errorMessage }}
+        </div>
+        <button type="submit" :disabled="isLoading">S'inscrire</button>
+    </form>
+</template>

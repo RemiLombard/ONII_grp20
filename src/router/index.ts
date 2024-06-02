@@ -5,13 +5,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'login',
-      component: () => import('../pages/login.vue')
-    },
-    {
-      path: '/signup',
       name: 'signup',
       component: () => import('../pages/signup.vue')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../pages/login.vue')
     },
     {
       path: '/journal',
@@ -32,6 +32,11 @@ const router = createRouter({
       path: '/journal/stats',
       name: 'stats',
       component: () => import('../pages/journal/stats.vue')
+    },
+    {
+      path: '/journal/create',
+      name: 'create',
+      component: () => import('../pages/journal/create.vue')
     },
     {
       path: '/about',
@@ -57,6 +62,11 @@ const router = createRouter({
       path: '/about/us',
       name: 'us',
       component: () => import('../pages/about/us.vue')
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: () => import('../pages/account/index.vue')
     },
     
   ]
