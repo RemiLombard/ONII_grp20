@@ -27,9 +27,9 @@ const formattedDate = computed(() => {
     >
       <!-- Titre de l'article avec les points d'icônes -->
       <div class="flex justify-between items-center w-full">
-        <p class="text-lg font-bold font-Quicksand text-left text-white">
+        <h3 class="text-lg font-bold font-Quicksand text-left text-white">
           {{ title }}
-        </p>
+        </h3>
         <div>
           <IconPoints />
         </div>

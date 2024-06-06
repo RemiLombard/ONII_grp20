@@ -9,7 +9,7 @@ export default {
     }
   },
   fontFamily: {
-    'Caveat Brush': ['Caveat Brush', 'cursive'],
+    'Caveat': ['Caveat Brush', 'cursive'],
     'Lato': ['Lato', 'sans-serif'],
     'Quicksand': ['Quicksand', 'sans-serif'],
   },
