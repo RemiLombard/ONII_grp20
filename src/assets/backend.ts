@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-catch */
 import PocketBase from 'pocketbase';
 
-export const pb = new PocketBase('http://127.0.0.1:8090');
+export const pb = new PocketBase('https://onii.remilombard.fr:443');
 
 // Restaurer le token d'authentification à partir de localStorage
 const authToken = localStorage.getItem('authToken');
@@ -43,7 +43,7 @@ export async function logIn(email: string, password: string) {
 }
 
 // Créer rêve
-export async function createDream(dreamData: { title: string; fullText: string, date: string, recurent: boolean, lucide: boolean, type: string, categories: string[] }) {
+export async function createDream(dreamData: { title: string; fullText: string, date: string, recurent: boolean, lucide: boolean, type: string, categorie: string }) {
     try {
         if (!pb.authStore.isValid) {
             throw new Error('Utilisateur non connecté');
