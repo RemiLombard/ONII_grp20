@@ -1,7 +1,8 @@
 /* eslint-disable no-useless-catch */
 import PocketBase from 'pocketbase';
+import { Collections, type TypedPocketBase } from './pocketbase-types.js'
 
-export const pb = new PocketBase('https://onii.remilombard.fr:443');
+export const pb = new PocketBase('http://127.0.0.1:8090/') as TypedPocketBase
 
 // Restaurer le token d'authentification à partir de localStorage
 const authToken = localStorage.getItem('authToken');
@@ -10,20 +11,26 @@ if (authToken) {
 }
 
 // Créer utilisateur
-export async function addUser(event: { email: string; password: string; passwordConfirm: string; username: string; firstName: string; name: string }) {
+export async function addUser(event: { email: string; password: string; passwordConfirm: string; username: string; firstName: string; name: string; avatar?: File }) {
     if (event.password !== event.passwordConfirm) {
         throw new Error('Les mots de passe ne correspondent pas.');
     }
 
     try {
-        const record = await pb.collection('users').create({
-            email: event.email,
-            username: event.username,
-            firstName: event.firstName,
-            name: event.name,
-            password: event.password,
-            passwordConfirm: event.passwordConfirm
-        });
+        const formData = new FormData();
+        formData.append('email', event.email);
+        formData.append('username', event.username);
+        formData.append('firstName', event.firstName);
+        formData.append('name', event.name);
+        formData.append('password', event.password);
+        formData.append('passwordConfirm', event.passwordConfirm);
+
+        if (event.avatar) {
+            formData.append('avatar', event.avatar);
+        }
+
+        const record = await pb.collection('users').create(formData);
+
         return record;
     } catch (error) {
         throw error;
@@ -84,7 +91,7 @@ export function logOut() {
     localStorage.removeItem('userId'); // Effacer l'ID utilisateur
 }
 
-// Rêve utilisateur connecté
+// Récupérer rêve de l'utilisateur connecté
 export async function getUserDreams() {
     try {
         if (!pb.authStore.isValid) {
