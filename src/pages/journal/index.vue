@@ -70,7 +70,7 @@ watch(searchQuery, (newQuery) => {
       type="text"
       placeholder="Rechercher des rêves"
       v-model="searchQuery"
-      class="p-2 bg-purple-900 text-white rounded"
+      class="py-3 px-2.5 bg-nightblue text-white rounded"
     />
   </div>
   <section class="mb-8 flex flex-col gap-5">
