@@ -9,7 +9,7 @@ const router = useRouter()
 
 const handleLogOut = () => {
   logOut()
-  router.push('/login') // Rediriger l'utilisateur vers la page de connexion
+  router.push('/') // Rediriger l'utilisateur vers la page de connexion
 }
 </script>
 

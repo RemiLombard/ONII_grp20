@@ -30,7 +30,7 @@ const handleSignUp = async () => {
       name: name.value,
       avatar: avatar.value as File
     })
-    router.push('/login')
+    router.push('/')
   } catch (error) {
     errorMessage.value = "Erreur lors de l'inscription: " + (error as Error).message
   } finally {
@@ -123,7 +123,7 @@ const handleAvatarChange = (event: Event) => {
             required
           />
         </div>
-        <div class="mb-1">
+        <div class="mb-5">
           <label for="passwordConfirm" class="text-lg font-bold font-Quicksand text-left text-white"
             >Confirmez le mot de passe:</label
           >
@@ -173,7 +173,7 @@ const handleAvatarChange = (event: Event) => {
         />
         <p>
           Vous êtes déjà inscrit ?
-          <RouterLink to="/login" class="text-yellow-200 hover:underline"
+          <RouterLink to="/" class="text-yellow-200 hover:underline"
             >Connectez-vous !</RouterLink
           >
         </p>
