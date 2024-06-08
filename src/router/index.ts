@@ -71,8 +71,13 @@ const router = createRouter({
     {
       path: '/journal/dream/:id',
       name: 'dream-details',
-      component: () => import('../pages/journal/dreamDetails.vue'),
+      component: () => import('../pages/journal/details.vue'),
       props: true
+    },
+    {
+      path: '/journal/:id/analyse',
+      name: 'dream-analysis',
+      component: () => import('../pages/journal/analyse.vue')
     }
     
   ]
