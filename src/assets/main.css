@@ -4,13 +4,17 @@
 
 @layer base {
   body {
-    @apply bg-gray-950 bg-fixed inset-0 text-white font-Lato
+    @apply bg-slate-950 bg-fixed inset-0 text-white font-Lato
   }
   main {
     @apply mx-5
   }
   h1 {
     @apply text-4xl font-Caveat my-10
+  }
+  h2 {
+    @apply text-2xl font-Caveat mb-5
+  
   }
   h3 {
     @apply text-lg font-bold font-Quicksand text-left text-white

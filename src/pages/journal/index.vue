@@ -78,6 +78,7 @@ watch(searchQuery, (newQuery) => {
       <p class="text-sm italic font-light mb-5 text-gray-400">{{ monthYear }}</p>
       <article v-for="dream in dreams" :key="dream.id">
         <CardDiary
+          :id="dream.id"
           :title="dream.title"
           :excerpt="dream.excerpt"
           :date="dream.date"
@@ -95,3 +96,4 @@ watch(searchQuery, (newQuery) => {
     </button>
   </RouterLink>
 </template>
+

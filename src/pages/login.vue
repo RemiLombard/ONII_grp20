@@ -33,7 +33,7 @@ const handleSignIn = async () => {
 </script>
 
 <template>
-  <div class="flex items-center gap-3">
+  <div class="flex items-center gap-3 justify-center">
     <h1>Bienvenue sur</h1>
     <IconLogo />
   </div>
@@ -43,7 +43,7 @@ const handleSignIn = async () => {
       <div class="mb-5">
         <label for="email" class="text-lg font-bold font-Quicksand text-left text-white">Email:</label>
         <input
-          class="text-white border bg-violet-950 border-yellow-200 mt-1 rounded-lg w-full py-2 px-3"
+          class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2 px-3"
           type="email"
           id="email"
           v-model="email"
@@ -54,7 +54,7 @@ const handleSignIn = async () => {
       <div class="mb-5">
         <label for="password" class="text-lg font-bold font-Quicksand text-left text-white">Mot de passe:</label>
         <input
-          class="text-white border bg-violet-950 border-yellow-200 mt-1 rounded-lg w-full py-2 px-3"
+          class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2 px-3"
           type="password"
           id="password"
           v-model="password"
@@ -74,7 +74,7 @@ const handleSignIn = async () => {
           :disabled="isLoading"
         />
         <p>
-          Vous n'avez pas de compte ?
+          Pas encore de compte ?
           <RouterLink to="/signup" class="text-yellow-200 hover:underline">Inscrivez-vous !</RouterLink>
         </p>
       </div>

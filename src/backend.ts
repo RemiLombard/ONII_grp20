@@ -50,7 +50,7 @@ export async function logIn(email: string, password: string) {
 }
 
 // Créer rêve
-export async function createDream(dreamData: { title: string; fullText: string; date: string; recurent: boolean; lucide: boolean; type: string; categorie: string }) {
+export async function createDream(dreamData: { title: string; fullText: string; date: string; recurrent: string; lucide: string; type: string; categorie: string }) {
     try {
         if (!pb.authStore.isValid) {
             throw new Error('Utilisateur non connecté');

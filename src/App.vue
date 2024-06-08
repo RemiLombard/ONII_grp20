@@ -7,7 +7,7 @@
 </script>
 
 <template>
-  <HeaderPage v-if="!['/','/login'].includes($route.path)"/>
+  <HeaderPage v-if="!['/signup','/'].includes($route.path)"/>
 
   <main>
     <RouterView />

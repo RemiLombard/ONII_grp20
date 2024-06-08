@@ -22,14 +22,12 @@ const handleLogOut = () => {
     >
       <IconDisconnect />
       <p class="flex-grow w-64 font-bold text-left text-red-400">Se déconnecter</p>
-      <IconTo />
     </div>
     <div
       class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 pt-3.5"
     >
       <IconBin />
       <p class="flex-grow w-64 font-bold text-left text-red-400">Supprimer le compte</p>
-      <IconTo />
     </div>
   </div>
 </template>

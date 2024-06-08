@@ -68,6 +68,12 @@ const router = createRouter({
       name: 'account',
       component: () => import('../pages/account/index.vue')
     },
+    {
+      path: '/journal/dream/:id',
+      name: 'dream-details',
+      component: () => import('../pages/journal/dreamDetails.vue'),
+      props: true
+    }
     
   ]
 })
