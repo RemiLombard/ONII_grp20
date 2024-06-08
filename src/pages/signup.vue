@@ -30,7 +30,7 @@ const handleSignUp = async () => {
       name: name.value,
       avatar: avatar.value as File
     })
-    router.push('/login')
+    router.push('/')
   } catch (error) {
     errorMessage.value = "Erreur lors de l'inscription: " + (error as Error).message
   } finally {
@@ -52,7 +52,7 @@ const handleAvatarChange = (event: Event) => {
 </script>
 
 <template>
-  <div class="flex items-center gap-3">
+  <div class="flex items-center gap-3 justify-center">
     <h1>Bienvenue sur</h1>
     <IconLogo class="" />
   </div>
@@ -64,7 +64,7 @@ const handleAvatarChange = (event: Event) => {
           >Email:</label
         >
         <input
-          class="text-white border bg-violet-950 border-yellow-200 mt-1 rounded-lg w-full py-2 px-3"
+          class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
           type="email"
           id="email"
           v-model="email"
@@ -77,7 +77,7 @@ const handleAvatarChange = (event: Event) => {
           >Nom d'utilisateur:</label
         >
         <input
-          class="text-white border bg-violet-950 border-yellow-200 mt-1 rounded-lg w-full py-2 px-3"
+          class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
           type="text"
           id="username"
           v-model="username"
@@ -90,7 +90,7 @@ const handleAvatarChange = (event: Event) => {
           >Prénom:</label
         >
         <input
-          class="text-white border bg-violet-950 border-yellow-200 mt-1 rounded-lg w-full py-2 px-3"
+          class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
           type="text"
           id="firstName"
           v-model="firstName"
@@ -101,7 +101,7 @@ const handleAvatarChange = (event: Event) => {
       <div class="mb-5">
         <label for="name" class="text-lg font-bold font-Quicksand text-left text-white">Nom:</label>
         <input
-          class="text-white border bg-violet-950 border-yellow-200 mt-1 rounded-lg w-full py-2 px-3"
+          class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
           type="text"
           id="name"
           v-model="name"
@@ -115,7 +115,7 @@ const handleAvatarChange = (event: Event) => {
             >Mot de passe:</label
           >
           <input
-            class="text-white border bg-violet-950 border-yellow-200 mt-1 rounded-lg w-full py-2 px-3"
+            class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
             type="password"
             id="password"
             v-model="password"
@@ -123,12 +123,12 @@ const handleAvatarChange = (event: Event) => {
             required
           />
         </div>
-        <div class="mb-1">
+        <div class="mb-5">
           <label for="passwordConfirm" class="text-lg font-bold font-Quicksand text-left text-white"
             >Confirmez le mot de passe:</label
           >
           <input
-            class="text-white border bg-violet-950 border-yellow-200 mt-1 rounded-lg w-full py-2 px-3"
+            class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
             type="password"
             id="passwordConfirm"
             v-model="passwordConfirm"
@@ -146,7 +146,7 @@ const handleAvatarChange = (event: Event) => {
           >Avatar:</label
         >
         <input
-          class="text-white border bg-violet-950 border-yellow-200 mt-1 rounded-lg w-full py-2 px-3"
+          class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
           type="file"
           id="avatar"
           @change="handleAvatarChange"
@@ -172,8 +172,8 @@ const handleAvatarChange = (event: Event) => {
           :disabled="isLoading"
         />
         <p>
-          Vous êtes déjà inscrit ?
-          <RouterLink to="/login" class="text-yellow-200 hover:underline"
+          Déjà inscrit ?
+          <RouterLink to="/" class="text-yellow-200 hover:underline"
             >Connectez-vous !</RouterLink
           >
         </p>

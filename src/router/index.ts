@@ -5,13 +5,13 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'signup',
-      component: () => import('../pages/signup.vue')
-    },
-    {
-      path: '/login',
       name: 'login',
       component: () => import('../pages/login.vue')
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('../pages/signup.vue')
     },
     {
       path: '/journal',
@@ -68,6 +68,12 @@ const router = createRouter({
       name: 'account',
       component: () => import('../pages/account/index.vue')
     },
+    {
+      path: '/journal/dream/:id',
+      name: 'dream-details',
+      component: () => import('../pages/journal/dreamDetails.vue'),
+      props: true
+    }
     
   ]
 })

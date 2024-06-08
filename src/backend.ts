@@ -1,8 +1,8 @@
 /* eslint-disable no-useless-catch */
 import PocketBase from 'pocketbase';
-import { Collections, type TypedPocketBase } from './pocketbase-types.js'
+import { Collections, type TypedPocketBase } from './pocketbase-types.js';
 
-export const pb = new PocketBase('http://127.0.0.1:8090/') as TypedPocketBase
+export const pb = new PocketBase('http://127.0.0.1:8090/') as TypedPocketBase;
 
 // Restaurer le token d'authentification à partir de localStorage
 const authToken = localStorage.getItem('authToken');
@@ -50,7 +50,7 @@ export async function logIn(email: string, password: string) {
 }
 
 // Créer rêve
-export async function createDream(dreamData: { title: string; fullText: string, date: string, recurent: boolean, lucide: boolean, type: string, categorie: string }) {
+export async function createDream(dreamData: { title: string; fullText: string; date: string; recurrent: string; lucide: string; type: string; categorie: string }) {
     try {
         if (!pb.authStore.isValid) {
             throw new Error('Utilisateur non connecté');
@@ -66,7 +66,7 @@ export async function createDream(dreamData: { title: string; fullText: string, 
         const newDream = await pb.collection('reve').create({
             ...dreamData,
             userId: userId,
-            categories: dreamData.categories, // Assurez-vous que les catégories sont envoyées correctement
+            categorie: dreamData.categorie, // Assurez-vous que les catégories sont envoyées correctement
             excerpt: excerpt
         });
 
@@ -110,6 +110,34 @@ export async function getUserDreams() {
 
         return dreams;
     } catch (error) {
+        throw error;
+    }
+}
+
+// Rechercher les rêves de l'utilisateur connecté
+export async function searchUserDreams(query: string) {
+    try {
+        if (!pb.authStore.isValid) {
+            throw new Error('Utilisateur non connecté');
+        }
+
+        const userId = pb.authStore.model?.id;
+        if (!userId) {
+            throw new Error('ID utilisateur non disponible');
+        }
+
+        const encodedQuery = encodeURIComponent(query);
+        const filter = `userId = '${userId}' && (title ~ '${encodedQuery}' || fullText ~ '${encodedQuery}')`;
+
+        const dreams = await pb.collection('reve').getFullList({
+            filter: filter,
+            sort: '-created'
+        });
+
+        console.log('searchUserDreams:', dreams); // Ajouter un log pour vérifier les résultats
+        return dreams;
+    } catch (error) {
+        console.error('Erreur dans searchUserDreams:', error);
         throw error;
     }
 }
