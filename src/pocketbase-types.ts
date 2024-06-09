@@ -34,14 +34,49 @@ export type AuthSystemFields<T = never> = {
 
 // Record types for each collection
 
+export enum ReveTypeOptions {
+	"Cauchemar" = "Cauchemar",
+	"Rêve" = "Rêve",
+}
+
+export enum ReveLucideOptions {
+	"Oui" = "Oui",
+	"Non" = "Non",
+}
+
+export enum ReveRecurrentOptions {
+	"Oui" = "Oui",
+	"Non" = "Non",
+}
+
+export enum ReveCategorieOptions {
+	"Joie" = "Joie",
+	"Peur" = "Peur",
+	"Tristesse" = "Tristesse",
+	"Colère" = "Colère",
+	"Amour" = "Amour",
+	"Famille" = "Famille",
+	"Amis" = "Amis",
+	"Loisirs" = "Loisirs",
+	"Aventure" = "Aventure",
+	"Fantastique" = "Fantastique",
+	"Exploration" = "Exploration",
+	"Voyage" = "Voyage",
+	"Suspens" = "Suspens",
+	"Historique" = "Historique",
+	"Culture pop" = "Culture pop",
+	"Spiritualité" = "Spiritualité",
+}
 export type ReveRecord = {
+	categorie?: ReveCategorieOptions
 	date?: IsoDateString
 	excerpt?: string
 	fullText?: string
-	lucide?: boolean
+	lucide?: ReveLucideOptions
 	partage?: boolean
-	recurrent?: boolean
+	recurrent?: ReveRecurrentOptions
 	title?: string
+	type?: ReveTypeOptions
 	userId?: RecordIdString
 }
 

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { logIn } from '@/assets/backend';
+import { logIn } from '@/backend';
+import ButtonUser from '@/components/ButtonUser.vue';
+import IconLogo from '@/components/icons/IconLogo.vue';
 
 const router = useRouter();
 const email = ref('');
@@ -23,7 +25,7 @@ const handleSignIn = async () => {
             throw new Error('Les données de session sont manquantes.');
         }
     } catch (error) {
-        errorMessage.value = "Erreur lors de la connexion: " + (error as Error).message;
+        errorMessage.value = 'Erreur lors de la connexion: ' + (error as Error).message;
     } finally {
         isLoading.value = false;
     }
@@ -31,18 +33,51 @@ const handleSignIn = async () => {
 </script>
 
 <template>
+  <div class="flex items-center gap-3 justify-center">
+    <h1>Bienvenue sur</h1>
+    <IconLogo />
+  </div>
+  <div class="bg-nightblue py-10 px-5 rounded-3xl">
+    <h1 class="text-center mt-0 mb-10 text-white">Connexion</h1>
     <form @submit.prevent="handleSignIn">
-        <div>
-            <label for="email">Email:</label>
-            <input class="text-black" type="email" id="email" v-model="email" required>
-        </div>
-        <div>
-            <label for="password">Mot de passe:</label>
-            <input class="text-black" type="password" id="password" v-model="password" required>
-        </div>
-        <div v-if="errorMessage" class="error-message">
-            {{ errorMessage }}
-        </div>
-        <button type="submit" :disabled="isLoading">Se connecter</button>
+      <div class="mb-5">
+        <label for="email" class="text-lg font-bold font-Quicksand text-left text-white">Email:</label>
+        <input
+          class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2 px-3"
+          type="email"
+          id="email"
+          v-model="email"
+          placeholder="Ex : damals@gmail.com"
+          required
+        />
+      </div>
+      <div class="mb-5">
+        <label for="password" class="text-lg font-bold font-Quicksand text-left text-white">Mot de passe:</label>
+        <input
+          class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2 px-3"
+          type="password"
+          id="password"
+          v-model="password"
+          placeholder="8 caractères minimum"
+          required
+        />
+      </div>
+      <div v-if="errorMessage" class="mb-4 text-red-400">
+        {{ errorMessage }}
+      </div>
+      <div class="flex flex-col items-center justify-center gap-5">
+        <ButtonUser
+          variant="default"
+          text="Se connecter"
+          size="medium"
+          type="submit"
+          :disabled="isLoading"
+        />
+        <p>
+          Pas encore de compte ?
+          <RouterLink to="/signup" class="text-yellow-200 hover:underline">Inscrivez-vous !</RouterLink>
+        </p>
+      </div>
     </form>
+  </div>
 </template>

@@ -1,38 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Quicksand:wght@300..700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
-body {
-    background-color: #020617;
-    background-attachment: fixed;
-    inset: 0;
-    @apply text-white;
-    font-family: 'Lato', sans-serif;
-}
-
-main {
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-@media (min-width: 1024px) {
-  main {
-    margin-left: 20px;
-    margin-right: 20px;
+@layer base {
+  body {
+    @apply bg-slate-950 bg-fixed inset-0 text-white font-Lato
   }
-}
-
-h1 {
-    font-family: 'Caveat Brush', cursive;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    @apply text-4xl
-}
-
-nav {
-  font-family: 'Quicksand', sans-serif;
-  font-weight: bold
-    @apply text-lg
+  main {
+    @apply mx-5
+  }
+  h1 {
+    @apply text-4xl font-Caveat my-10
+  }
+  h2 {
+    @apply text-2xl font-Caveat mb-5
+  
+  }
+  h3 {
+    @apply text-lg font-bold font-Quicksand text-left text-white
+  }
+  nav {
+    @apply text-lg font-Quicksand font-bold
+  }
 }

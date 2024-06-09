@@ -1,24 +1,65 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 import CardDiary from '@/components/CardDiary.vue';
 import ButtonStat from '@/components/ButtonStat.vue';
 import IconNew from '@/components/icons/IconNew.vue';
-import { getUserDreams } from '@/assets/backend';
+import { getUserDreams, searchUserDreams } from '@/backend';
+import { format, parseISO } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 const dreams = ref([]);
+const groupedDreams = ref({});
+const searchQuery = ref('');
+
+const groupDreamsByMonthYear = (dreams) => {
+    const grouped = dreams.reduce((acc, dream) => {
+        const date = parseISO(dream.date);
+        const monthYear = format(date, 'MMMM yyyy', { locale: fr });
+        if (!acc[monthYear]) {
+            acc[monthYear] = [];
+        }
+        acc[monthYear].push(dream);
+        return acc;
+    }, {});
+    return grouped;
+};
 
 const fetchDreams = async () => {
     try {
         const userDreams = await getUserDreams();
-        dreams.value = userDreams;
+        dreams.value = userDreams.sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)));
+        groupedDreams.value = groupDreamsByMonthYear(dreams.value);
     } catch (error) {
         console.error('Erreur lors de la récupération des rêves:', error);
     }
 };
 
+const searchDreams = async () => {
+    try {
+        const userDreams = await searchUserDreams(searchQuery.value);
+        dreams.value = userDreams.sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)));
+        groupedDreams.value = groupDreamsByMonthYear(dreams.value);
+    } catch (error) {
+        console.error('Erreur lors de la recherche des rêves:', error);
+    }
+};
+
+const handleDeleteDream = (id) => {
+    dreams.value = dreams.value.filter(dream => dream.id !== id);
+    groupedDreams.value = groupDreamsByMonthYear(dreams.value);
+};
+
 onMounted(() => {
     fetchDreams();
+});
+
+watch(searchQuery, (newQuery) => {
+    if (newQuery) {
+        searchDreams();
+    } else {
+        fetchDreams();
+    }
 });
 </script>
 
@@ -33,22 +74,30 @@ onMounted(() => {
     <input
       type="text"
       placeholder="Rechercher des rêves"
-      class="p-2 bg-purple-900 text-white rounded"
+      v-model="searchQuery"
+      class="py-3 px-2.5 bg-nightblue text-white rounded"
     />
-    <button class="p-2 bg-purple-900 text-white rounded">
-      <IconSearch />
-    </button>
-    <button class="p-2 bg-purple-900 text-white rounded">
-      <IconSettings />
-    </button>
   </div>
-  <section class="mb-8 flex flex-col gap-4">
-    <article v-for="dream in dreams" :key="dream.id">
-      <CardDiary :title="dream.title" :excerpt="dream.excerpt" :date="dream.date" :categorie="dream.categorie" />
-    </article>
+  <section class="mb-8 flex flex-col gap-5">
+    <div v-for="(dreams, monthYear) in groupedDreams" :key="monthYear">
+      <p class="text-sm italic font-light mb-5 text-gray-400">{{ monthYear }}</p>
+      <article v-for="dream in dreams" :key="dream.id">
+        <CardDiary
+          :id="dream.id"
+          :title="dream.title"
+          :excerpt="dream.excerpt"
+          :date="dream.date"
+          :categorie="dream.categorie"
+          @deleteDream="handleDeleteDream"
+          class="mb-5"
+        />
+      </article>
+    </div>
   </section>
   <RouterLink to="/journal/create">
-    <button class="fixed bottom-4 right-4 p-3 bg-gradient-to-r from-blue-100 to-blue-300 text-black rounded-[500px]">
+    <button
+      class="fixed bottom-4 right-4 p-3 bg-gradient-to-r from-blue-100 to-blue-300 text-black rounded-[500px]"
+    >
       <IconNew />
     </button>
   </RouterLink>
