@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
+import { defineProps, computed, ref } from 'vue'
 import IconPoints from './icons/IconPoints.vue'
 import IconTag from './icons/IconTag.vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import ButtonLink from './ButtonLink.vue'
 import ParamsReve from './ParamsReve.vue'
 import { deleteDream } from '@/backend'
+import Modal from './Modal.vue'
 
 const props = defineProps({
   id: String,
@@ -16,6 +17,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['deleteDream'])
+const showModal = ref(false)
+const router = useRouter()
 
 const formattedDate = computed(() => {
   const dateObj = new Date(props.date ?? '')
@@ -40,10 +43,28 @@ const handleDelete = async () => {
     alert('Erreur lors de la suppression du rêve');
   }
 }
+
+const handleAnalyzeClick = () => {
+  const noShowModal = localStorage.getItem('noShowModal')
+  if (noShowModal) {
+    router.push(`/journal/${props.id}/analyse`)
+  } else {
+    showModal.value = true
+  }
+}
+
+const confirmModal = () => {
+  showModal.value = false
+  router.push(`/journal/${props.id}/analyse`)
+}
+
+const cancelModal = () => {
+  showModal.value = false
+}
 </script>
 
 <template>
-  <div class="flex flex-col items-end space-y-[-20px]">
+  <div class="flex flex-col items-end space-y-[-20px] mb-5">
     <div
       class="flex flex-col justify-start items-start w-full gap-5 p-2.5 rounded-[15px] bg-violet-950"
     >
@@ -83,8 +104,10 @@ const handleDelete = async () => {
         variant="common"
         size="common"
         text="Analyser ce rêve avec l'IA"
-        :url="`/journal/${props.id}/analyse`"
+        @click="handleAnalyzeClick"
       />
     </div>
+
+    <Modal v-if="showModal" @confirm="confirmModal" @cancel="cancelModal" />
   </div>
 </template>
