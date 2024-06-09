@@ -50,7 +50,7 @@ export async function logIn(email: string, password: string) {
 }
 
 // Créer rêve
-export async function createDream(dreamData: { title: string; fullText: string; date: string; recurrent: string; lucide: string; type: string; categorie: string }) {
+export async function createDream(dreamData: { title: string; fullText: string; date: string; recurrent: string; lucide: string; type: string; categorie: string; partage: boolean }) {
     try {
         if (!pb.authStore.isValid) {
             throw new Error('Utilisateur non connecté');
@@ -82,6 +82,19 @@ function generateExcerpt(text: string, charLimit: number): string {
         return text;
     }
     return text.slice(0, charLimit) + '...';
+}
+
+// Suppression de rêve
+export async function deleteDream(dreamId: string) {
+    try {
+        if (!pb.authStore.isValid) {
+            throw new Error('Utilisateur non connecté');
+        }
+
+        await pb.collection('reve').delete(dreamId);
+    } catch (error) {
+        throw new Error('Erreur lors de la suppression du rêve: ' + error.message);
+    }
 }
 
 // Déconnecter utilisateur

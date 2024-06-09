@@ -28,7 +28,7 @@ const groupDreamsByMonthYear = (dreams) => {
 const fetchDreams = async () => {
     try {
         const userDreams = await getUserDreams();
-        dreams.value = userDreams.sort((a, b) => new Date(b.date) - new Date(a.date));
+        dreams.value = userDreams.sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)));
         groupedDreams.value = groupDreamsByMonthYear(dreams.value);
     } catch (error) {
         console.error('Erreur lors de la récupération des rêves:', error);
@@ -38,11 +38,16 @@ const fetchDreams = async () => {
 const searchDreams = async () => {
     try {
         const userDreams = await searchUserDreams(searchQuery.value);
-        dreams.value = userDreams.sort((a, b) => new Date(b.date) - new Date(a.date));
+        dreams.value = userDreams.sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)));
         groupedDreams.value = groupDreamsByMonthYear(dreams.value);
     } catch (error) {
         console.error('Erreur lors de la recherche des rêves:', error);
     }
+};
+
+const handleDeleteDream = (id) => {
+    dreams.value = dreams.value.filter(dream => dream.id !== id);
+    groupedDreams.value = groupDreamsByMonthYear(dreams.value);
 };
 
 onMounted(() => {
@@ -83,6 +88,7 @@ watch(searchQuery, (newQuery) => {
           :excerpt="dream.excerpt"
           :date="dream.date"
           :categorie="dream.categorie"
+          @deleteDream="handleDeleteDream"
           class="mb-5"
         />
       </article>
@@ -96,4 +102,3 @@ watch(searchQuery, (newQuery) => {
     </button>
   </RouterLink>
 </template>
-
