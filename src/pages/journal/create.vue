@@ -62,7 +62,7 @@ const goBack = () => {
 
     <!-- Form Content -->
     <section class="mt-[97.6px]">
-      <form @submit.prevent="handleCreateDream" class="space-y-6">
+      <form @submit.prevent="handleCreateDream" class="mb-10">
         <div class="mb-10">
           <h2>Général</h2>
           <div class="mb-5">
@@ -90,7 +90,7 @@ const goBack = () => {
           </div>
         </div>
 
-        <div class="mb-8">
+        <div class="">
           <h2>Détails</h2>
           <div class="mb-5">
             <label for="type" class="block text-lg font-bold text-white">Type de rêve :</label>
@@ -164,16 +164,17 @@ const goBack = () => {
               <option value="Spiritualité">Spiritualité</option>
             </select>
           </div>
-          <div class="mb-5 flex gap-2 justify-center">
-            <input
-              type="checkbox"
-              v-model="partage"
-              class="text-white bg-nightblue border border-none mt-1 rounded"
-            />
-            <label class="block text-lg font-bold text-white">Partager ce rêve :</label>
-            
-          </div>
         </div>
+        <!-- Checkbox Partage -->
+        <div class="mt-10 text-center">
+            <input
+              class="text-white bg-nightblue border border-none mr-2 rounded"
+              type="checkbox"
+              id="partage"
+              v-model="partage"
+            />
+            <label for="partage" class="text-lg font-bold text-white">Partager ce rêve avec la communauté</label>
+          </div>
         <div v-if="errorMessage" class="text-red-400 text-center">
           {{ errorMessage }}
         </div>
@@ -181,6 +182,3 @@ const goBack = () => {
     </section>
   </div>
 </template>
-
-
-
