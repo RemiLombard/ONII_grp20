@@ -66,12 +66,6 @@ onMounted(() => {
           </p>
         </div>
         <div class="mb-5">
-          <p class="block text-lg font-bold text-white">Date du rêve :</p>
-          <p class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3">
-            {{ new Date(dream.date).toLocaleDateString('fr-FR') }}
-          </p>
-        </div>
-        <div class="mb-5">
           <p class="text-lg font-bold text-white">Rêve récurrent :</p>
           <p class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3">
             {{ dream.recurrent ? 'Oui' : 'Non' }}

@@ -13,6 +13,7 @@ const recurrent = ref('')
 const lucide = ref('')
 const type = ref('') // 'cauchemar' ou 'reve'
 const categorie = ref('')
+const partage = ref(false) // Ajout du champ de partage
 const isLoading = ref(false)
 const errorMessage = ref('')
 
@@ -27,7 +28,8 @@ const handleCreateDream = async () => {
       recurrent: recurrent.value,
       lucide: lucide.value,
       type: type.value,
-      categorie: categorie.value
+      categorie: categorie.value,
+      partage: partage.value // Inclure le champ de partage
     })
     router.push('/journal')
   } catch (error) {
@@ -60,7 +62,7 @@ const goBack = () => {
 
     <!-- Form Content -->
     <section class="mt-[97.6px]">
-      <form @submit.prevent="handleCreateDream" class="space-y-6">
+      <form @submit.prevent="handleCreateDream" class="mb-10">
         <div class="mb-10">
           <h2>Général</h2>
           <div class="mb-5">
@@ -88,7 +90,7 @@ const goBack = () => {
           </div>
         </div>
 
-        <div class="mb-8">
+        <div class="">
           <h2>Détails</h2>
           <div class="mb-5">
             <label for="type" class="block text-lg font-bold text-white">Type de rêve :</label>
@@ -163,6 +165,16 @@ const goBack = () => {
             </select>
           </div>
         </div>
+        <!-- Checkbox Partage -->
+        <div class="mt-10 text-center">
+            <input
+              class="text-white bg-nightblue border border-none mr-2 rounded"
+              type="checkbox"
+              id="partage"
+              v-model="partage"
+            />
+            <label for="partage" class="text-lg font-bold text-white">Partager ce rêve avec la communauté</label>
+          </div>
         <div v-if="errorMessage" class="text-red-400 text-center">
           {{ errorMessage }}
         </div>

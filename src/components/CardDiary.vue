@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { defineProps, computed } from 'vue';
-import IconPoints from './icons/IconPoints.vue';
-import IconTag from './icons/IconTag.vue';
-import { RouterLink } from 'vue-router';
+import { defineProps, computed } from 'vue'
+import IconPoints from './icons/IconPoints.vue'
+import IconTag from './icons/IconTag.vue'
+import { RouterLink } from 'vue-router'
+import ButtonLink from './ButtonLink.vue'
+import ParamsReve from './ParamsReve.vue'
+import { deleteDream } from '@/backend'
 
 const props = defineProps({
   id: String,
@@ -10,27 +13,46 @@ const props = defineProps({
   excerpt: String,
   date: String,
   categorie: String
-});
+})
+
+const emit = defineEmits(['deleteDream'])
 
 const formattedDate = computed(() => {
-  const dateObj = new Date(props.date ?? '');
+  const dateObj = new Date(props.date ?? '')
   return new Intl.DateTimeFormat('fr-FR', {
     day: '2-digit',
     month: 'long',
     year: 'numeric'
-  }).format(dateObj);
-});
+  }).format(dateObj)
+})
+
+const handleEdit = () => {
+  // Logique pour éditer le rêve
+  alert('Édition du rêve ' + props.id)
+}
+
+const handleDelete = async () => {
+  try {
+    await deleteDream(props.id);
+    emit('deleteDream', props.id); // Émettre l'événement avec l'ID du rêve supprimé
+  } catch (error) {
+    console.error('Erreur lors de la suppression du rêve:', error);
+    alert('Erreur lors de la suppression du rêve');
+  }
+}
 </script>
 
 <template>
   <div class="flex flex-col items-end space-y-[-20px]">
-    <div class="flex flex-col justify-start items-start w-full gap-5 p-2.5 rounded-[15px] bg-violet-950">
+    <div
+      class="flex flex-col justify-start items-start w-full gap-5 p-2.5 rounded-[15px] bg-violet-950"
+    >
       <!-- Titre de l'article avec les points d'icônes -->
       <div class="flex justify-between items-center w-full">
         <h3 class="text-lg font-bold font-Quicksand text-left text-white">{{ title }}</h3>
-        <div>
+        <ParamsReve @edit="handleEdit" @delete="handleDelete">
           <IconPoints />
-        </div>
+        </ParamsReve>
       </div>
 
       <!-- Contenu de l'article -->
@@ -57,11 +79,12 @@ const formattedDate = computed(() => {
 
     <!-- Bouton d'analyse -->
     <div class="flex flex-col items-end h-10 pr-2.5">
-      <div
-        class="flex justify-center items-center text-sm gap-2.5 px-3.5 py-2.5 rounded-[50px] bg-fuchsia-700"
-      >
-        <RouterLink to="/" class="text-white"> Analyser ce rêve avec l’IA </RouterLink>
-      </div>
+      <ButtonLink
+        variant="common"
+        size="common"
+        text="Analyser ce rêve avec l'IA"
+        :url="`/journal/${props.id}/analyse`"
+      />
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
+<!-- ButtonLink.vue -->
 <script setup lang="ts">
-import { defineProps, withDefaults } from 'vue'
-import { RouterLink } from 'vue-router'
+import { defineProps, withDefaults, defineEmits } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -16,11 +16,13 @@ const props = withDefaults(
   }
 )
 
+const emit = defineEmits(['click'])
+
 const variantClass = {
   default: 'border border-white text-black justify-center bg-white hover:opacity-80',
   dark: 'border border-black bg-black justify-center text-white',
   outlined: 'border border-white text-white justify-center bg-transparent hover:opacity-80',
-  common: 'border border-green-600 text-white justify-center bg-fuchsia-700 hover:opacity-80'
+  common: 'border border-fuchsia-700 text-white justify-center bg-fuchsia-700 hover:opacity-80'
 }
 
 const sizeClass = {
@@ -32,10 +34,10 @@ const sizeClass = {
 </script>
 
 <template>
-  <RouterLink
+  <button
     class="inline-flex items-center gap-2 font-bold rounded-[30px] transition duration-300 ease-in-out"
     :class="[variantClass[props.variant], sizeClass[props.size]]"
-    :to="`${props.url}`"
+    @click="$emit('click')"
   >
     <component
       v-if="props.icon"
@@ -44,5 +46,5 @@ const sizeClass = {
       class="size-5"
     />
     {{ props.text }}
-  </RouterLink>
+  </button>
 </template>
