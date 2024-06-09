@@ -63,10 +63,35 @@ export async function createDream(dreamData: { title: string; fullText: string; 
 
         const excerpt = generateExcerpt(dreamData.fullText, 147);
 
+        const allowedTypes = ["Cauchemar", "Rêve"];
+        const allowedCategories = ["Joie", "Peur", "Tristesse", "Colère", "Amour", "Famille", "Amis", "Loisirs", "Aventure", "Fantastique", "Exploration", "Voyage", "Suspens", "Historique", "Culture pop", "Spiritualité"];
+        const allowedLucideOptions = ["Oui", "Non"];
+        const allowedRecurrentOptions = ["Oui", "Non"];
+
+        if (!allowedTypes.includes(dreamData.type)) {
+            throw new Error(`Type invalide: ${dreamData.type}`);
+        }
+
+        if (!allowedCategories.includes(dreamData.categorie)) {
+            throw new Error(`Catégorie invalide: ${dreamData.categorie}`);
+        }
+
+        if (!allowedLucideOptions.includes(dreamData.lucide)) {
+            throw new Error(`Option lucide invalide: ${dreamData.lucide}`);
+        }
+
+        if (!allowedRecurrentOptions.includes(dreamData.recurrent)) {
+            throw new Error(`Option récurrente invalide: ${dreamData.recurrent}`);
+        }
+
         const newDream = await pb.collection('reve').create({
             ...dreamData,
             userId: userId,
-            categorie: dreamData.categorie, // Assurez-vous que les catégories sont envoyées correctement
+            categorie: dreamData.categorie,
+            type: dreamData.type,
+            lucide: dreamData.lucide,
+            recurrent: dreamData.recurrent,
+            partage: dreamData.partage,
             excerpt: excerpt
         });
 
@@ -75,6 +100,8 @@ export async function createDream(dreamData: { title: string; fullText: string; 
         throw error;
     }
 }
+
+
 
 // Générer extrait rêve
 function generateExcerpt(text: string, charLimit: number): string {
