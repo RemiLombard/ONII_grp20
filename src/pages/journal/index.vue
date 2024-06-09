@@ -81,7 +81,7 @@ watch(searchQuery, (newQuery) => {
   <section class="mb-8 flex flex-col gap-5">
     <div v-for="(dreams, monthYear) in groupedDreams" :key="monthYear">
       <p class="text-sm italic font-light mb-5 text-gray-400">{{ monthYear }}</p>
-      <article v-for="dream in dreams" :key="dream.id">
+      <article v-for="dream in dreams" :key="dream.id" class="mb-5">
         <CardDiary
           :id="dream.id"
           :title="dream.title"
@@ -89,7 +89,6 @@ watch(searchQuery, (newQuery) => {
           :date="dream.date"
           :categorie="dream.categorie"
           @deleteDream="handleDeleteDream"
-          class="mb-5"
         />
       </article>
     </div>
@@ -102,3 +101,4 @@ watch(searchQuery, (newQuery) => {
     </button>
   </RouterLink>
 </template>
+
