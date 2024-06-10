@@ -5,6 +5,9 @@ import { pb } from '@/backend'
 import IconBack from '@/components/icons/IconBack.vue'
 import ButtonLink from '@/components/ButtonLink.vue'
 import IconBigModif from '@/components/icons/IconBigModif.vue'
+import Modal from '@/components/Modal.vue'
+
+const showModal = ref(false)
 
 // Définir le prop 'id'
 const props = defineProps({
@@ -33,6 +36,24 @@ const goBack = () => {
 onMounted(() => {
   fetchDreamDetails()
 })
+
+const handleAnalyzeClick = () => {
+  const noShowModal = localStorage.getItem('noShowModal')
+  if (noShowModal) {
+    router.push(`/journal/${props.id}/analyse`)
+  } else {
+    showModal.value = true
+  }
+}
+
+const confirmModal = () => {
+  showModal.value = false
+  router.push(`/journal/${props.id}/analyse`)
+}
+
+const cancelModal = () => {
+  showModal.value = false
+}
 </script>
 
 <template>
@@ -91,18 +112,19 @@ onMounted(() => {
   </section>
   <!-- Fixed Bottom Buttons -->
   <div class="fixed bottom-0 left-0 right-0 p-5 flex justify-between items-center z-10">
-      <ButtonLink
-        variant="common"
-        size="common"
-        text="Analyser ce rêve avec l'IA"
-        :url="`/journal/${props.id}/analyse`"
-        class="bg-fuchsia-700 text-white py-2 h-[51px] w-full mr-2.5 px-4 rounded-[30px]"
-      />
-      <button
-        @click="() => router.push(`/journal/edit/${props.id}`)"
-        class="bg-fuchsia-700 text-white py-2 px-4 rounded-[30px] flex items-center"
-      >
-        <IconBigModif/>
-      </button>
-    </div>
+    <ButtonLink
+      variant="common"
+      size="common"
+      text="Analyser ce rêve avec l'IA"
+      @click="handleAnalyzeClick"
+      class="bg-fuchsia-700 text-white py-2 h-[51px] w-full mr-2.5 px-4 rounded-[30px]"
+    />
+    <Modal v-if="showModal" @confirm="confirmModal" @cancel="cancelModal" />
+    <button
+      @click="() => router.push(`/journal/edit/${props.id}`)"
+      class="bg-fuchsia-700 text-white py-2 px-4 rounded-[30px] flex items-center"
+    >
+      <IconBigModif />
+    </button>
+  </div>
 </template>
