@@ -112,4 +112,7 @@ const goBack = () => {
     <button @click="applyFilters" class="w-full p-3 bg-fuchsia-700 text-white rounded">
       Enregistrer
     </button>
+    <button @click="applyFilters" class="w-full p-3 bg-blue-400 text-white rounded">
+      Réinitialiser
+    </button>
 </template>
