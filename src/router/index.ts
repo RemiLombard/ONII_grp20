@@ -84,7 +84,12 @@ const router = createRouter({
       name: 'dream-edit',
       component: () => import('../pages/journal/edit.vue'),
       props: true
-    }
+    },
+    {
+      path: '/journal/filter',
+      name: 'filter',
+      component: () => import('../pages/journal/filter.vue')
+    },
     
     
     
