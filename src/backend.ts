@@ -2,7 +2,7 @@
 import PocketBase from 'pocketbase';
 import { Collections, type TypedPocketBase } from './pocketbase-types.js';
 
-export const pb = new PocketBase('https://onii.remilombard.fr:443') as TypedPocketBase;
+export const pb = new PocketBase('http://127.0.0.1:8090') as TypedPocketBase;
 
 // Restaurer le token d'authentification à partir de localStorage
 const authToken = localStorage.getItem('authToken');
@@ -90,8 +90,6 @@ export async function updateDream(dreamId: string, updatedData: { title: string;
     }
 }
 
-  
-
 // Générer extrait rêve
 function generateExcerpt(text: string, charLimit: number): string {
     if (text.length <= charLimit) {
@@ -170,3 +168,45 @@ export async function searchUserDreams(query: string) {
         throw error;
     }
 }
+
+// Filtrer les rêves de l'utilisateur connecté
+export async function filterUserDreams(filters: Record<string, string>) {
+    try {
+      if (!pb.authStore.isValid) {
+        throw new Error('Utilisateur non connecté');
+      }
+  
+      const userId = pb.authStore.model?.id;
+      if (!userId) {
+        throw new Error('ID utilisateur non disponible');
+      }
+  
+      let filterString = `userId = '${userId}'`;
+      
+      if (filters.category) {
+        filterString += ` && categorie = '${filters.category}'`;
+      }
+      if (filters.type) {
+        filterString += ` && type = '${filters.type}'`;
+      }
+      if (filters.recurrent) {
+        filterString += ` && recurrent = '${filters.recurrent}'`;
+      }
+      if (filters.lucide) {
+        filterString += ` && lucide = '${filters.lucide}'`;
+      }
+      
+      const sortOption = filters.sortOption === 'Date (ancien)' ? 'created' : '-created';
+  
+      const dreams = await pb.collection('reve').getFullList({
+        filter: filterString,
+        sort: sortOption,
+      });
+  
+      return dreams;
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+  
