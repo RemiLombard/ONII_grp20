@@ -79,26 +79,30 @@ watch(searchQuery, (newQuery) => {
     />
   </div>
   <section class="mb-8 flex flex-col gap-5">
-    <div v-for="(dreams, monthYear) in groupedDreams" :key="monthYear">
-      <p class="text-sm italic font-light mb-5 text-gray-400">{{ monthYear }}</p>
-      <article v-for="dream in dreams" :key="dream.id" class="mb-5">
-        <CardDiary
-          :id="dream.id"
-          :title="dream.title"
-          :excerpt="dream.excerpt"
-          :date="dream.date"
-          :categorie="dream.categorie"
-          @deleteDream="handleDeleteDream"
-        />
-      </article>
+    <div v-if="dreams.length === 0" class="flex items-center justify-center h-96">
+      <p class="text-center text-gray-400">Vous n'avez pas encore de rêve enregistré dans votre journal.</p>
+    </div>
+    <div v-else>
+      <div v-for="(dreams, monthYear) in groupedDreams" :key="monthYear">
+        <p class="text-sm italic font-light mb-5 text-gray-400">{{ monthYear }}</p>
+        <article v-for="dream in dreams" :key="dream.id" class="mb-5">
+          <CardDiary
+            :id="dream.id"
+            :title="dream.title"
+            :excerpt="dream.excerpt"
+            :date="dream.date"
+            :categorie="dream.categorie"
+            @deleteDream="handleDeleteDream"
+          />
+        </article>
+      </div>
     </div>
   </section>
   <RouterLink to="/journal/create">
     <button
-      class="fixed bottom-4 right-4 p-3 bg-gradient-to-r from-blue-100 to-blue-300 text-black rounded-[500px]"
+      class="fixed bottom-4 right-4 p-3 bg-blue-200 text-black rounded-[500px]"
     >
       <IconNew />
     </button>
   </RouterLink>
 </template>
-
