@@ -58,7 +58,7 @@ const goBack = () => {
       </div>
     </section>
     <div class="mb-4">
-      <label for="sort" class="block text-lg">Trier par</label>
+      <label for="sort" class="text-lg font-Quicksand font-bold">Trier par</label>
       <select
         id="sort"
         v-model="selectedSortOption"
@@ -68,7 +68,7 @@ const goBack = () => {
       </select>
     </div>
     <div class="mb-4">
-      <label for="category" class="block text-lg">Catégorie</label>
+      <label for="category" class="text-lg font-Quicksand font-bold">Catégorie</label>
       <select
         id="category"
         v-model="selectedCategory"
@@ -81,14 +81,14 @@ const goBack = () => {
       </select>
     </div>
     <div class="mb-4">
-      <label for="type" class="block text-lg">Type</label>
+      <label for="type" class="text-lg font-Quicksand font-bold">Type</label>
       <select id="type" v-model="selectedType" class="w-full p-2 rounded bg-nightblue text-white">
         <option value="">Aucun</option>
         <option v-for="type in types" :key="type" :value="type">{{ type }}</option>
       </select>
     </div>
     <div class="mb-4">
-      <label for="recurrent" class="block text-lg">Rêve récurrent ?</label>
+      <label for="recurrent" class="text-lg font-Quicksand font-bold">Rêve récurrent ?</label>
       <select
         id="recurrent"
         v-model="selectedRecurrent"
@@ -98,8 +98,8 @@ const goBack = () => {
         <option v-for="option in yesNoOptions" :key="option" :value="option">{{ option }}</option>
       </select>
     </div>
-    <div class="mb-4">
-      <label for="lucide" class="block text-lg">Rêve lucide ?</label>
+    <div class="mb-5">
+      <label for="lucide" class="text-lg font-Quicksand font-bold">Rêve lucide ?</label>
       <select
         id="lucide"
         v-model="selectedLucide"
@@ -109,10 +109,10 @@ const goBack = () => {
         <option v-for="option in yesNoOptions" :key="option" :value="option">{{ option }}</option>
       </select>
     </div>
-    <button @click="applyFilters" class="w-full p-3 bg-fuchsia-700 text-white rounded">
+    <button @click="applyFilters" class="w-full p-3 bg-fuchsia-700 rounded-[15px] text-white">
       Enregistrer
     </button>
-    <button @click="applyFilters" class="w-full p-3 bg-blue-400 text-white rounded">
+    <button @click="applyFilters" class="w-full p-3 bg-blue-200 rounded-[15px] text-black mt-5">
       Réinitialiser
     </button>
 </template>
