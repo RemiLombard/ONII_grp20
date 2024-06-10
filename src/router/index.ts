@@ -78,7 +78,15 @@ const router = createRouter({
       path: '/journal/:id/analyse',
       name: 'dream-analysis',
       component: () => import('../pages/journal/analyse.vue')
+    },
+    {
+      path: '/journal/edit/:id',
+      name: 'dream-edit',
+      component: () => import('../pages/journal/edit.vue'),
+      props: true
     }
+    
+    
     
   ]
 })

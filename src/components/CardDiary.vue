@@ -29,11 +29,6 @@ const formattedDate = computed(() => {
   }).format(dateObj)
 })
 
-const handleEdit = () => {
-  // Logique pour éditer le rêve
-  alert('Édition du rêve ' + props.id)
-}
-
 const handleDelete = async () => {
   try {
     await deleteDream(props.id);
@@ -68,20 +63,17 @@ const cancelModal = () => {
     <div
       class="flex flex-col justify-start items-start w-full gap-5 p-2.5 rounded-[15px] bg-violet-950"
     >
-      <!-- Titre de l'article avec les points d'icônes -->
       <div class="flex justify-between items-center w-full">
         <h3 class="text-lg font-bold font-Quicksand text-left text-white">{{ title }}</h3>
-        <ParamsReve @edit="handleEdit" @delete="handleDelete">
+        <ParamsReve :dreamId="props.id" @delete="handleDelete">
           <IconPoints />
         </ParamsReve>
       </div>
 
-      <!-- Contenu de l'article -->
       <div class="w-full">
         <p class="text-base text-left text-white">{{ excerpt }}</p>
       </div>
 
-      <!-- Tags -->
       <div class="flex justify-between self-stretch">
         <RouterLink :to="{ name: 'dream-details', params: { id: props.id } }">
           <span class="text-lg font-bold font-Lato text-yellow-200">Voir plus</span>
@@ -92,13 +84,11 @@ const cancelModal = () => {
         </div>
       </div>
 
-      <!-- Date -->
       <div class="w-full gap-2.5">
         <p class="text-sm italic font-light text-left text-white">{{ formattedDate }}</p>
       </div>
     </div>
 
-    <!-- Bouton d'analyse -->
     <div class="flex flex-col items-end h-10 pr-2.5">
       <ButtonLink
         variant="common"

@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue'
+import { useRouter } from 'vue-router'
 import IconBin from './icons/IconBin.vue'
 import IconModif from './icons/IconModif.vue'
 
-const emit = defineEmits(['edit', 'delete'])
+const props = defineProps({
+  dreamId: String
+})
+
+const emit = defineEmits(['delete'])
 const isVisible = ref(false)
+const router = useRouter()
 
 const toggleVisibility = () => {
   isVisible.value = !isVisible.value
 }
 
 const editDream = () => {
-  emit('edit')
+  router.push({ name: 'dream-edit', params: { id: props.dreamId } })
   toggleVisibility()
 }
 

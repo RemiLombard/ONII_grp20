@@ -76,6 +76,22 @@ export async function createDream(dreamData: { title: string; fullText: string; 
     }
 }
 
+// Mettre à jour un rêve
+export async function updateDream(dreamId: string, updatedData: { title: string; fullText: string; date: string; recurrent: string; lucide: string; type: string; categorie: string; partage: boolean }) {
+    try {
+        if (!pb.authStore.isValid) {
+            throw new Error('Utilisateur non connecté');
+        }
+
+        const updatedDream = await pb.collection('reve').update(dreamId, updatedData);
+        return updatedDream;
+    } catch (error) {
+        throw error;
+    }
+}
+
+  
+
 // Générer extrait rêve
 function generateExcerpt(text: string, charLimit: number): string {
     if (text.length <= charLimit) {
