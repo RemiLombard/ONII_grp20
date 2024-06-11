@@ -40,7 +40,7 @@ const formattedDate = computed(() => {
 
 const userAvatar = computed(() => {
   return props.user && props.user.avatar
-    ? `http://127.0.0.1:8090/api/files/_pb_users_auth_/${props.user.id}/${props.user.avatar}`
+    ? `https://onii.remilombard.fr:443/api/files/_pb_users_auth_/${props.user.id}/${props.user.avatar}`
     : defaultAvatar
 })
 
