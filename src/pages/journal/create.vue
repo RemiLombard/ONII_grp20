@@ -66,7 +66,7 @@ const goBack = () => {
         <div class="mb-10">
           <h2>Général</h2>
           <div class="mb-5">
-            <label for="title" class="block text-lg font-bold text-white">Titre du rêve :</label>
+            <label for="title" class="block text-lg font-Quicksand font-bold text-white">Titre du rêve :</label>
             <input
               class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3"
               type="text"
@@ -77,7 +77,7 @@ const goBack = () => {
             />
           </div>
           <div>
-            <label for="fullText" class="block text-lg font-bold text-white"
+            <label for="fullText" class="block text-lg font-Quicksand font-bold text-white"
               >Contenu du rêve :</label
             >
             <textarea
@@ -93,7 +93,7 @@ const goBack = () => {
         <div class="">
           <h2>Détails</h2>
           <div class="mb-5">
-            <label for="type" class="block text-lg font-bold text-white">Type de rêve :</label>
+            <label for="type" class="block text-lg font-Quicksand font-bold text-white">Type de rêve :</label>
             <select
               class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3"
               id="type"
@@ -105,7 +105,7 @@ const goBack = () => {
             </select>
           </div>
           <div class="mb-5">
-            <label for="date" class="block text-lg font-bold text-white">Date du rêve :</label>
+            <label for="date" class="block text-lg font-Quicksand font-bold text-white">Date du rêve :</label>
             <input
               class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3"
               type="date"
@@ -115,7 +115,7 @@ const goBack = () => {
             />
           </div>
           <div class="mb-5">
-            <label for="recurrent" class="block text-lg font-bold text-white">Rêve récurrent ? :</label>
+            <label for="recurrent" class="block text-lg font-Quicksand font-bold text-white">Rêve récurrent ? :</label>
             <select
               class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3"
               id="recurrent"
@@ -127,7 +127,7 @@ const goBack = () => {
             </select>
           </div>
           <div class="mb-5">
-            <label for="lucide" class="block text-lg font-bold text-white">Rêve lucide ? :</label>
+            <label for="lucide" class="block text-lg font-Quicksand font-bold text-white">Rêve lucide ? :</label>
             <select
               class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3"
               id="lucide"
@@ -139,7 +139,7 @@ const goBack = () => {
             </select>
           </div>
           <div class="mb-5">
-            <label for="categorie" class="block text-lg font-bold text-white">Catégorie :</label>
+            <label for="categorie" class="block text-lg font-Quicksand font-bold text-white">Catégorie :</label>
             <select
               class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3"
               id="categorie"
@@ -173,7 +173,7 @@ const goBack = () => {
               id="partage"
               v-model="partage"
             />
-            <label for="partage" class="text-lg font-bold text-white">Partager ce rêve avec la communauté</label>
+            <label for="partage" class="text-lg font-Quicksand font-bold text-white">Partager ce rêve avec la communauté</label>
           </div>
         <div v-if="errorMessage" class="text-red-400 text-center">
           {{ errorMessage }}

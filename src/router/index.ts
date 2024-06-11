@@ -90,6 +90,12 @@ const router = createRouter({
       name: 'filter',
       component: () => import('../pages/journal/filter.vue')
     },
+    {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: () => import('../pages/ForgotPassword.vue')
+    }
+    
     
     
     
