@@ -80,14 +80,14 @@ watch(searchQuery, (newQuery) => {
       <ButtonStat />
     </RouterLink>
   </div>
-  <div class="flex items-center justify-between mb-6">
+  <div class="flex items-center justify-between mb-8">
     <input
       type="text"
       placeholder="Rechercher des rêves"
       v-model="searchQuery"
       class="py-3 px-2.5 bg-nightblue w-full mr-2.5 text-white rounded"
     />
-    <RouterLink to="/journal/filter" class="ml-2 p-3 bg-nightblue text-white rounded">
+    <RouterLink to="/journal/filter" class="ml-2 p-3.5 bg-nightblue text-white rounded">
       <IconFilter />
     </RouterLink>
   </div>

@@ -77,7 +77,12 @@ const handleSignIn = async () => {
           Pas encore de compte ?
           <RouterLink to="/signup" class="text-yellow-200 hover:underline">Inscrivez-vous !</RouterLink>
         </p>
+        <p>
+          <RouterLink to="/forgot-password" class="text-yellow-200 hover:underline">Mot de passe oublié ?</RouterLink>
+        </p>
       </div>
     </form>
   </div>
 </template>
+
+
