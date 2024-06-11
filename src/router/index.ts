@@ -94,6 +94,17 @@ const router = createRouter({
       path: '/forgot-password',
       name: 'forgot-password',
       component: () => import('../pages/ForgotPassword.vue')
+    },
+    {
+      path: '/reseau/filter',
+      name: 'share-filter',
+      component: () => import('../pages/reseau/filter.vue')
+    },
+    {
+      path: '/auth/confirm-password-reset/:token',
+      name: 'reset-password',
+      component: () => import('../pages/ResetPassword.vue'),
+      props: true
     }
     
     

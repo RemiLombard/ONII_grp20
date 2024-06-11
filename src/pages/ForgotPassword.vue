@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { requestPasswordReset } from '@/backend';
 import ButtonUser from '@/components/ButtonUser.vue';
+import IconLogo from '@/components/icons/IconLogo.vue';
 
 const router = useRouter();
 const email = ref('');
@@ -41,6 +42,10 @@ const startCountdown = () => {
 </script>
 
 <template>
+  <div class="flex items-center gap-3 justify-center">
+    <h1>Bienvenue sur</h1>
+    <IconLogo class="" />
+  </div>
     <div class="bg-nightblue py-10 px-5 rounded-3xl">
       <h1 class="text-center mt-0 mb-10 text-white">Réinitialiser le mot de passe</h1>
       <form @submit.prevent="handleForgotPassword">

@@ -1,35 +1,60 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { fetchSharedDreams } from '@/backend';
-import CardDream from '@/components/CardDream.vue';
+import { ref, onMounted, watch } from 'vue'
+import { fetchSharedDreams, searchSharedDreams, filterSharedDreams } from '@/backend'
+import CardDream from '@/components/CardReseau.vue'
+import { useRoute, useRouter } from 'vue-router'
 
-const dreams = ref([]);
+const dreams = ref([])
+const searchQuery = ref('')
+const route = useRoute()
+const router = useRouter()
 
-const loadDreams = async () => {
+const loadDreams = async (filters = {}) => {
   try {
-    const result = await fetchSharedDreams();
-    console.log('Fetched shared dreams:', result);
-    dreams.value = result;
+    const result = await filterSharedDreams(filters)
+    console.log('Fetched shared dreams:', result)
+    dreams.value = result
   } catch (error) {
-    console.error('Error loading dreams:', error);
+    console.error('Error loading dreams:', error)
   }
-};
+}
+
+const searchDreams = async () => {
+  try {
+    const result = await searchSharedDreams(searchQuery.value)
+    console.log('Searched shared dreams:', result)
+    dreams.value = result
+  } catch (error) {
+    console.error('Error searching dreams:', error)
+  }
+}
 
 onMounted(() => {
-  loadDreams();
-});
+  loadDreams(route.query)
+})
+
+watch(() => route.query, (newQuery) => {
+  loadDreams(newQuery)
+})
+
+watch(searchQuery, (newQuery) => {
+  if (newQuery) {
+    searchDreams()
+  } else {
+    loadDreams(route.query)
+  }
+})
 </script>
 
 <template>
   <div>
-    <h1>Pour Vous</h1>
     <div v-for="dream in dreams" :key="dream.id">
-      <CardDream 
+      <CardDream
         :id="dream.id"
         :title="dream.title"
         :excerpt="dream.excerpt"
         :date="dream.created"
-        :user="dream.user" 
+        :user="dream.user"
         :likes="dream.likes || 0"
         :comments="dream.comments || 0"
       />

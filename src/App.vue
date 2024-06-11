@@ -7,7 +7,7 @@
 </script>
 
 <template>
-  <HeaderPage v-if="!['/signup','/'].includes($route.path)"/>
+  <HeaderPage v-if="!['/signup','/', '/forgot-password', '/auth/confirm-password-reset/:token'].includes($route.path)"/>
 
   <main>
     <RouterView />

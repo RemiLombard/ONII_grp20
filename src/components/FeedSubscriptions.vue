@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { getSubscriptionDreams } from '@/backend'
-import CardDream from '@/components/CardDream.vue'
+import CardDream from '@/components/CardReseau.vue'
 
 const dreams = ref([])
 const errorMessage = ref('')
