@@ -13,8 +13,8 @@ const setActiveTab = (tab: string) => {
 <template>
   <div>
     <div class="flex justify-around bg-slate-950 text-white py-4">
-      <button :class="{ 'border-b-4 border-fuchsia-700': activeTab === 'pour-vous' }" @click="setActiveTab('pour-vous')">Pour vous</button>
-      <button :class="{ 'border-b-4 border-fuchsia-700': activeTab === 'abonnements' }" @click="setActiveTab('abonnements')">Abonnements</button>
+      <button class="p-2.5 flex-grow text-center text-lg font-bold" :class="{ 'border-b-4 border-fuchsia-700': activeTab === 'pour-vous' }" @click="setActiveTab('pour-vous')">Pour vous</button>
+      <button class="p-2.5 flex-grow text-center text-lg font-bold" :class="{ 'border-b-4 border-fuchsia-700': activeTab === 'abonnements' }" @click="setActiveTab('abonnements')">Abonnements</button>
     </div>
 
     <div v-if="activeTab === 'pour-vous'">
@@ -26,11 +26,3 @@ const setActiveTab = (tab: string) => {
   </div>
 </template>
 
-<style scoped>
-button {
-  padding: 10px;
-  flex-grow: 1;
-  text-align: center;
-  font-size: 1rem;
-}
-</style>
