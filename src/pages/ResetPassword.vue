@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import ButtonUser from '@/components/ButtonUser.vue';
 import { resetPassword } from '@/backend';
+import IconLogo from '@/components/icons/IconLogo.vue';
 
 const router = useRouter();
 const route = useRoute();
