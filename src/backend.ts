@@ -399,12 +399,6 @@ export async function filterSharedDreams(filters: Record<string, string>) {
     }
 }
 
-        return dreamsWithUserDetails;
-    } catch (error) {
-        console.error('Error filtering shared dreams:', error);
-        throw error;
-    }
-}
 
 // Fonction pour réinitialiser le mot de passe
 export async function resetPassword(token: string, newPassword: string) {
