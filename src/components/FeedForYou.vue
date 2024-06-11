@@ -2,15 +2,12 @@
 import { ref, onMounted, watch } from 'vue'
 import { fetchSharedDreams, searchSharedDreams, filterSharedDreams } from '@/backend'
 import CardDream from '@/components/CardReseau.vue'
-
-const props = defineProps({
-  searchQuery: {
-    type: String,
-    default: ''
-  }
-})
+import { useRoute, useRouter } from 'vue-router'
 
 const dreams = ref([])
+const searchQuery = ref('')
+const route = useRoute()
+const router = useRouter()
 
 const loadDreams = async (filters = {}) => {
   try {
@@ -24,7 +21,7 @@ const loadDreams = async (filters = {}) => {
 
 const searchDreams = async () => {
   try {
-    const result = await searchSharedDreams(props.searchQuery)
+    const result = await searchSharedDreams(searchQuery.value)
     console.log('Searched shared dreams:', result)
     dreams.value = result
   } catch (error) {
@@ -33,14 +30,18 @@ const searchDreams = async () => {
 }
 
 onMounted(() => {
-  loadDreams()
+  loadDreams(route.query)
 })
 
-watch(() => props.searchQuery, (newQuery) => {
+watch(() => route.query, (newQuery) => {
+  loadDreams(newQuery)
+})
+
+watch(searchQuery, (newQuery) => {
   if (newQuery) {
     searchDreams()
   } else {
-    loadDreams()
+    loadDreams(route.query)
   }
 })
 </script>

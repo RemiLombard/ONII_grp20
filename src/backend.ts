@@ -2,7 +2,7 @@
 import PocketBase from 'pocketbase';
 import { Collections, type TypedPocketBase } from './pocketbase-types.js';
 
-export const pb = new PocketBase('https://onii.remilombard.fr:443') as TypedPocketBase;
+export const pb = new PocketBase('http://127.0.0.1:8090/') as TypedPocketBase;
 
 // Restaurer le token d'authentification à partir de localStorage
 const authToken = localStorage.getItem('authToken');
@@ -391,6 +391,13 @@ export async function filterSharedDreams(filters: Record<string, string>) {
                 user: user
             };
         });
+
+        return dreamsWithUserDetails;
+    } catch (error) {
+        console.error('Error filtering shared dreams:', error);
+        throw error;
+    }
+}
 
         return dreamsWithUserDetails;
     } catch (error) {
