@@ -271,7 +271,7 @@ export async function fetchSharedDreams() {
     try {
         const dreams = await pb.collection('reve').getFullList({
             filter: 'partage = true',
-            expand: 'userId' // Assurez-vous d'inclure les détails de l'utilisateur
+            expand: 'userId' 
         });
 
         const dreamsWithUserDetails = dreams.map(dream => {
@@ -333,5 +333,81 @@ export async function requestPasswordReset(email: string) {
         throw new Error('Erreur lors de la demande de réinitialisation de mot de passe: ' + error.message);
     }
 }
-  
+
+// Rechercher les rêves partagés par tous les utilisateurs
+export async function searchSharedDreams(query: string) {
+    try {
+        const filter = `(title ~ '${query}' || excerpt ~ '${query}') && partage = true`;
+        const dreams = await pb.collection('reve').getFullList({
+            filter: filter,
+            expand: 'userId'
+        });
+
+        const dreamsWithUserDetails = dreams.map(dream => {
+            const user = dream.expand?.userId || { username: 'Utilisateur inconnu', avatar: null };
+            return {
+                ...dream,
+                user: user
+            };
+        });
+
+        return dreamsWithUserDetails;
+    } catch (error) {
+        console.error('Error searching shared dreams:', error);
+        throw error;
+    }
+}
+
+// Filtrer les rêves partagés
+export async function filterSharedDreams(filters: Record<string, string>) {
+    try {
+        let filterString = 'partage = true';
+
+        if (filters.category) {
+            filterString += ` && categorie = '${filters.category}'`;
+        }
+        if (filters.type) {
+            filterString += ` && type = '${filters.type}'`;
+        }
+        if (filters.recurrent) {
+            filterString += ` && recurrent = '${filters.recurrent}'`;
+        }
+        if (filters.lucide) {
+            filterString += ` && lucide = '${filters.lucide}'`;
+        }
+
+        const sortOption = filters.sortOption === 'Date (ancien)' ? 'created' : '-created';
+
+        const dreams = await pb.collection('reve').getFullList({
+            filter: filterString,
+            sort: sortOption,
+            expand: 'userId'
+        });
+
+        const dreamsWithUserDetails = dreams.map(dream => {
+            const user = dream.expand?.userId || { username: 'Utilisateur inconnu', avatar: null };
+            return {
+                ...dream,
+                user: user
+            };
+        });
+
+        return dreamsWithUserDetails;
+    } catch (error) {
+        console.error('Error filtering shared dreams:', error);
+        throw error;
+    }
+}
+
+// Fonction pour réinitialiser le mot de passe
+export async function resetPassword(token: string, newPassword: string) {
+    try {
+        console.log('Resetting password with token:', token);
+        await pb.collection('users').confirmPasswordReset(token, newPassword, newPassword);
+        console.log('Password reset successful');
+    } catch (error) {
+        console.error('Error resetting password:', error.message);
+        throw new Error('Error resetting password: ' + error.message);
+    }
+}
   

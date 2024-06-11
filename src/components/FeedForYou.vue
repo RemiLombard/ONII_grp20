@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { fetchSharedDreams } from '@/backend'
+import { ref, onMounted, watch } from 'vue'
+import { fetchSharedDreams, searchSharedDreams, filterSharedDreams } from '@/backend'
 import CardDream from '@/components/CardReseau.vue'
+
+const props = defineProps({
+  searchQuery: {
+    type: String,
+    default: ''
+  }
+})
 
 const dreams = ref([])
 
-const loadDreams = async () => {
+const loadDreams = async (filters = {}) => {
   try {
-    const result = await fetchSharedDreams()
+    const result = await filterSharedDreams(filters)
     console.log('Fetched shared dreams:', result)
     dreams.value = result
   } catch (error) {
@@ -15,14 +22,31 @@ const loadDreams = async () => {
   }
 }
 
+const searchDreams = async () => {
+  try {
+    const result = await searchSharedDreams(props.searchQuery)
+    console.log('Searched shared dreams:', result)
+    dreams.value = result
+  } catch (error) {
+    console.error('Error searching dreams:', error)
+  }
+}
+
 onMounted(() => {
   loadDreams()
+})
+
+watch(() => props.searchQuery, (newQuery) => {
+  if (newQuery) {
+    searchDreams()
+  } else {
+    loadDreams()
+  }
 })
 </script>
 
 <template>
   <div>
-    <h1>Pour Vous</h1>
     <div v-for="dream in dreams" :key="dream.id">
       <CardDream
         :id="dream.id"

@@ -85,7 +85,7 @@ const cancelModal = () => {
       </div>
 
       <div class="w-full gap-2.5">
-        <p class="text-sm italic font-light text-left text-white">{{ formattedDate }}</p>
+        <p class="text-sm italic font-light text-left text-gray-400">{{ formattedDate }}</p>
       </div>
     </div>
 
