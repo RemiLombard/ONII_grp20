@@ -42,7 +42,7 @@ const applyFilters = () => {
     lucide: selectedLucide.value
   }
 
-  router.push({ name: 'journal', query: filters })
+  router.push({ name: 'reseau', query: filters })
 }
 
 const goBack = () => {

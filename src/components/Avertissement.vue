@@ -30,12 +30,6 @@ const cancel = () => {
           une consultation professionnelle.
         </p>
         <p class="mt-2.5">
-          Si vous avez des préoccupations ou des questions plus profondes concernant vos rêves, nous
-          vous recommandons vivement de consulter un professionnel qualifié, tel qu'un psychologue
-          ou un thérapeute spécialisé dans l'analyse des rêves. Ils seront en mesure de vous offrir
-          une compréhension plus approfondie et personnalisée de votre monde intérieur.
-        </p>
-        <p class="mt-2.5">
           Nous espérons que notre service vous apportera une certaine clarté et une nouvelle
           perspective sur vos rêves, mais n'oubliez pas que rien ne remplace l'expertise et
           l'expérience d'un spécialiste.

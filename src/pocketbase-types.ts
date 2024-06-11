@@ -6,6 +6,11 @@ import type PocketBase from 'pocketbase'
 import type { RecordService } from 'pocketbase'
 
 export enum Collections {
+	Blocks = "blocks",
+	Comments = "comments",
+	Follows = "follows",
+	Likes = "likes",
+	Reports = "reports",
 	Reve = "reve",
 	Users = "users",
 }
@@ -33,6 +38,34 @@ export type AuthSystemFields<T = never> = {
 } & BaseSystemFields<T>
 
 // Record types for each collection
+
+export type BlocksRecord = {
+	blockedUserId?: RecordIdString
+	blockerId?: RecordIdString
+}
+
+export type CommentsRecord = {
+	content?: string
+	date?: IsoDateString
+	dreamId?: RecordIdString
+	userId?: RecordIdString
+}
+
+export type FollowsRecord = {
+	followerId?: RecordIdString
+	followingId?: RecordIdString
+}
+
+export type LikesRecord = {
+	dreamId?: RecordIdString
+	userId?: RecordIdString
+}
+
+export type ReportsRecord = {
+	reason?: string
+	reportedDreamId?: RecordIdString
+	reporterId?: RecordIdString
+}
 
 export enum ReveTypeOptions {
 	"Cauchemar" = "Cauchemar",
@@ -69,9 +102,11 @@ export enum ReveCategorieOptions {
 }
 export type ReveRecord = {
 	categorie?: ReveCategorieOptions
+	comments?: number
 	date?: IsoDateString
 	excerpt?: string
 	fullText?: string
+	likes?: number
 	lucide?: ReveLucideOptions
 	partage?: boolean
 	recurrent?: ReveRecurrentOptions
@@ -87,17 +122,32 @@ export type UsersRecord = {
 }
 
 // Response types include system fields and match responses from the PocketBase API
+export type BlocksResponse<Texpand = unknown> = Required<BlocksRecord> & BaseSystemFields<Texpand>
+export type CommentsResponse<Texpand = unknown> = Required<CommentsRecord> & BaseSystemFields<Texpand>
+export type FollowsResponse<Texpand = unknown> = Required<FollowsRecord> & BaseSystemFields<Texpand>
+export type LikesResponse<Texpand = unknown> = Required<LikesRecord> & BaseSystemFields<Texpand>
+export type ReportsResponse<Texpand = unknown> = Required<ReportsRecord> & BaseSystemFields<Texpand>
 export type ReveResponse<Texpand = unknown> = Required<ReveRecord> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
 
 // Types containing all Records and Responses, useful for creating typing helper functions
 
 export type CollectionRecords = {
+	blocks: BlocksRecord
+	comments: CommentsRecord
+	follows: FollowsRecord
+	likes: LikesRecord
+	reports: ReportsRecord
 	reve: ReveRecord
 	users: UsersRecord
 }
 
 export type CollectionResponses = {
+	blocks: BlocksResponse
+	comments: CommentsResponse
+	follows: FollowsResponse
+	likes: LikesResponse
+	reports: ReportsResponse
 	reve: ReveResponse
 	users: UsersResponse
 }
@@ -106,6 +156,11 @@ export type CollectionResponses = {
 // https://github.com/pocketbase/js-sdk#specify-typescript-definitions
 
 export type TypedPocketBase = PocketBase & {
+	collection(idOrName: 'blocks'): RecordService<BlocksResponse>
+	collection(idOrName: 'comments'): RecordService<CommentsResponse>
+	collection(idOrName: 'follows'): RecordService<FollowsResponse>
+	collection(idOrName: 'likes'): RecordService<LikesResponse>
+	collection(idOrName: 'reports'): RecordService<ReportsResponse>
 	collection(idOrName: 'reve'): RecordService<ReveResponse>
 	collection(idOrName: 'users'): RecordService<UsersResponse>
 }

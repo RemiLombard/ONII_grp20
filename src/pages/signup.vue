@@ -61,7 +61,7 @@ const handleAvatarChange = (event: Event) => {
     <form @submit.prevent="handleSignUp">
       <div class="mb-5">
         <label for="email" class="text-lg font-bold font-Quicksand text-left text-white"
-          >Email:</label
+          >Email :</label
         >
         <input
           class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
@@ -74,7 +74,7 @@ const handleAvatarChange = (event: Event) => {
       </div>
       <div class="mb-5">
         <label for="username" class="text-lg font-bold font-Quicksand text-left text-white"
-          >Nom d'utilisateur:</label
+          >Nom d'utilisateur :</label
         >
         <input
           class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
@@ -87,7 +87,7 @@ const handleAvatarChange = (event: Event) => {
       </div>
       <div class="mb-5">
         <label for="firstName" class="text-lg font-bold font-Quicksand text-left text-white"
-          >Prénom:</label
+          >Prénom :</label
         >
         <input
           class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
@@ -99,7 +99,7 @@ const handleAvatarChange = (event: Event) => {
         />
       </div>
       <div class="mb-5">
-        <label for="name" class="text-lg font-bold font-Quicksand text-left text-white">Nom:</label>
+        <label for="name" class="text-lg font-bold font-Quicksand text-left text-white">Nom :</label>
         <input
           class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
           type="text"
@@ -112,7 +112,7 @@ const handleAvatarChange = (event: Event) => {
       <div>
         <div class="mb-5">
           <label for="password" class="text-lg font-bold font-Quicksand text-left text-white"
-            >Mot de passe:</label
+            >Mot de passe :</label
           >
           <input
             class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
@@ -125,7 +125,7 @@ const handleAvatarChange = (event: Event) => {
         </div>
         <div class="mb-5">
           <label for="passwordConfirm" class="text-lg font-bold font-Quicksand text-left text-white"
-            >Confirmez le mot de passe:</label
+            >Confirmez le mot de passe :</label
           >
           <input
             class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
@@ -143,7 +143,7 @@ const handleAvatarChange = (event: Event) => {
 
       <div class="mb-5">
         <label for="avatar" class="text-lg font-bold font-Quicksand text-left text-white"
-          >Avatar:</label
+          >Photo de profil :</label
         >
         <input
           class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
