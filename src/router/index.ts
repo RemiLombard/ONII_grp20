@@ -105,6 +105,12 @@ const router = createRouter({
       name: 'reset-password',
       component: () => import('../pages/ResetPassword.vue'),
       props: true
+    },
+    {
+      path: '/pages/reseau/:id',
+      name: 'dream-post',
+      component: () => import('../pages/reseau/DreamPost.vue'),
+      props: true
     }
     
     

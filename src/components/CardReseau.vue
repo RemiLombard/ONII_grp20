@@ -1,6 +1,7 @@
-<!-- src/components/CardReseau.vue -->
 <script setup lang="ts">
-import { defineProps, computed, ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { addLike, removeLike, pb } from '@/backend'
+import { Collections } from '@/pocketbase-types'
 import IconPoints from './icons/IconPoints.vue'
 import IconTag from './icons/IconTag.vue'
 import IconLike from './icons/IconLike.vue'
@@ -28,6 +29,43 @@ const props = defineProps({
     default: 0
   }
 })
+
+const liked = ref(false)
+const totalLikes = ref(props.likes)
+
+const checkIfLiked = async () => {
+  try {
+    const userId = pb.authStore.model?.id
+    const filter = `dreamId = '${props.id}' && userId = '${userId}'`
+    const existingLike = await pb.collection(Collections.Likes).getFirstListItem(filter)
+    liked.value = !!existingLike
+  } catch (error) {
+    if (error.status === 404) {
+      liked.value = false
+    } else {
+      console.error('Error checking like status:', error)
+    }
+  }
+}
+
+onMounted(() => {
+  checkIfLiked()
+})
+
+const handleLike = async () => {
+  try {
+    if (liked.value) {
+      await removeLike(props.id)
+      totalLikes.value -= 1
+    } else {
+      await addLike(props.id)
+      totalLikes.value += 1
+    }
+    liked.value = !liked.value
+  } catch (error) {
+    console.error('Error handling like:', error)
+  }
+}
 
 const formattedDate = computed(() => {
   const dateObj = new Date(props.date ?? '')
@@ -83,12 +121,10 @@ const username = computed(() => {
     </div>
 
     <div class="flex space-x-4 items-end h-10 pr-2.5">
-      <RouterLink :to="{ name: 'dream-details', params: { id: props.id } }">
-        <button class="flex items-center text-white bg-fuchsia-700 py-3 px-2.5 rounded-full">
-          <IconLike class="w-6 h-6 mr-1" />
-          <span>{{ likes }}</span>
-        </button>
-      </RouterLink>
+      <button @click="handleLike" :class="['flex items-center py-3 px-2.5 rounded-full', liked ? 'bg-fuchsia-700 text-white' : 'bg-fuchsia-700 text-white']">
+        <IconLike :fillColor="liked ? '#FEF08A' : 'transparent'" :strokeColor="liked ? '#FEF08A' : 'white'" class="w-6 h-6 mr-1" />
+        <span>{{ totalLikes }}</span>
+      </button>
       <RouterLink :to="{ name: 'dream-details', params: { id: props.id } }">
         <button class="flex items-center text-white bg-fuchsia-700 py-3 px-2.5 rounded-full">
           <IconCom class="w-6 h-6 mr-1" />
