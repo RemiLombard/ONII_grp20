@@ -6,7 +6,7 @@ import { RouterLink, useRouter } from 'vue-router'
 import ButtonLink from './ButtonLink.vue'
 import ParamsReve from './ParamsReve.vue'
 import { deleteDream } from '@/backend'
-import Modal from './Modal.vue'
+import Modal from './Avertissement.vue'
 
 const props = defineProps({
   id: String,
@@ -31,11 +31,11 @@ const formattedDate = computed(() => {
 
 const handleDelete = async () => {
   try {
-    await deleteDream(props.id);
-    emit('deleteDream', props.id); // Émettre l'événement avec l'ID du rêve supprimé
+    await deleteDream(props.id)
+    emit('deleteDream', props.id) // Émettre l'événement avec l'ID du rêve supprimé
   } catch (error) {
-    console.error('Erreur lors de la suppression du rêve:', error);
-    alert('Erreur lors de la suppression du rêve');
+    console.error('Erreur lors de la suppression du rêve:', error)
+    alert('Erreur lors de la suppression du rêve')
   }
 }
 

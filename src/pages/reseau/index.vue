@@ -20,22 +20,36 @@ const openFilter = () => {
 
 <template>
   <div>
-    <div class="flex items-center justify-between mb-8">
-      <input
-        type="text"
-        placeholder="Rechercher des rêves"
-        v-model="searchQuery"
-        class="py-3 px-2.5 bg-nightblue w-full mr-2.5 text-white rounded"
-      />
-      <button @click="openFilter" class="ml-2 p-3.5 bg-nightblue text-white rounded">
-        <IconFilter />
-      </button>
-    </div>
+    <section class="">
+      <div class="flex items-center justify-between my-10">
+        <input
+          type="text"
+          placeholder="Rechercher des rêves"
+          v-model="searchQuery"
+          class="py-3 px-2.5 bg-nightblue w-full mr-2.5 text-white rounded"
+        />
+        <button @click="openFilter" class="ml-2 p-3.5 bg-nightblue text-white rounded">
+          <IconFilter />
+        </button>
+      </div>
 
-    <div class="flex justify-around bg-slate-950 text-white py-4">
-      <button class="p-2.5 flex-grow text-center text-lg font-bold" :class="{ 'border-b-4 border-fuchsia-700': activeTab === 'pour-vous' }" @click="setActiveTab('pour-vous')">Pour vous</button>
-      <button class="p-2.5 flex-grow text-center text-lg font-bold" :class="{ 'border-b-4 border-fuchsia-700': activeTab === 'abonnements' }" @click="setActiveTab('abonnements')">Abonnements</button>
-    </div>
+      <div class="flex justify-around bg-slate-950 text-white">
+        <button
+          class="p-2.5 flex-grow text-center text-lg font-bold"
+          :class="{ 'border-b-4 text-yellow-200 border-yellow-200': activeTab === 'pour-vous' }"
+          @click="setActiveTab('pour-vous')"
+        >
+          Pour vous
+        </button>
+        <button
+          class="p-2.5 flex-grow text-center text-lg font-bold"
+          :class="{ 'border-b-4 text-yellow-200 border-yellow-200': activeTab === 'abonnements' }"
+          @click="setActiveTab('abonnements')"
+        >
+          Abonnements
+        </button>
+      </div>
+    </section>
 
     <div v-if="activeTab === 'pour-vous'">
       <FeedForYou :searchQuery="searchQuery" />

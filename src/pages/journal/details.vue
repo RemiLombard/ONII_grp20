@@ -5,7 +5,7 @@ import { pb } from '@/backend'
 import IconBack from '@/components/icons/IconBack.vue'
 import ButtonLink from '@/components/ButtonLink.vue'
 import IconBigModif from '@/components/icons/IconBigModif.vue'
-import Modal from '@/components/Modal.vue'
+import Modal from '@/components/Avertissement.vue'
 
 const showModal = ref(false)
 
