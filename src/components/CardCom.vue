@@ -73,7 +73,7 @@ const handleReport = async (reason: string) => {
 </script>
 
 <template>
-  <div class="bg-nightblue text-white py-3 px-2.5 rounded-[15px] flex items-start">
+  <div class="text-white rounded-[15px] flex items-start">
     <img :src="userAvatar" alt="avatar" class="w-10 h-10 rounded-full mr-3" />
     <div class="flex-1">
       <div class="flex justify-between items-center mb-2">
@@ -88,7 +88,7 @@ const handleReport = async (reason: string) => {
           <IconPoints />
         </ParamsComment>
       </div>
-      <p>{{ content }}</p>
+      <p class="bg-nightblue px-2.5 py-3 rounded-[15px]">{{ content }}</p>
     </div>
   </div>
 </template>

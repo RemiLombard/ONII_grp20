@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import PocketBase from 'pocketbase';
 import { Collections, type TypedPocketBase } from './pocketbase-types.js';
 

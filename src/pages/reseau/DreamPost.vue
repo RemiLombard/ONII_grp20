@@ -138,7 +138,7 @@ onMounted(() => {
       <h1 class="text-white">Post</h1>
     </div>
   </section>
-  <div class="flex flex-col items-end space-y-[-20px] mb-5 w-full">
+  <div class="flex flex-col items-end space-y-[-20px] mb-8 w-full">
     <div class="bg-violet-950 text-white p-2.5 rounded-[15px] w-full">
       <div class="flex justify-between items-center mb-5">
         <div class="flex items-center">
@@ -182,10 +182,9 @@ onMounted(() => {
     </div>
   </div>
 
-  <div class="mt-6 w-full">
-    <h2 class="text-white text-lg mb-4">Commentaires</h2>
+  <div class="mt-6 mb-24 w-full">
     <div class="flex-1 overflow-auto">
-      <div v-for="comment in comments" :key="comment.id" class="mb-4">
+      <div v-for="comment in comments" :key="comment.id" class="mb-5">
         <CardCom
           :commentId="comment.id"
           :userId="comment.userId"
