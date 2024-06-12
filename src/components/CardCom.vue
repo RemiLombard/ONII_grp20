@@ -35,7 +35,7 @@ const showModal = ref(false)
 
 const userAvatar = computed(() => {
   return props.avatar
-    ? `https://onii.remilombard.fr/api/files/_pb_users_auth_/${props.userId}/${props.avatar}`
+    ? `https://onii.remilombard.fr:443/api/files/_pb_users_auth_/${props.userId}/${props.avatar}`
     : defaultAvatar
 })
 
