@@ -27,7 +27,7 @@ const fetchDreamDetails = async () => {
 
 // Fonction pour analyser le rêve avec l'IA
 const analyzeDream = async (dreamText) => {
-  const url = 'https://remilombard.fr:443/api.together.xyz/v1/chat/completions';
+  const url = 'https://remilombard.fr/api.together.xyz/v1/chat/completions';
   const apiKey = '89614d88374f9ae4488178d9c315ef8faec5bfbe7c14309a0a06393d85a0b6ad';
 
   const data = {
@@ -88,7 +88,7 @@ onMounted(() => {
       <div v-if="dream" class="mt-24 mb-10 space-y-5">
         <div class="bg-violet-950 text-white p-2.5 rounded-[15px]">
           <div class="flex items-center mb-5">
-            <img :src="userProfile?.avatar ? `https://remilombard.fr:443/api/files/${userProfile?.collectionId}/${userProfile?.id}/${userProfile?.avatar}` : 'default-avatar.png'" alt="Profile" class="w-10 h-10 rounded-full mr-3" />
+            <img :src="userProfile?.avatar ? `https://remilombard.fr/api/files/${userProfile?.collectionId}/${userProfile?.id}/${userProfile?.avatar}` : 'default-avatar.png'" alt="Profile" class="w-10 h-10 rounded-full mr-3" />
             <div>
               <p class="text-lg font-bold">Vous</p>
               <p class="text-sm text-gray-400">{{ new Date(dream?.date).toLocaleDateString('fr-FR') }}</p>
