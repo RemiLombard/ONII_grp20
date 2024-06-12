@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { pb, Collections, addLike, removeLike, addComment } from '@/backend'
+import { pb, Collections, addLike, removeLike, addComment, deleteDream, reportPost, blockUser } from '@/backend'
 import { ReveResponse, UsersResponse, CommentsResponse } from '@/pocketbase-types'
 import defaultAvatar from '/default-avatar.png'
 import IconBack from '@/components/icons/IconBack.vue'
@@ -9,6 +9,7 @@ import IconLike from '@/components/icons/IconLike.vue'
 import IconCom from '@/components/icons/IconCom.vue'
 import IconPoints from '@/components/icons/IconPoints.vue'
 import CardCom from '@/components/CardCom.vue'
+import ParamsDetail from '@/components/ParamsDetail.vue'
 
 const router = useRouter()
 
@@ -102,6 +103,33 @@ const removeComment = (commentId: string) => {
   comments.value = comments.value.filter(comment => comment.id !== commentId)
 }
 
+const handleDreamDeleted = async () => {
+  try {
+    if (dream.value) {
+      await deleteDream(dream.value.id)
+      router.push({ name: 'reseau' }) // Redirige vers la page index de la partie réseau
+    }
+  } catch (error) {
+    console.error('Error deleting dream:', error)
+  }
+}
+
+const handleDreamEdited = () => {
+  // Logique pour l'édition du rêve
+}
+
+const handleDreamReported = (reason: string) => {
+  if (dream.value) {
+    reportPost(dream.value.id, reason)
+  }
+}
+
+const handleUserBlocked = () => {
+  if (userProfile.value) {
+    blockUser(userProfile.value.id)
+  }
+}
+
 const formattedDate = computed(() => {
   if (dream.value) {
     const dateObj = new Date(dream.value.date)
@@ -126,6 +154,10 @@ const username = computed(() => {
     : 'Utilisateur inconnu'
 })
 
+const isOwner = computed(() => {
+  return pb.authStore.model?.id === userProfile.value?.id
+})
+
 onMounted(() => {
   fetchDreamDetails()
 })
@@ -148,7 +180,16 @@ onMounted(() => {
             <p class="text-sm text-gray-400">{{ formattedDate }}</p>
           </div>
         </div>
-        <IconPoints />
+        <ParamsDetail
+          :dreamId="dream?.id" 
+          :isOwner="isOwner"
+          @delete="handleDreamDeleted"
+          @edit="handleDreamEdited"
+          @report="handleDreamReported"
+          @block="handleUserBlocked"
+        >
+          <IconPoints />
+        </ParamsDetail>
       </div>
       <h3 class="font-bold">{{ dream?.title }}</h3>
       <p class="text-base mt-4">{{ dream?.fullText }}</p>
@@ -206,5 +247,3 @@ onMounted(() => {
     </form>
   </div>
 </template>
-
-

@@ -42,6 +42,10 @@ const filterDreams = debounce(async () => {
   }
 }, 300) // 300ms delay
 
+const handleDreamDeleted = (dreamId: string) => {
+  dreams.value = dreams.value.filter(dream => dream.id !== dreamId)
+}
+
 watch(() => props.searchQuery, (newQuery) => {
   if (newQuery) {
     searchDreams()
@@ -62,6 +66,6 @@ onMounted(() => {
 <template>
   <div class="">
     <div v-if="errorMessage">{{ errorMessage }}</div>
-    <CardDream v-for="dream in dreams" :key="dream.id" :id="dream.id" :title="dream.title" :excerpt="dream.excerpt" :date="dream.created" :user="dream.user" :likes="dream.likes || 0" :comments="dream.comments || 0" />
+    <CardDream v-for="dream in dreams" :key="dream.id" :id="dream.id" :title="dream.title" :excerpt="dream.excerpt" :date="dream.created" :user="dream.user" :likes="dream.likes || 0" :comments="dream.comments || 0" @deleteDream="handleDreamDeleted" />
   </div>
 </template>

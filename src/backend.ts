@@ -107,6 +107,10 @@ export async function deleteDream(dreamId: string) {
             throw new Error('Utilisateur non connecté');
         }
 
+        if (!dreamId) {
+            throw new Error('ID de rêve manquant');
+        }
+
         const dream = await pb.collection(Collections.Reve).getOne(dreamId);
         const commentCount = dream.comments || 0;
 
