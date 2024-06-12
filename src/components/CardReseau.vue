@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { addLike, removeLike, pb } from '@/backend'
+import { addLike, removeLike, pb, deleteDream, reportPost, blockUser } from '@/backend'
 import { Collections } from '@/pocketbase-types'
 import IconPoints from './icons/IconPoints.vue'
 import IconTag from './icons/IconTag.vue'
@@ -8,6 +8,7 @@ import IconLike from './icons/IconLike.vue'
 import IconCom from './icons/IconCom.vue'
 import { RouterLink } from 'vue-router'
 import defaultAvatar from '/default-avatar.png'
+import ParamsReseau from './ParamsReseau.vue'
 
 const props = defineProps({
   id: String,
@@ -67,6 +68,33 @@ const handleLike = async () => {
   }
 }
 
+const handleDelete = async () => {
+  try {
+    await deleteDream(props.id)
+    // Add any additional logic you need after deleting the dream
+  } catch (error) {
+    console.error('Error deleting dream:', error)
+  }
+}
+
+const handleBlock = async () => {
+  try {
+    await blockUser(props.user.id)
+    // Add any additional logic you need after blocking the user
+  } catch (error) {
+    console.error('Error blocking user:', error)
+  }
+}
+
+const handleReport = async (reason: string) => {
+  try {
+    await reportPost(props.id, reason)
+    // Add any additional logic you need after reporting the post
+  } catch (error) {
+    console.error('Error reporting post:', error)
+  }
+}
+
 const formattedDate = computed(() => {
   const dateObj = new Date(props.date ?? '')
   return new Intl.DateTimeFormat('fr-FR', {
@@ -85,6 +113,10 @@ const userAvatar = computed(() => {
 const username = computed(() => {
   return props.user && props.user.username ? props.user.username : 'Utilisateur inconnu'
 })
+
+const isOwner = computed(() => {
+  return pb.authStore.model?.id === props.user?.id
+})
 </script>
 
 <template>
@@ -99,7 +131,9 @@ const username = computed(() => {
     >
       <div class="flex justify-between items-center w-full">
         <h3 class="text-lg font-bold font-Quicksand text-left text-white">{{ title }}</h3>
-        <IconPoints />
+        <ParamsReseau :dreamId="props.id" :isOwner="isOwner" @delete="handleDelete" @block="handleBlock" @report="handleReport">
+          <IconPoints />
+        </ParamsReseau>
       </div>
       <div class="w-full">
         <p class="text-base text-left text-white">{{ excerpt }}</p>

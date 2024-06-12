@@ -499,11 +499,53 @@ export async function addLike(dreamId: string) {
       const newCommentCount = (dream.comments || 0) + 1
       await pb.collection(Collections.Reve).update(dreamId, { comments: newCommentCount })
   
-      return comment
+      // Récupérer le commentaire avec les détails de l'utilisateur
+      const expandedComment = await pb.collection(Collections.Comments).getOne(comment.id, {
+        expand: 'userId'
+      })
+  
+      return { comment: expandedComment, newCommentCount }
     } catch (error) {
       console.error('Error in addComment:', error)
       throw error
     }
   }
+
+// Fonction pour signaler un post
+export async function reportPost(dreamId: string, reason: string) {
+    try {
+      const userId = pb.authStore.model?.id
+      if (!userId) throw new Error('Utilisateur non connecté')
+  
+      await pb.collection(Collections.Reports).create({
+        reportedDreamId: dreamId,
+        reporterId: userId,
+        reason
+      })
+    } catch (error) {
+      console.error('Error in reportPost:', error)
+      throw error
+    }
+  }
+
+// Fonction pour bloquer un utilisateur
+export async function blockUser(blockedUserId: string) {
+    try {
+        const userId = pb.authStore.model?.id;
+        if (!userId) throw new Error('Utilisateur non connecté');
+
+        const block = await pb.collection(Collections.Blocks).create({
+            blockedUserId: blockedUserId,
+            blockerId: userId
+        });
+
+        return block;
+    } catch (error) {
+        console.error('Error blocking user:', error);
+        throw error;
+    }
+}
+
+  
 
 
