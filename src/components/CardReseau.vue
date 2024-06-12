@@ -106,7 +106,7 @@ const username = computed(() => {
       </div>
 
       <div class="flex justify-between self-stretch">
-        <RouterLink :to="{ name: 'dream-details', params: { id: props.id } }">
+        <RouterLink :to="{ name: 'dream-post', params: { id: props.id } }">
           <span class="text-lg font-bold font-Lato text-yellow-200">Voir plus</span>
         </RouterLink>
         <div class="flex items-center gap-2">
@@ -125,7 +125,7 @@ const username = computed(() => {
         <IconLike :fillColor="liked ? '#FEF08A' : 'transparent'" :strokeColor="liked ? '#FEF08A' : 'white'" class="w-6 h-6 mr-1" />
         <span>{{ totalLikes }}</span>
       </button>
-      <RouterLink :to="{ name: 'dream-details', params: { id: props.id } }">
+      <RouterLink :to="{ name: 'dream-post', params: { id: props.id } }">
         <button class="flex items-center text-white bg-fuchsia-700 py-3 px-2.5 rounded-full">
           <IconCom class="w-6 h-6 mr-1" />
           <span>{{ comments }}</span>

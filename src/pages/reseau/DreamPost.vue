@@ -1,0 +1,200 @@
+<script setup lang="ts">
+  import { ref, computed, onMounted } from 'vue'
+  import { useRoute, useRouter } from 'vue-router'
+  import { pb, Collections, addLike, removeLike, addComment } from '@/backend'
+  import { ReveResponse, UsersResponse, CommentsResponse } from '@/pocketbase-types'
+  import defaultAvatar from '/default-avatar.png'
+  import IconBack from '@/components/icons/IconBack.vue'
+  import IconLike from '@/components/icons/IconLike.vue'
+  import IconCom from '@/components/icons/IconCom.vue'
+  import IconPoints from '@/components/icons/IconPoints.vue'
+  import CardCom from '@/components/CardCom.vue'
+  
+  const router = useRouter()
+  
+  const goBack = () => {
+    router.go(-1)
+  }
+  
+  const route = useRoute()
+  const dream = ref<ReveResponse | null>(null)
+  const userProfile = ref<UsersResponse | null>(null)
+  const liked = ref(false)
+  const totalLikes = ref(0)
+  const comments = ref<CommentsResponse[]>([])
+  const newComment = ref('')
+  
+  const fetchDreamDetails = async () => {
+    try {
+      const dreamId = route.params.id as string
+      const dreamData = await pb
+        .collection(Collections.Reve)
+        .getOne<ReveResponse>(dreamId, { expand: 'userId' })
+      dream.value = dreamData
+      userProfile.value = dreamData.expand?.userId as UsersResponse
+      totalLikes.value = dreamData.likes || 0
+      fetchComments(dreamId)
+      checkIfLiked()
+    } catch (error) {
+      console.error('Error fetching dream details:', error)
+    }
+  }
+  
+  const fetchComments = async (dreamId: string) => {
+    try {
+      const commentsData = await pb.collection(Collections.Comments).getFullList<CommentsResponse>({
+        filter: `dreamId = '${dreamId}'`,
+        expand: 'userId'
+      })
+      comments.value = commentsData
+    } catch (error) {
+      console.error('Error fetching comments:', error)
+    }
+  }
+  
+  const checkIfLiked = async () => {
+    try {
+      const userId = pb.authStore.model?.id
+      const filter = `dreamId = '${route.params.id}' && userId = '${userId}'`
+      const existingLike = await pb.collection(Collections.Likes).getFirstListItem(filter)
+      liked.value = !!existingLike
+    } catch (error) {
+      if (error.status === 404) {
+        liked.value = false
+      } else {
+        console.error('Error checking like status:', error)
+      }
+    }
+  }
+  
+  const handleLike = async () => {
+    try {
+      if (liked.value) {
+        await removeLike(route.params.id as string)
+        totalLikes.value -= 1
+      } else {
+        await addLike(route.params.id as string)
+        totalLikes.value += 1
+      }
+      liked.value = !liked.value
+    } catch (error) {
+      console.error('Error handling like:', error)
+    }
+  }
+  
+  const submitComment = async () => {
+    if (newComment.value.trim() === '') return
+  
+    try {
+      await addComment(route.params.id as string, newComment.value.trim())
+      newComment.value = ''
+      fetchComments(route.params.id as string)
+    } catch (error) {
+      console.error('Error submitting comment:', error)
+    }
+  }
+  
+  const formattedDate = computed(() => {
+    if (dream.value) {
+      const dateObj = new Date(dream.value.date)
+      return new Intl.DateTimeFormat('fr-FR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      }).format(dateObj)
+    }
+    return ''
+  })
+  
+  const userAvatar = computed(() => {
+    return userProfile.value && userProfile.value.avatar
+      ? `http://127.0.0.1:8090/api/files/${userProfile.value.collectionId}/${userProfile.value.id}/${userProfile.value.avatar}`
+      : defaultAvatar
+  })
+  
+  const username = computed(() => {
+    return userProfile.value && userProfile.value.username
+      ? userProfile.value.username
+      : 'Utilisateur inconnu'
+  })
+  
+  onMounted(() => {
+    fetchDreamDetails()
+  })
+  </script>
+
+<template>
+    <section class="flex justify-between items-center flex-grow">
+      <IconBack class="text-white" @click="goBack" />
+      <div class="flex-grow text-right">
+        <h1 class="text-white">Post</h1>
+      </div>
+    </section>
+    <div class="flex flex-col items-end space-y-[-20px] mb-5 w-full">
+      <div class="bg-violet-950 text-white p-2.5 rounded-[15px] w-full">
+        <div class="flex justify-between items-center mb-5">
+          <div class="flex items-center">
+            <img :src="userAvatar" alt="Profile" class="w-10 h-10 rounded-full mr-3" />
+            <div>
+              <p class="text-lg font-bold">{{ username }}</p>
+              <p class="text-sm text-gray-400">{{ formattedDate }}</p>
+            </div>
+          </div>
+          <IconPoints />
+        </div>
+        <h3 class="font-bold">{{ dream?.title }}</h3>
+        <p class="text-base mt-4">{{ dream?.fullText }}</p>
+        <div class="flex gap-2 mt-5 text-sm italic font-light text-gray-400">
+          <p>{{ totalLikes }} Like(s)</p>
+          <p>{{ dream?.comments }} Réponse(s)</p>
+        </div>
+      </div>
+  
+      <div class="flex space-x-4 items-end h-10 pr-2.5">
+        <button
+          @click="handleLike"
+          :class="[
+            'flex items-center py-3 px-2.5 rounded-full',
+            liked ? 'bg-fuchsia-700 text-white' : 'bg-fuchsia-700 text-white'
+          ]"
+        >
+          <IconLike
+            :fillColor="liked ? '#FEF08A' : 'transparent'"
+            :strokeColor="liked ? '#FEF08A' : 'white'"
+            class="w-6 h-6 mr-1"
+          />
+          <span>{{ totalLikes }}</span>
+        </button>
+        <router-link :to="{ name: 'dream-post', params: { id: route.params.id } }">
+          <button class="flex items-center text-white bg-fuchsia-700 py-3 px-2.5 rounded-full">
+            <IconCom class="w-6 h-6 mr-1" />
+            <span>{{ dream?.comments }}</span>
+          </button>
+        </router-link>
+      </div>
+    </div>
+  
+    <div class="mt-6 w-full">
+      <h2 class="text-white text-lg mb-4">Commentaires</h2>
+      <form @submit.prevent="submitComment" class="mb-4">
+        <input
+          v-model="newComment"
+          type="text"
+          placeholder="Ajouter un commentaire"
+          class="w-full p-2 rounded"
+        />
+        <button type="submit" class="mt-2 p-2 bg-fuchsia-700 text-white rounded">Envoyer</button>
+      </form>
+      <div v-for="comment in comments" :key="comment.id" class="mb-4">
+        <CardCom
+          :username="comment.expand.userId.username"
+          :avatar="comment.expand.userId.avatar"
+          :userId="comment.expand.userId.id"
+          :content="comment.content"
+        />
+      </div>
+    </div>
+  </template>
+  
+  
+  

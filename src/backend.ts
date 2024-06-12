@@ -4,6 +4,8 @@ import { Collections, type TypedPocketBase } from './pocketbase-types.js';
 
 export const pb = new PocketBase('http://127.0.0.1:8090/') as TypedPocketBase;
 
+export { Collections };
+
 // Restaurer le token d'authentification à partir de localStorage
 const authToken = localStorage.getItem('authToken');
 if (authToken) {
@@ -99,17 +101,37 @@ function generateExcerpt(text: string, charLimit: number): string {
 }
 
 // Suppression de rêve
+// Suppression de rêve
 export async function deleteDream(dreamId: string) {
     try {
-        if (!pb.authStore.isValid) {
-            throw new Error('Utilisateur non connecté');
-        }
-
-        await pb.collection('reve').delete(dreamId);
+      if (!pb.authStore.isValid) {
+        throw new Error('Utilisateur non connecté')
+      }
+  
+      const dream = await pb.collection(Collections.Reve).getOne(dreamId)
+      const commentCount = dream.comments || 0
+  
+      // Suppression des commentaires associés
+      const comments = await pb.collection(Collections.Comments).getFullList({
+        filter: `dreamId = '${dreamId}'`,
+      })
+      for (const comment of comments) {
+        await pb.collection(Collections.Comments).delete(comment.id)
+      }
+  
+      // Suppression du rêve
+      await pb.collection(Collections.Reve).delete(dreamId)
+  
+      // Mise à jour du compteur de commentaires de l'utilisateur
+      const userId = dream.userId
+      const user = await pb.collection(Collections.Users).getOne(userId)
+      const newCommentCount = Math.max((user.comments || 0) - commentCount, 0)
+      await pb.collection(Collections.Users).update(userId, { comments: newCommentCount })
+  
     } catch (error) {
-        throw new Error('Erreur lors de la suppression du rêve: ' + error.message);
+      throw new Error('Erreur lors de la suppression du rêve: ' + error.message)
     }
-}
+  }
 
 // Déconnecter utilisateur
 export function logOut() {
@@ -459,3 +481,29 @@ export async function addLike(dreamId: string) {
     }
   }
   
+
+  export async function addComment(dreamId: string, content: string) {
+    try {
+      const userId = pb.authStore.model?.id
+      if (!userId) throw new Error('Utilisateur non connecté')
+  
+      // Créer le commentaire
+      const comment = await pb.collection(Collections.Comments).create({
+        dreamId,
+        userId,
+        content,
+      })
+  
+      // Mettre à jour le compteur de commentaires
+      const dream = await pb.collection(Collections.Reve).getOne(dreamId)
+      const newCommentCount = (dream.comments || 0) + 1
+      await pb.collection(Collections.Reve).update(dreamId, { comments: newCommentCount })
+  
+      return comment
+    } catch (error) {
+      console.error('Error in addComment:', error)
+      throw error
+    }
+  }
+
+

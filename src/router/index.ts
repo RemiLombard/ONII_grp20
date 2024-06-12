@@ -107,7 +107,7 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/pages/reseau/:id',
+      path: '/reseau/:id',
       name: 'dream-post',
       component: () => import('../pages/reseau/DreamPost.vue'),
       props: true
