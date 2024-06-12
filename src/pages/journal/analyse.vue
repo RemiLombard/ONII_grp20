@@ -88,7 +88,7 @@ onMounted(() => {
       <div v-if="dream" class="mt-24 mb-10 space-y-5">
         <div class="bg-violet-950 text-white p-2.5 rounded-[15px]">
           <div class="flex items-center mb-5">
-            <img :src="userProfile?.avatar ? `https://onii.remilombard.fr:443/api/files/${userProfile?.collectionId}/${userProfile?.id}/${userProfile?.avatar}` : 'default-avatar.png'" alt="Profile" class="w-10 h-10 rounded-full mr-3" />
+            <img :src="userProfile?.avatar ? `http://127.0.0.1:8090/api/files/${userProfile?.collectionId}/${userProfile?.id}/${userProfile?.avatar}` : 'default-avatar.png'" alt="Profile" class="w-10 h-10 rounded-full mr-3" />
             <div>
               <p class="text-lg font-bold">Vous</p>
               <p class="text-sm text-gray-400">{{ new Date(dream?.date).toLocaleDateString('fr-FR') }}</p>

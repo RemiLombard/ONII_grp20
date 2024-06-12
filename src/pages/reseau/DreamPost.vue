@@ -116,7 +116,7 @@ const formattedDate = computed(() => {
 
 const userAvatar = computed(() => {
   return userProfile.value && userProfile.value.avatar
-    ? `https://onii.remilombard.fr:443/api/files/${userProfile.value.collectionId}/${userProfile.value.id}/${userProfile.value.avatar}`
+    ? `http://127.0.0.1:8090/api/files/${userProfile.value.collectionId}/${userProfile.value.id}/${userProfile.value.avatar}`
     : defaultAvatar
 })
 
