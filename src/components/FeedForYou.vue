@@ -1,63 +1,67 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { fetchSharedDreams, searchSharedDreams, filterSharedDreams } from '@/backend'
+import { debounce } from '@/utils/debounce'
 import CardDream from '@/components/CardReseau.vue'
-import { useRoute, useRouter } from 'vue-router'
+
+const props = defineProps({
+  searchQuery: String,
+  filters: Object
+})
 
 const dreams = ref([])
-const searchQuery = ref('')
-const route = useRoute()
-const router = useRouter()
+const errorMessage = ref('')
 
-const loadDreams = async (filters = {}) => {
+const loadDreams = async () => {
   try {
-    const result = await filterSharedDreams(filters)
-    console.log('Fetched shared dreams:', result)
+    const result = await fetchSharedDreams()
     dreams.value = result
   } catch (error) {
-    console.error('Error loading dreams:', error)
+    errorMessage.value = error.message
+    console.error('Error loading dreams:', error.message)
   }
 }
 
-const searchDreams = async () => {
+const searchDreams = debounce(async () => {
   try {
-    const result = await searchSharedDreams(searchQuery.value)
-    console.log('Searched shared dreams:', result)
+    const result = await searchSharedDreams(props.searchQuery)
     dreams.value = result
   } catch (error) {
-    console.error('Error searching dreams:', error)
+    errorMessage.value = error.message
+    console.error('Error searching dreams:', error.message)
   }
-}
+}, 300) // 300ms delay
 
-onMounted(() => {
-  loadDreams(route.query)
-})
+const filterDreams = debounce(async () => {
+  try {
+    const result = await filterSharedDreams(props.filters)
+    dreams.value = result
+  } catch (error) {
+    errorMessage.value = error.message
+    console.error('Error filtering dreams:', error.message)
+  }
+}, 300) // 300ms delay
 
-watch(() => route.query, (newQuery) => {
-  loadDreams(newQuery)
-})
-
-watch(searchQuery, (newQuery) => {
+watch(() => props.searchQuery, (newQuery) => {
   if (newQuery) {
     searchDreams()
   } else {
-    loadDreams(route.query)
+    loadDreams()
   }
+})
+
+watch(() => props.filters, () => {
+  filterDreams()
+}, { deep: true })
+
+onMounted(() => {
+  loadDreams()
 })
 </script>
 
 <template>
-  <div>
-    <div v-for="dream in dreams" :key="dream.id">
-      <CardDream
-        :id="dream.id"
-        :title="dream.title"
-        :excerpt="dream.excerpt"
-        :date="dream.created"
-        :user="dream.user"
-        :likes="dream.likes || 0"
-        :comments="dream.comments || 0"
-      />
-    </div>
+  <div class="">
+    <div v-if="errorMessage">{{ errorMessage }}</div>
+    <CardDream v-for="dream in dreams" :key="dream.id" :id="dream.id" :title="dream.title" :excerpt="dream.excerpt" :date="dream.created" :user="dream.user" :likes="dream.likes || 0" :comments="dream.comments || 0" />
   </div>
 </template>

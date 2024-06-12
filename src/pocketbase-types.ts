@@ -46,7 +46,6 @@ export type BlocksRecord = {
 
 export type CommentsRecord = {
 	content?: string
-	date?: IsoDateString
 	dreamId?: RecordIdString
 	userId?: RecordIdString
 }

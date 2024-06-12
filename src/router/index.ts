@@ -6,67 +6,80 @@ const router = createRouter({
     {
       path: '/',
       name: 'login',
-      component: () => import('../pages/login.vue')
+      component: () => import('../pages/login.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/signup',
       name: 'signup',
-      component: () => import('../pages/signup.vue')
+      component: () => import('../pages/signup.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/journal',
       name: 'journal',
-      component: () => import('../pages/journal/index.vue')
+      component: () => import('../pages/journal/index.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/reseau',
       name: 'reseau',
-      component: () => import('../pages/reseau/index.vue')
+      component: () => import('../pages/reseau/index.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/reseau/test',
       name: 'test',
-      component: () => import('../pages/reseau/test.vue')
+      component: () => import('../pages/reseau/test.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/journal/stats',
       name: 'stats',
-      component: () => import('../pages/journal/stats.vue')
+      component: () => import('../pages/journal/stats.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/journal/create',
       name: 'create',
-      component: () => import('../pages/journal/create.vue')
+      component: () => import('../pages/journal/create.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/about',
       name: 'about',
-      component: () => import('../pages/about/index.vue')
+      component: () => import('../pages/about/index.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/about/cgu',
       name: 'cgu',
-      component: () => import('../pages/about/cgu.vue')
+      component: () => import('../pages/about/cgu.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/about/nda',
       name: 'nda',
-      component: () => import('../pages/about/nda.vue')
+      component: () => import('../pages/about/nda.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/about/rgpd',
       name: 'rgpd',
-      component: () => import('../pages/about/rgpd.vue')
+      component: () => import('../pages/about/rgpd.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/about/us',
       name: 'us',
-      component: () => import('../pages/about/us.vue')
+      component: () => import('../pages/about/us.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/account',
       name: 'account',
-      component: () => import('../pages/account/index.vue')
+      component: () => import('../pages/account/index.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/journal/dream/:id',
@@ -77,7 +90,8 @@ const router = createRouter({
     {
       path: '/journal/:id/analyse',
       name: 'dream-analysis',
-      component: () => import('../pages/journal/analyse.vue')
+      component: () => import('../pages/journal/analyse.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/journal/edit/:id',
@@ -88,24 +102,43 @@ const router = createRouter({
     {
       path: '/journal/filter',
       name: 'filter',
-      component: () => import('../pages/journal/filter.vue')
+      component: () => import('../pages/journal/filter.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/forgot-password',
       name: 'forgot-password',
-      component: () => import('../pages/ForgotPassword.vue')
+      component: () => import('../pages/ForgotPassword.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/reseau/filter',
       name: 'share-filter',
-      component: () => import('../pages/reseau/filter.vue')
+      component: () => import('../pages/reseau/filter.vue'),
+      props: true // Assurez-vous que les props sont définies correctement
     },
     {
       path: '/auth/confirm-password-reset/:token',
       name: 'reset-password',
       component: () => import('../pages/ResetPassword.vue'),
       props: true
+    },
+    {
+      path: '/reseau/:id',
+      name: 'dream-post',
+      component: () => import('../pages/reseau/DreamPost.vue'),
+      props: true
+    },
+    {
+      path: '/account/change-password',
+      name: 'change-password',
+      component: () => import('../pages/account/ChangePassword.vue')
     }
+    ,
+    { path: '/contact',
+       name: 'contactus',
+       component: () => import('../pages/contact/index.vue') 
+    },
     
     
     

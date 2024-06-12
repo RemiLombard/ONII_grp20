@@ -4,6 +4,8 @@ import { Collections, type TypedPocketBase } from './pocketbase-types.js';
 
 export const pb = new PocketBase('http://127.0.0.1:8090/') as TypedPocketBase;
 
+export { Collections };
+
 // Restaurer le token d'authentification à partir de localStorage
 const authToken = localStorage.getItem('authToken');
 if (authToken) {
@@ -99,17 +101,37 @@ function generateExcerpt(text: string, charLimit: number): string {
 }
 
 // Suppression de rêve
+// Suppression de rêve
 export async function deleteDream(dreamId: string) {
     try {
-        if (!pb.authStore.isValid) {
-            throw new Error('Utilisateur non connecté');
-        }
-
-        await pb.collection('reve').delete(dreamId);
+      if (!pb.authStore.isValid) {
+        throw new Error('Utilisateur non connecté')
+      }
+  
+      const dream = await pb.collection(Collections.Reve).getOne(dreamId)
+      const commentCount = dream.comments || 0
+  
+      // Suppression des commentaires associés
+      const comments = await pb.collection(Collections.Comments).getFullList({
+        filter: `dreamId = '${dreamId}'`,
+      })
+      for (const comment of comments) {
+        await pb.collection(Collections.Comments).delete(comment.id)
+      }
+  
+      // Suppression du rêve
+      await pb.collection(Collections.Reve).delete(dreamId)
+  
+      // Mise à jour du compteur de commentaires de l'utilisateur
+      const userId = dream.userId
+      const user = await pb.collection(Collections.Users).getOne(userId)
+      const newCommentCount = Math.max((user.comments || 0) - commentCount, 0)
+      await pb.collection(Collections.Users).update(userId, { comments: newCommentCount })
+  
     } catch (error) {
-        throw new Error('Erreur lors de la suppression du rêve: ' + error.message);
+      throw new Error('Erreur lors de la suppression du rêve: ' + error.message)
     }
-}
+  }
 
 // Déconnecter utilisateur
 export function logOut() {
@@ -266,12 +288,13 @@ export async function getUserDreamStatistics() {
     }
 }
 
+
 // Récupérer les rêves partagés par tous les utilisateurs
 export async function fetchSharedDreams() {
     try {
         const dreams = await pb.collection('reve').getFullList({
             filter: 'partage = true',
-            expand: 'userId' 
+            expand: 'userId'
         });
 
         const dreamsWithUserDetails = dreams.map(dream => {
@@ -284,8 +307,8 @@ export async function fetchSharedDreams() {
 
         return dreamsWithUserDetails;
     } catch (error) {
-        console.error('Error fetching shared dreams:', error);
-        throw error;
+        console.error('Error fetching shared dreams:', error.message);
+        throw new Error('Unable to fetch shared dreams at this time.');
     }
 }
 
@@ -362,7 +385,7 @@ export async function searchSharedDreams(query: string) {
 export async function filterSharedDreams(filters: Record<string, string>) {
     try {
         let filterString = 'partage = true';
-
+        
         if (filters.category) {
             filterString += ` && categorie = '${filters.category}'`;
         }
@@ -375,13 +398,13 @@ export async function filterSharedDreams(filters: Record<string, string>) {
         if (filters.lucide) {
             filterString += ` && lucide = '${filters.lucide}'`;
         }
-
+        
         const sortOption = filters.sortOption === 'Date (ancien)' ? 'created' : '-created';
-
+        
         const dreams = await pb.collection('reve').getFullList({
             filter: filterString,
             sort: sortOption,
-            expand: 'userId'
+            expand: 'userId',
         });
 
         const dreamsWithUserDetails = dreams.map(dream => {
@@ -394,8 +417,8 @@ export async function filterSharedDreams(filters: Record<string, string>) {
 
         return dreamsWithUserDetails;
     } catch (error) {
-        console.error('Error filtering shared dreams:', error);
-        throw error;
+        console.error('Error filtering shared dreams:', error.message);
+        throw new Error('Unable to filter shared dreams at this time.');
     }
 }
 
@@ -411,4 +434,138 @@ export async function resetPassword(token: string, newPassword: string) {
         throw new Error('Error resetting password: ' + error.message);
     }
 }
+
+// Fonction pour ajouter un like
+export async function addLike(dreamId: string) {
+    try {
+      const userId = pb.authStore.model?.id
+      if (!userId) throw new Error('Utilisateur non connecté')
   
+      const like = await pb.collection(Collections.Likes).create({
+        dreamId,
+        userId,
+      })
+  
+      // Mise à jour du compteur de likes
+      const dream = await pb.collection(Collections.Reve).getOne(dreamId)
+      const newLikeCount = (dream.likes || 0) + 1
+      await pb.collection(Collections.Reve).update(dreamId, { likes: newLikeCount })
+  
+      return like
+    } catch (error) {
+      console.error('Error in addLike:', error)
+      throw error
+    }
+  }
+  
+  // Fonction pour supprimer un like
+  export async function removeLike(dreamId: string) {
+    try {
+      const userId = pb.authStore.model?.id
+      if (!userId) throw new Error('Utilisateur non connecté')
+  
+      const filter = `dreamId = '${dreamId}' && userId = '${userId}'`
+      const like = await pb.collection(Collections.Likes).getFirstListItem(filter)
+  
+      if (like) {
+        await pb.collection(Collections.Likes).delete(like.id)
+  
+        // Mise à jour du compteur de likes
+        const dream = await pb.collection(Collections.Reve).getOne(dreamId)
+        const newLikeCount = Math.max((dream.likes || 0) - 1, 0) // Ne pas descendre en dessous de 0
+        await pb.collection(Collections.Reve).update(dreamId, { likes: newLikeCount })
+      }
+    } catch (error) {
+      console.error('Error in removeLike:', error)
+      throw error
+    }
+  }
+  
+
+  export async function addComment(dreamId: string, content: string) {
+    try {
+      const userId = pb.authStore.model?.id
+      if (!userId) throw new Error('Utilisateur non connecté')
+  
+      // Créer le commentaire
+      const comment = await pb.collection(Collections.Comments).create({
+        dreamId,
+        userId,
+        content,
+      })
+  
+      // Mettre à jour le compteur de commentaires
+      const dream = await pb.collection(Collections.Reve).getOne(dreamId)
+      const newCommentCount = (dream.comments || 0) + 1
+      await pb.collection(Collections.Reve).update(dreamId, { comments: newCommentCount })
+  
+      // Récupérer le commentaire avec les détails de l'utilisateur
+      const expandedComment = await pb.collection(Collections.Comments).getOne(comment.id, {
+        expand: 'userId'
+      })
+  
+      return { comment: expandedComment, newCommentCount }
+    } catch (error) {
+      console.error('Error in addComment:', error)
+      throw error
+    }
+  }
+
+// Fonction pour signaler un post
+export async function reportPost(dreamId: string, reason: string) {
+    try {
+      const userId = pb.authStore.model?.id
+      if (!userId) throw new Error('Utilisateur non connecté')
+  
+      await pb.collection(Collections.Reports).create({
+        reportedDreamId: dreamId,
+        reporterId: userId,
+        reason
+      })
+    } catch (error) {
+      console.error('Error in reportPost:', error)
+      throw error
+    }
+  }
+
+// Fonction pour bloquer un utilisateur
+export async function blockUser(blockedUserId: string) {
+    try {
+        const userId = pb.authStore.model?.id;
+        if (!userId) throw new Error('Utilisateur non connecté');
+
+        const block = await pb.collection(Collections.Blocks).create({
+            blockedUserId: blockedUserId,
+            blockerId: userId
+        });
+
+        return block;
+    } catch (error) {
+        console.error('Error blocking user:', error);
+        throw error;
+    }
+}
+
+// Changer mot de passe
+export async function changePassword(currentEmail: string, currentPassword: string, newPassword: string) {
+    try {
+        // Authentifier l'utilisateur avec le mot de passe actuel
+        const authData = await pb.collection('users').authWithPassword(currentEmail, currentPassword);
+        console.log('Authentification réussie avec le mot de passe actuel');
+
+        const userId = authData.record.id;
+
+        // Mettre à jour le mot de passe
+        await pb.collection('users').update(userId, {
+            password: newPassword,
+            passwordConfirm: newPassword // Assurez-vous de fournir le champ passwordConfirm si nécessaire
+        });
+        console.log('Mot de passe mis à jour avec succès');
+    } catch (error) {
+        console.error('Erreur lors du changement de mot de passe:', error);
+        throw new Error('Erreur lors du changement de mot de passe: ' + (error as Error).message);
+    }
+}
+  
+
+

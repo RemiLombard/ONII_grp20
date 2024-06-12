@@ -60,13 +60,13 @@ const startCountdown = () => {
             required
           />
         </div>
-        <div v-if="message" class="mb-4 text-yellow-400">
+        <div v-if="message" class="mb-4 mt-5 text-gray-400">
           {{ message }}
         </div>
-        <div v-if="errorMessage" class="mb-4 text-red-400">
+        <div v-if="errorMessage" class="mb-4 text-red-400 mt-5">
           {{ errorMessage }}
         </div>
-        <div v-if="isCountdown" class="mb-4 text-yellow-400">
+        <div v-if="isCountdown" class="mb-4 text-gray-400 mt-5">
           Redirection vers la page de connexion dans {{ countdown }} secondes...
         </div>
         <div v-if="!isCountdown" class="flex flex-col items-center justify-center gap-5">
