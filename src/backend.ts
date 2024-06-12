@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-catch */
 import PocketBase from 'pocketbase';
 import { Collections, type TypedPocketBase } from './pocketbase-types.js';
 
@@ -101,37 +100,36 @@ function generateExcerpt(text: string, charLimit: number): string {
 }
 
 // Suppression de rêve
-// Suppression de rêve
 export async function deleteDream(dreamId: string) {
     try {
-      if (!pb.authStore.isValid) {
-        throw new Error('Utilisateur non connecté')
-      }
-  
-      const dream = await pb.collection(Collections.Reve).getOne(dreamId)
-      const commentCount = dream.comments || 0
-  
-      // Suppression des commentaires associés
-      const comments = await pb.collection(Collections.Comments).getFullList({
-        filter: `dreamId = '${dreamId}'`,
-      })
-      for (const comment of comments) {
-        await pb.collection(Collections.Comments).delete(comment.id)
-      }
-  
-      // Suppression du rêve
-      await pb.collection(Collections.Reve).delete(dreamId)
-  
-      // Mise à jour du compteur de commentaires de l'utilisateur
-      const userId = dream.userId
-      const user = await pb.collection(Collections.Users).getOne(userId)
-      const newCommentCount = Math.max((user.comments || 0) - commentCount, 0)
-      await pb.collection(Collections.Users).update(userId, { comments: newCommentCount })
-  
+        if (!pb.authStore.isValid) {
+            throw new Error('Utilisateur non connecté');
+        }
+
+        const dream = await pb.collection(Collections.Reve).getOne(dreamId);
+        const commentCount = dream.comments || 0;
+
+        // Suppression des commentaires associés
+        const comments = await pb.collection(Collections.Comments).getFullList({
+            filter: `dreamId = '${dreamId}'`,
+        });
+        for (const comment of comments) {
+            await pb.collection(Collections.Comments).delete(comment.id);
+        }
+
+        // Suppression du rêve
+        await pb.collection(Collections.Reve).delete(dreamId);
+
+        // Mise à jour du compteur de commentaires de l'utilisateur
+        const userId = dream.userId;
+        const user = await pb.collection(Collections.Users).getOne(userId);
+        const newCommentCount = Math.max((user.comments || 0) - commentCount, 0);
+        await pb.collection(Collections.Users).update(userId, { comments: newCommentCount });
+
     } catch (error) {
-      throw new Error('Erreur lors de la suppression du rêve: ' + error.message)
+        throw new Error('Erreur lors de la suppression du rêve: ' + error.message);
     }
-  }
+}
 
 // Déconnecter utilisateur
 export function logOut() {
@@ -194,42 +192,42 @@ export async function searchUserDreams(query: string) {
 // Filtrer les rêves de l'utilisateur connecté
 export async function filterUserDreams(filters: Record<string, string>) {
     try {
-      if (!pb.authStore.isValid) {
-        throw new Error('Utilisateur non connecté');
-      }
-  
-      const userId = pb.authStore.model?.id;
-      if (!userId) {
-        throw new Error('ID utilisateur non disponible');
-      }
-  
-      let filterString = `userId = '${userId}'`;
-      
-      if (filters.category) {
-        filterString += ` && categorie = '${filters.category}'`;
-      }
-      if (filters.type) {
-        filterString += ` && type = '${filters.type}'`;
-      }
-      if (filters.recurrent) {
-        filterString += ` && recurrent = '${filters.recurrent}'`;
-      }
-      if (filters.lucide) {
-        filterString += ` && lucide = '${filters.lucide}'`;
-      }
-      
-      const sortOption = filters.sortOption === 'Date (ancien)' ? 'created' : '-created';
-  
-      const dreams = await pb.collection('reve').getFullList({
-        filter: filterString,
-        sort: sortOption,
-      });
-  
-      return dreams;
+        if (!pb.authStore.isValid) {
+            throw new Error('Utilisateur non connecté');
+        }
+
+        const userId = pb.authStore.model?.id;
+        if (!userId) {
+            throw new Error('ID utilisateur non disponible');
+        }
+
+        let filterString = `userId = '${userId}'`;
+
+        if (filters.category) {
+            filterString += ` && categorie = '${filters.category}'`;
+        }
+        if (filters.type) {
+            filterString += ` && type = '${filters.type}'`;
+        }
+        if (filters.recurrent) {
+            filterString += ` && recurrent = '${filters.recurrent}'`;
+        }
+        if (filters.lucide) {
+            filterString += ` && lucide = '${filters.lucide}'`;
+        }
+
+        const sortOption = filters.sortOption === 'Date (ancien)' ? 'created' : '-created';
+
+        const dreams = await pb.collection('reve').getFullList({
+            filter: filterString,
+            sort: sortOption,
+        });
+
+        return dreams;
     } catch (error) {
-      throw error;
+        throw error;
     }
-  }
+}
 
 // Récupération données rêves pour stats
 export async function getUserDreamStatistics() {
@@ -287,7 +285,6 @@ export async function getUserDreamStatistics() {
         throw error;
     }
 }
-
 
 // Récupérer les rêves partagés par tous les utilisateurs
 export async function fetchSharedDreams() {
@@ -385,7 +382,7 @@ export async function searchSharedDreams(query: string) {
 export async function filterSharedDreams(filters: Record<string, string>) {
     try {
         let filterString = 'partage = true';
-        
+
         if (filters.category) {
             filterString += ` && categorie = '${filters.category}'`;
         }
@@ -398,9 +395,9 @@ export async function filterSharedDreams(filters: Record<string, string>) {
         if (filters.lucide) {
             filterString += ` && lucide = '${filters.lucide}'`;
         }
-        
+
         const sortOption = filters.sortOption === 'Date (ancien)' ? 'created' : '-created';
-        
+
         const dreams = await pb.collection('reve').getFullList({
             filter: filterString,
             sort: sortOption,
@@ -422,7 +419,6 @@ export async function filterSharedDreams(filters: Record<string, string>) {
     }
 }
 
-
 // Fonction pour réinitialiser le mot de passe
 export async function resetPassword(token: string, newPassword: string) {
     try {
@@ -438,95 +434,122 @@ export async function resetPassword(token: string, newPassword: string) {
 // Fonction pour ajouter un like
 export async function addLike(dreamId: string) {
     try {
-      const userId = pb.authStore.model?.id
-      if (!userId) throw new Error('Utilisateur non connecté')
-  
-      const like = await pb.collection(Collections.Likes).create({
-        dreamId,
-        userId,
-      })
-  
-      // Mise à jour du compteur de likes
-      const dream = await pb.collection(Collections.Reve).getOne(dreamId)
-      const newLikeCount = (dream.likes || 0) + 1
-      await pb.collection(Collections.Reve).update(dreamId, { likes: newLikeCount })
-  
-      return like
-    } catch (error) {
-      console.error('Error in addLike:', error)
-      throw error
-    }
-  }
-  
-  // Fonction pour supprimer un like
-  export async function removeLike(dreamId: string) {
-    try {
-      const userId = pb.authStore.model?.id
-      if (!userId) throw new Error('Utilisateur non connecté')
-  
-      const filter = `dreamId = '${dreamId}' && userId = '${userId}'`
-      const like = await pb.collection(Collections.Likes).getFirstListItem(filter)
-  
-      if (like) {
-        await pb.collection(Collections.Likes).delete(like.id)
-  
-        // Mise à jour du compteur de likes
-        const dream = await pb.collection(Collections.Reve).getOne(dreamId)
-        const newLikeCount = Math.max((dream.likes || 0) - 1, 0) // Ne pas descendre en dessous de 0
-        await pb.collection(Collections.Reve).update(dreamId, { likes: newLikeCount })
-      }
-    } catch (error) {
-      console.error('Error in removeLike:', error)
-      throw error
-    }
-  }
-  
+        const userId = pb.authStore.model?.id;
+        if (!userId) throw new Error('Utilisateur non connecté');
 
-  export async function addComment(dreamId: string, content: string) {
-    try {
-      const userId = pb.authStore.model?.id
-      if (!userId) throw new Error('Utilisateur non connecté')
-  
-      // Créer le commentaire
-      const comment = await pb.collection(Collections.Comments).create({
-        dreamId,
-        userId,
-        content,
-      })
-  
-      // Mettre à jour le compteur de commentaires
-      const dream = await pb.collection(Collections.Reve).getOne(dreamId)
-      const newCommentCount = (dream.comments || 0) + 1
-      await pb.collection(Collections.Reve).update(dreamId, { comments: newCommentCount })
-  
-      // Récupérer le commentaire avec les détails de l'utilisateur
-      const expandedComment = await pb.collection(Collections.Comments).getOne(comment.id, {
-        expand: 'userId'
-      })
-  
-      return { comment: expandedComment, newCommentCount }
+        const like = await pb.collection(Collections.Likes).create({
+            dreamId,
+            userId,
+        });
+
+        // Mise à jour du compteur de likes
+        const dream = await pb.collection(Collections.Reve).getOne(dreamId);
+        const newLikeCount = (dream.likes || 0) + 1;
+        await pb.collection(Collections.Reve).update(dreamId, { likes: newLikeCount });
+
+        return like;
     } catch (error) {
-      console.error('Error in addComment:', error)
-      throw error
+        console.error('Error in addLike:', error);
+        throw error;
     }
-  }
+}
+
+// Fonction pour supprimer un like
+export async function removeLike(dreamId: string) {
+    try {
+        const userId = pb.authStore.model?.id;
+        if (!userId) throw new Error('Utilisateur non connecté');
+
+        const filter = `dreamId = '${dreamId}' && userId = '${userId}'`;
+        const like = await pb.collection(Collections.Likes).getFirstListItem(filter);
+
+        if (like) {
+            await pb.collection(Collections.Likes).delete(like.id);
+
+            // Mise à jour du compteur de likes
+            const dream = await pb.collection(Collections.Reve).getOne(dreamId);
+            const newLikeCount = Math.max((dream.likes || 0) - 1, 0); // Ne pas descendre en dessous de 0
+            await pb.collection(Collections.Reve).update(dreamId, { likes: newLikeCount });
+        }
+    } catch (error) {
+        console.error('Error in removeLike:', error);
+        throw error;
+    }
+}
+
+// Fonction pour ajouter un commentaire
+export async function addComment(dreamId: string, content: string) {
+    try {
+        const userId = pb.authStore.model?.id;
+        if (!userId) throw new Error('Utilisateur non connecté');
+
+        // Créer le commentaire
+        const comment = await pb.collection(Collections.Comments).create({
+            dreamId,
+            userId,
+            content,
+        });
+
+        // Mettre à jour le compteur de commentaires du rêve
+        const dream = await pb.collection(Collections.Reve).getOne(dreamId);
+        const newCommentCount = (dream.comments || 0) + 1;
+        await pb.collection(Collections.Reve).update(dreamId, { comments: newCommentCount });
+
+        // Mettre à jour le compteur de commentaires de l'utilisateur
+        const user = await pb.collection(Collections.Users).getOne(userId);
+        const newUserCommentCount = (user.comments || 0) + 1;
+        await pb.collection(Collections.Users).update(userId, { comments: newUserCommentCount });
+
+        // Récupérer le commentaire avec les détails de l'utilisateur
+        const expandedComment = await pb.collection(Collections.Comments).getOne(comment.id, {
+            expand: 'userId'
+        });
+
+        return { comment: expandedComment, newCommentCount };
+    } catch (error) {
+        console.error('Error in addComment:', error);
+        throw error;
+    }
+}
+
+// Fonction pour supprimer un commentaire
+export async function deleteComment(commentId: string) {
+    try {
+        const comment = await pb.collection(Collections.Comments).getOne(commentId);
+        const userId = comment.userId;
+        await pb.collection(Collections.Comments).delete(commentId);
+
+        // Mettre à jour le compteur de commentaires du rêve
+        const dream = await pb.collection(Collections.Reve).getOne(comment.dreamId);
+        const newCommentCount = Math.max((dream.comments || 0) - 1, 0); // Ne pas descendre en dessous de 0
+        await pb.collection(Collections.Reve).update(comment.dreamId, { comments: newCommentCount });
+
+        // Mettre à jour le compteur de commentaires de l'utilisateur
+        const user = await pb.collection(Collections.Users).getOne(userId);
+        const newUserCommentCount = Math.max((user.comments || 0) - 1, 0);
+        await pb.collection(Collections.Users).update(userId, { comments: newUserCommentCount });
+    } catch (error) {
+        console.error('Error in deleteComment:', error);
+        throw error;
+    }
+}
 
 // Fonction pour signaler un post
 export async function reportPost(dreamId: string, reason: string) {
     try {
-      const userId = pb.authStore.model?.id
-      if (!userId) throw new Error('Utilisateur non connecté')
-  
-      await pb.collection(Collections.Reports).create({
-        reportedDreamId: dreamId,
-        reporterId: userId,
-        reason
-      })
+        const userId = pb.authStore.model?.id;
+        if (!userId) throw new Error('Utilisateur non connecté');
+
+        await pb.collection(Collections.Reports).create({
+            reportedDreamId: dreamId,
+            reporterId: userId,
+            reason
+        });
     } catch (error) {
-      console.error('Error in reportPost:', error)
-      throw error
+        console.error('Error in reportPost:', error);
+        throw error;
     }
-  }
+}
 
 // Fonction pour bloquer un utilisateur
 export async function blockUser(blockedUserId: string) {
@@ -566,6 +589,35 @@ export async function changePassword(currentEmail: string, currentPassword: stri
         throw new Error('Erreur lors du changement de mot de passe: ' + (error as Error).message);
     }
 }
-  
 
+// Fonction pour signaler un commentaire
+export async function reportComment(commentId: string, reason: string) {
+    try {
+        const userId = pb.authStore.model?.id;
+        if (!userId) throw new Error('Utilisateur non connecté');
 
+        await pb.collection(Collections.Reports).create({
+            reportedCommentId: commentId,
+            reporterId: userId,
+            reason
+        });
+    } catch (error) {
+        console.error('Error in reportComment:', error);
+        throw error;
+    }
+}
+
+// Fonction pour mettre à jour le compteur de commentaires de l'utilisateur
+export async function updateUserCommentCount(userId: string) {
+    try {
+        const commentsCount = await pb.collection(Collections.Comments).getFullList({
+            filter: `userId = '${userId}'`,
+            fields: 'id'
+        }).then(comments => comments.length);
+
+        await pb.collection(Collections.Users).update(userId, { comments: commentsCount });
+    } catch (error) {
+        console.error('Error in updateUserCommentCount:', error);
+        throw error;
+    }
+}

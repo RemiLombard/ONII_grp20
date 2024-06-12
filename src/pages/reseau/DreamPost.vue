@@ -86,13 +86,20 @@ const submitComment = async () => {
   if (newComment.value.trim() === '') return
 
   try {
-    const { comment, newCommentCount } = await addComment(route.params.id as string, newComment.value.trim())
+    const { comment, newCommentCount } = await addComment(
+      route.params.id as string,
+      newComment.value.trim()
+    )
     newComment.value = ''
     comments.value.push(comment) // Ajouter directement le nouveau commentaire
     dream.value.comments = newCommentCount // Mettre à jour le compteur de commentaires
   } catch (error) {
     console.error('Error submitting comment:', error)
   }
+}
+
+const removeComment = (commentId: string) => {
+  comments.value = comments.value.filter(comment => comment.id !== commentId)
 }
 
 const formattedDate = computed(() => {
@@ -177,23 +184,28 @@ onMounted(() => {
 
   <div class="mt-6 w-full">
     <h2 class="text-white text-lg mb-4">Commentaires</h2>
-    <form @submit.prevent="submitComment" class="mb-4 flex gap-2.5 align-">
+    <div class="flex-1 overflow-auto">
+      <div v-for="comment in comments" :key="comment.id" class="mb-4">
+        <CardCom
+          :commentId="comment.id"
+          :userId="comment.userId"
+          :username="comment.expand.userId.username"
+          :avatar="comment.expand.userId.avatar"
+          :content="comment.content"
+          @deleteComment="removeComment"
+        />
+      </div>
+    </div>
+    <form @submit.prevent="submitComment" class="fixed bottom-0 left-0 w-full bg-slate-950 flex p-5 items-center rounded-tl-[15px] rounded-tr-[15px] border-t border-t-gray-400">
       <input
         v-model="newComment"
         type="text"
         placeholder="Ajouter un commentaire"
-        class="w-full p-2 rounded bg-nightblue"
+        class="flex-1 p-2 rounded bg-nightblue text-white mr-2"
       />
-      <button type="submit" class="mt-2 p-2 bg-fuchsia-700 text-white rounded">Envoyer</button>
+      <button type="submit" class="p-2 bg-fuchsia-700 text-white rounded">Envoyer</button>
     </form>
-    <div v-for="comment in comments" :key="comment.id" class="mb-4">
-      <CardCom
-        v-if="comment.expand && comment.expand.userId"
-        :username="comment.expand.userId.username"
-        :avatar="comment.expand.userId.avatar"
-        :userId="comment.expand.userId.id"
-        :content="comment.content"
-      />
-    </div>
   </div>
 </template>
+
+
