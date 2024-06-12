@@ -79,7 +79,7 @@ const route = useRoute()
                   >
                     <IconNewsletter />
                     <p class="flex-grow w-64 font-bold text-left text-white">
-                      S'abonner à la Newslater
+                      S'abonner à la Newsletter
                     </p>
                     <IconTo />
                   </div>
@@ -94,13 +94,15 @@ const route = useRoute()
                     <p class="flex-grow w-64 font-bold text-left text-white">À propos</p>
                     <IconTo />
                   </RouterLink>
-                  <div
+                  <RouterLink
+                    to="/contact"
                     class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 pt-3.5"
+                    @click="closeMenu"
                   >
                     <IconContact />
                     <p class="flex-grow w-64 font-bold text-left text-white">Nous contacter</p>
                     <IconTo />
-                  </div>
+                  </RouterLink>
                 </div>
               </div>
             </section>
@@ -124,3 +126,5 @@ const route = useRoute()
     </div>
   </header>
 </template>
+
+

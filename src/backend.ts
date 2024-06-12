@@ -546,6 +546,26 @@ export async function blockUser(blockedUserId: string) {
     }
 }
 
+// Changer mot de passe
+export async function changePassword(currentEmail: string, currentPassword: string, newPassword: string) {
+    try {
+        // Authentifier l'utilisateur avec le mot de passe actuel
+        const authData = await pb.collection('users').authWithPassword(currentEmail, currentPassword);
+        console.log('Authentification réussie avec le mot de passe actuel');
+
+        const userId = authData.record.id;
+
+        // Mettre à jour le mot de passe
+        await pb.collection('users').update(userId, {
+            password: newPassword,
+            passwordConfirm: newPassword // Assurez-vous de fournir le champ passwordConfirm si nécessaire
+        });
+        console.log('Mot de passe mis à jour avec succès');
+    } catch (error) {
+        console.error('Erreur lors du changement de mot de passe:', error);
+        throw new Error('Erreur lors du changement de mot de passe: ' + (error as Error).message);
+    }
+}
   
 
 

@@ -135,9 +135,9 @@ const router = createRouter({
       component: () => import('../pages/account/ChangePassword.vue')
     }
     ,
-    { path: '/contactus',
+    { path: '/contact',
        name: 'contactus',
-       component: () => import('../pages/contactus/index.vue') 
+       component: () => import('../pages/contact/index.vue') 
     },
     
     

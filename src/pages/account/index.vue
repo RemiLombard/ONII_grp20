@@ -16,7 +16,7 @@ const router = useRouter();
 const user = ref({
   username: '',
   firstName: '',
-  name: '', // Changer ici pour correspondre à PocketBase
+  name: '',
   email: ''
 });
 const fieldToEdit = ref('');
@@ -66,7 +66,7 @@ const getFieldLabel = (field) => {
   switch (field) {
     case 'username': return "Nom d'utilisateur";
     case 'firstName': return 'Prénom';
-    case 'name': return 'Nom'; // Changer ici pour correspondre à PocketBase
+    case 'name': return 'Nom';
     case 'email': return 'Email';
     default: return '';
   }
@@ -107,7 +107,7 @@ const goBack = () => {
         </div>
         <div class="flex items-center gap-2 rounded p-3 relative">
           <IconModiname class="text-white" />
-          <p class="flex-1 text-white">{{ user.name }}</p> 
+          <p class="flex-1 text-white">{{ user.name }}</p>
           <IconModif class="text-white cursor-pointer absolute right-4" @click="openModal('name')" />
         </div>
         <div class="flex items-center gap-2 rounded p-3 relative">
@@ -115,7 +115,10 @@ const goBack = () => {
           <p class="flex-1 text-white">{{ user.email }}</p>
           <IconModif class="text-white cursor-pointer absolute right-4" @click="openModal('email')" />
         </div>
-        <button class="bg-fuchsia-700 text-white rounded p-3 w-full cursor-not-allowed">
+        <button
+          class="bg-fuchsia-700 text-white rounded p-3 w-full"
+          @click="() => router.push('/account/change-password')"
+        >
           <IconLock class="inline mr-2" /> Changer votre mot de passe
         </button>
       </div>
@@ -140,8 +143,4 @@ const goBack = () => {
   </div>
 </template>
 
-<style scoped>
-input:focus {
-  outline: none;
-}
-</style>
+
