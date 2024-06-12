@@ -2,7 +2,7 @@
 import PocketBase from 'pocketbase';
 import { Collections, type TypedPocketBase } from './pocketbase-types.js';
 
-export const pb = new PocketBase('https://remilombard.fr:443') as TypedPocketBase;
+export const pb = new PocketBase('https://onii.remilombard.fr:443') as TypedPocketBase;
 
 export { Collections };
 

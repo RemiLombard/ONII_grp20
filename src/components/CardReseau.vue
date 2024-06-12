@@ -106,7 +106,7 @@ const formattedDate = computed(() => {
 
 const userAvatar = computed(() => {
   return props.user && props.user.avatar
-    ? `https://remilombard.fr/api/files/_pb_users_auth_/${props.user.id}/${props.user.avatar}`
+    ? `https://onii.remilombard.fr/api/files/_pb_users_auth_/${props.user.id}/${props.user.avatar}`
     : defaultAvatar
 })
 
