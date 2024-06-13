@@ -1,25 +1,38 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { ref } from 'vue'
-import { addUser } from '@/backend'
-import ButtonUser from '@/components/ButtonUser.vue'
-import IconLogo from '@/components/icons/IconLogo.vue'
+import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { addUser } from '@/backend';
+import ButtonUser from '@/components/ButtonUser.vue';
+import IconLogo from '@/components/icons/IconLogo.vue';
 
-const router = useRouter()
-const email = ref('')
-const username = ref('')
-const name = ref('')
-const firstName = ref('')
-const password = ref('')
-const passwordConfirm = ref('')
-const avatar = ref<File | null>(null)
-const avatarPreview = ref<string | null>(null) // Ajouter une variable pour l'aperçu de l'avatar
-const isLoading = ref(false)
-const errorMessage = ref('')
+const router = useRouter();
+const email = ref('');
+const username = ref('');
+const name = ref('');
+const firstName = ref('');
+const password = ref('');
+const passwordConfirm = ref('');
+const avatar = ref<File | null>(null);
+const avatarPreview = ref<string | null>(null); // Ajouter une variable pour l'aperçu de l'avatar
+const isLoading = ref(false);
+const errorMessage = ref('');
 
 const handleSignUp = async () => {
-  isLoading.value = true
-  errorMessage.value = ''
+  if (
+    !email.value ||
+    !username.value ||
+    !name.value ||
+    !firstName.value ||
+    !password.value ||
+    !passwordConfirm.value ||
+    !avatar.value
+  ) {
+    errorMessage.value = 'Tous les champs sont obligatoires.';
+    return;
+  }
+
+  isLoading.value = true;
+  errorMessage.value = '';
   try {
     await addUser({
       email: email.value,
@@ -29,26 +42,26 @@ const handleSignUp = async () => {
       firstName: firstName.value,
       name: name.value,
       avatar: avatar.value as File
-    })
-    router.push('/')
+    });
+    router.push('/');
   } catch (error) {
-    errorMessage.value = "Erreur lors de l'inscription: " + (error as Error).message
+    errorMessage.value = "Erreur lors de l'inscription: " + (error as Error).message;
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
+};
 
 const handleAvatarChange = (event: Event) => {
-  const file = (event.target as HTMLInputElement).files?.[0]
+  const file = (event.target as HTMLInputElement).files?.[0];
   if (file) {
-    avatar.value = file
-    const reader = new FileReader()
+    avatar.value = file;
+    const reader = new FileReader();
     reader.onload = (e) => {
-      avatarPreview.value = e.target?.result as string
-    }
-    reader.readAsDataURL(file)
+      avatarPreview.value = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
   }
-}
+};
 </script>
 
 <template>
@@ -60,9 +73,7 @@ const handleAvatarChange = (event: Event) => {
     <h1 class="text-center mt-0 mb-10">Inscription</h1>
     <form @submit.prevent="handleSignUp">
       <div class="mb-5">
-        <label for="email" class="text-lg font-bold font-Quicksand text-left text-white"
-          >Email :</label
-        >
+        <label for="email" class="text-lg font-bold font-Quicksand text-left text-white">Email :</label>
         <input
           class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
           type="email"
@@ -73,9 +84,7 @@ const handleAvatarChange = (event: Event) => {
         />
       </div>
       <div class="mb-5">
-        <label for="username" class="text-lg font-bold font-Quicksand text-left text-white"
-          >Nom d'utilisateur :</label
-        >
+        <label for="username" class="text-lg font-bold font-Quicksand text-left text-white">Nom d'utilisateur :</label>
         <input
           class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
           type="text"
@@ -86,9 +95,7 @@ const handleAvatarChange = (event: Event) => {
         />
       </div>
       <div class="mb-5">
-        <label for="firstName" class="text-lg font-bold font-Quicksand text-left text-white"
-          >Prénom :</label
-        >
+        <label for="firstName" class="text-lg font-bold font-Quicksand text-left text-white">Prénom :</label>
         <input
           class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
           type="text"
@@ -111,9 +118,7 @@ const handleAvatarChange = (event: Event) => {
       </div>
       <div>
         <div class="mb-5">
-          <label for="password" class="text-lg font-bold font-Quicksand text-left text-white"
-            >Mot de passe :</label
-          >
+          <label for="password" class="text-lg font-bold font-Quicksand text-left text-white">Mot de passe :</label>
           <input
             class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
             type="password"
@@ -124,9 +129,7 @@ const handleAvatarChange = (event: Event) => {
           />
         </div>
         <div class="mb-5">
-          <label for="passwordConfirm" class="text-lg font-bold font-Quicksand text-left text-white"
-            >Confirmez le mot de passe :</label
-          >
+          <label for="passwordConfirm" class="text-lg font-bold font-Quicksand text-left text-white">Confirmez le mot de passe :</label>
           <input
             class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
             type="password"
@@ -142,21 +145,20 @@ const handleAvatarChange = (event: Event) => {
       </div>
 
       <div class="mb-5">
-        <label for="avatar" class="text-lg font-bold font-Quicksand text-left text-white"
-          >Photo de profil :</label
-        >
+        <label for="avatar" class="text-lg font-bold font-Quicksand text-left text-white">Photo de profil :</label>
         <input
           class="text-white border bg-violet-950 border-none mt-1 rounded-lg w-full py-2.5 px-3"
           type="file"
           id="avatar"
           @change="handleAvatarChange"
           accept="image/*"
+          required
         />
         <div v-if="avatarPreview" class="mt-4">
           <img
             :src="avatarPreview"
             alt="Avatar Preview"
-            class="w-32 h-32 object-cover rounded-full mx-auto"
+            class="w-24 h-24 object-cover rounded-full mx-auto"
           />
         </div>
         <div v-if="errorMessage" class="mb-4 text-red-400">
@@ -173,9 +175,7 @@ const handleAvatarChange = (event: Event) => {
         />
         <p>
           Déjà inscrit ?
-          <RouterLink to="/" class="text-yellow-200 hover:underline"
-            >Connectez-vous !</RouterLink
-          >
+          <RouterLink to="/" class="text-yellow-200 hover:underline">Connectez-vous !</RouterLink>
         </p>
       </div>
     </form>

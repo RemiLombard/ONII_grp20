@@ -822,3 +822,41 @@ export async function fetchOtherUserSharedDreams(userId) {
       throw error
     }
   }
+
+  // Suppression de compte
+export async function deleteAccount() {
+    try {
+        if (!pb.authStore.isValid) {
+            throw new Error('Utilisateur non connecté');
+        }
+
+        const userId = pb.authStore.model?.id;
+        if (!userId) {
+            throw new Error('ID utilisateur non disponible');
+        }
+
+        // Supprimer tous les rêves de l'utilisateur
+        const dreams = await pb.collection(Collections.Reve).getFullList({
+            filter: `userId = '${userId}'`,
+        });
+        for (const dream of dreams) {
+            await deleteDream(dream.id);
+        }
+
+        // Supprimer tous les commentaires de l'utilisateur
+        const comments = await pb.collection(Collections.Comments).getFullList({
+            filter: `userId = '${userId}'`,
+        });
+        for (const comment of comments) {
+            await pb.collection(Collections.Comments).delete(comment.id);
+        }
+
+        // Supprimer l'utilisateur
+        await pb.collection('users').delete(userId);
+
+        // Déconnecter l'utilisateur et effacer les données locales
+        logOut();
+    } catch (error) {
+        throw new Error('Erreur lors de la suppression du compte: ' + error.message);
+    }
+}

@@ -12,7 +12,7 @@ const toggleSubscription = () => {
 <template>
   <div class="relative w-10 h-5 cursor-pointer" @click="toggleSubscription">
     <input type="checkbox" id="newsletter-toggle" class="sr-only" v-model="isSubscribed" />
-    <div class="block w-full h-full rounded-full" :class="{ 'bg-gray-800': !isSubscribed, 'bg-fuchsia-700': isSubscribed }"></div>
+    <div class="block w-full h-full rounded-full" :class="{ 'bg-gray-500': !isSubscribed, 'bg-fuchsia-700': isSubscribed }"></div>
     <div
       class="dot absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-all duration-300"
       :class="{ 'translate-x-5': isSubscribed, 'bg-gray-400': !isSubscribed }"

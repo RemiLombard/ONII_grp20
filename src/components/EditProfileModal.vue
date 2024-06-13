@@ -1,26 +1,5 @@
-<template>
-    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75">
-      <div class="bg-white p-8 rounded-lg">
-        <h2 class="text-xl font-bold mb-4">Modifier le profil</h2>
-        <form @submit.prevent="updateProfile">
-          <div class="mb-4">
-            <label for="username" class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
-            <input v-model="username" id="username" type="text" class="mt-1 p-2 block w-full border border-gray-300 rounded-md" required />
-          </div>
-          <div class="mb-4">
-            <label for="avatar" class="block text-sm font-medium text-gray-700">Avatar</label>
-            <input @change="handleAvatarChange" id="avatar" type="file" class="mt-1 block w-full text-sm text-gray-500" />
-          </div>
-          <div class="flex space-x-4">
-            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Enregistrer</button>
-            <button type="button" @click="close" class="px-4 py-2 bg-gray-300 rounded">Annuler</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </template>
-  
-  <script setup lang="ts">
+
+<script setup lang="ts">
   import { ref } from 'vue';
   import { pb, Collections } from '@/backend';
   import { UsersResponse } from '@/pocketbase-types';
@@ -78,4 +57,28 @@
   
   fetchCurrentUser();
   </script>
+  
+<template>
+    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75">
+      <div class="bg-white p-8 rounded-lg">
+        <h2 class="text-xl font-bold mb-4">Modifier le profil</h2>
+        <form @submit.prevent="updateProfile">
+          <div class="mb-4">
+            <label for="username" class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
+            <input v-model="username" id="username" type="text" class="mt-1 p-2 block w-full border border-gray-300 rounded-md" required />
+          </div>
+          <div class="mb-4">
+            <label for="avatar" class="block text-sm font-medium text-gray-700">Avatar</label>
+            <input @change="handleAvatarChange" id="avatar" type="file" class="mt-1 block w-full text-sm text-gray-500" />
+          </div>
+          <div class="flex space-x-4">
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Enregistrer</button>
+            <button type="button" @click="close" class="px-4 py-2 bg-gray-300 rounded">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </template>
+  
+  
   

@@ -59,7 +59,7 @@ const cancelModal = () => {
 </script>
 
 <template>
-  <div class="flex flex-col items-end space-y-[-20px] mb-5">
+  <div class="flex flex-col items-end space-y-[-20px] mb-7">
     <div
       class="flex flex-col justify-start items-start w-full gap-5 p-2.5 rounded-[15px] bg-violet-950"
     >

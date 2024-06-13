@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import IconBack from '@/components/icons/IconBack.vue';
+import ButtonLink from '@/components/ButtonLink.vue';
 
 // Importer les images
 const imgRemi = '/public/imgremi.png';
@@ -23,18 +24,18 @@ const goBack = () => {
   </section>
   
   <!-- Ajouter cette section pour les images et les noms -->
-  <section class="flex justify-center gap-4 mt-4 mb-4">
+  <section class="flex justify-between mb-5">
     <div class="flex flex-col items-center">
       <img :src="imgRemi" alt="Rémi Lombard" class="w-24 h-24 rounded-full" />
-      <p class="text-white mt-2 text-center">Rémi Lombard</p>
+      <p class="text-white mt-2 text-center w-20">Rémi Lombard</p>
     </div>
     <div class="flex flex-col items-center">
       <img :src="imgAnto" alt="Antoine Dejeux" class="w-24 h-24 rounded-full" />
-      <p class="text-white mt-2 text-center">Antoine Dejeux</p>
+      <p class="text-white mt-2 text-center w-20">Antoine Dejeux</p>
     </div>
     <div class="flex flex-col items-center">
       <img :src="imgTheo" alt="Théo Gasner" class="w-24 h-24 rounded-full" />
-      <p class="text-white mt-2 text-center">Théoo Gasner</p>
+      <p class="text-white mt-2 text-center w-20">Théo Gasner</p>
     </div>
   </section>
   
@@ -64,10 +65,13 @@ const goBack = () => {
     </p>
   </section>
   
-  <div class="flex-grow-0 flex-shrink-0 w-[150px] h-10 relative mt-4">
-    <div class="w-[150px] h-10 absolute left-[-1px] top-[-1px] rounded-[200px] bg-fuchsia-700"></div>
-    <p class="w-[150px] h-10 absolute left-0 top-0 text-base text-center text-white">
-      Nous contacter
-    </p>
+  <div class="flex mt-5 mb-10 justify-center">
+    <RouterLink to="/contact" class="text-white">
+    <ButtonLink
+        variant="common"
+        size="common"
+        text="Nous contacter"
+      />
+    </RouterLink>
   </div>
 </template>

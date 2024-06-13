@@ -1,28 +1,73 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { getSubscriptionDreams } from '@/backend';
-import CardDream from '@/components/CardReseau.vue';
+import { ref, watch, onMounted } from 'vue'
+import { getSubscriptionDreams, searchSharedDreams, filterSharedDreams } from '@/backend'
+import { debounce } from '@/utils/debounce'
+import CardDream from '@/components/CardReseau.vue'
 
-const dreams = ref([]);
-const errorMessage = ref('');
+const props = defineProps({
+  searchQuery: String,
+  filters: Object
+})
 
-const loadSubscriptionDreams = async () => {
+const dreams = ref([])
+const errorMessage = ref('')
+
+const loadDreams = async () => {
   try {
-    const result = await getSubscriptionDreams();
-    dreams.value = result;
+    const result = await getSubscriptionDreams()
+    dreams.value = result
   } catch (error) {
-    errorMessage.value = error.message;
-    console.error('Error loading subscription dreams:', error.message);
+    errorMessage.value = error.message
+    console.error('Error loading dreams:', error.message)
   }
-};
+}
+
+const searchDreams = debounce(async () => {
+  try {
+    const result = await searchSharedDreams(props.searchQuery)
+    dreams.value = result
+  } catch (error) {
+    errorMessage.value = error.message
+    console.error('Error searching dreams:', error.message)
+  }
+}, 300) // 300ms delay
+
+const filterDreams = debounce(async () => {
+  try {
+    const result = await filterSharedDreams(props.filters)
+    dreams.value = result
+  } catch (error) {
+    errorMessage.value = error.message
+    console.error('Error filtering dreams:', error.message)
+  }
+}, 300) // 300ms delay
 
 const handleDreamDeleted = (dreamId: string) => {
-  dreams.value = dreams.value.filter(dream => dream.id !== dreamId);
-};
+  dreams.value = dreams.value.filter((dream) => dream.id !== dreamId)
+}
+
+watch(
+  () => props.searchQuery,
+  (newQuery) => {
+    if (newQuery) {
+      searchDreams()
+    } else {
+      loadDreams()
+    }
+  }
+)
+
+watch(
+  () => props.filters,
+  () => {
+    filterDreams()
+  },
+  { deep: true }
+)
 
 onMounted(() => {
-  loadSubscriptionDreams();
-});
+  loadDreams()
+})
 </script>
 
 <template>
@@ -42,4 +87,3 @@ onMounted(() => {
     />
   </div>
 </template>
-

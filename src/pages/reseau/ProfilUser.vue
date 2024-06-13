@@ -93,24 +93,24 @@ const goBack = () => {
     </button>
   </section>
 
-  <div class="flex justify-center space-x-14 mt-3">
+  <div class="flex justify-center space-x-14 mt-3 border-b border-gray-400">
     <button
       class="pb-2.5 flex-grow text-center text-lg font-bold"
-      :class="{ 'border-b-4 text-yellow-200 border-yellow-200': activeTab === 'posts' }"
+      :class="{ 'border-b-2 text-yellow-200 border-yellow-200': activeTab === 'posts' }"
       @click="setActiveTab('posts')"
     >
       Posts
     </button>
     <button
       class="pb-2.5 flex-grow text-center text-lg font-bold"
-      :class="{ 'border-b-4 text-yellow-200 border-yellow-200': activeTab === 'likes' }"
+      :class="{ 'border-b-2 text-yellow-200 border-yellow-200': activeTab === 'likes' }"
       @click="setActiveTab('likes')"
     >
       J'aime
     </button>
   </div>
 
-  <div class="mt-6">
+  <div class="mt-6 mb-10">
     <div v-if="activeTab === 'posts'">
       <CardDream
         v-for="dream in userDreams"
