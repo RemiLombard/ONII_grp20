@@ -148,8 +148,18 @@ const router = createRouter({
       name: 'user-profile',
       component: () => import('../pages/reseau/UserProfile.vue'),
       props: true
-    }
-    
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../pages/[...404].vue')
+    },
+    {
+      path: '/reseau/create',
+      name: 'create-reseau-dream',
+      component: () => import('../pages/reseau/createDream.vue'),
+      props: true
+    },
     
     
     

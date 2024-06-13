@@ -4,6 +4,7 @@ import FeedForYou from '@/components/FeedForYou.vue'
 import FeedSubscriptions from '@/components/FeedSubscriptions.vue'
 import { useRouter, useRoute } from 'vue-router'
 import IconFilter from '@/components/icons/IconFilter.vue'
+import IconNew from '@/components/icons/IconNew.vue'
 
 const activeTab = ref('pour-vous')
 const searchQuery = ref('')
@@ -95,5 +96,13 @@ watch(route, () => {
         <FeedSubscriptions :searchQuery="searchQuery" :filters="filters" />
       </div>
     </div>
+
+    <RouterLink to="/reseau/create">
+      <button
+        class="fixed bottom-4 right-4 p-3 bg-blue-200 text-black rounded-[500px]"
+      >
+        <IconNew />
+      </button>
+    </RouterLink>
   </div>
 </template>

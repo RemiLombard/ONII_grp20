@@ -29,11 +29,11 @@ const goBack = () => {
   <section class="flex justify-between mb-5">
     <div class="flex flex-col items-center">
       <img src="/public/imganto.png" alt="Rémi Lombard" class="w-24 h-24 rounded-full" />
-      <p class="text-white mt-2 text-center w-20">Rémi Lombard</p>
+      <p class="text-white mt-2 text-center w-20">Antoine Dejeux</p>
     </div>
     <div class="flex flex-col items-center">
       <img src="/public/imgremi.png" alt="Antoine Dejeux" class="w-24 h-24 rounded-full" />
-      <p class="text-white mt-2 text-center w-20">Antoine Dejeux</p>
+      <p class="text-white mt-2 text-center w-20">Rémi Lombard</p>
     </div>
     <div class="flex flex-col items-center">
       <img src="/public/imgtheo.png" alt="Théo Gasner" class="w-24 h-24 rounded-full" />

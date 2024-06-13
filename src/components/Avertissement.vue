@@ -32,7 +32,7 @@ const cancel = () => {
         <p class="mt-2.5">
           Nous espérons que notre service vous apportera une certaine clarté et une nouvelle
           perspective sur vos rêves, mais n'oubliez pas que rien ne remplace l'expertise et
-          l'expérience d'un spécialist.
+          l'expérience d'un spécialiste.
         </p>
         <p class="mt-2.5">Bien à vous,<br />L'équipe ONII</p>
       </div>
