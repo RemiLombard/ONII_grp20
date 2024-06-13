@@ -26,13 +26,13 @@ const cancel = () => {
         <p>
           Nous tenons à vous rappeler que l'analyse des rêves par le biais de notre intelligence
           artificielle est un service informatif et divertissant. Bien que notre IA soit équipée
-          pour interpréter les rêves, il est important de noter qu'elle n'est pas une substitut à
+          pour interpréter les rêves, il est important de noter qu'elle n'est pas un substitut à
           une consultation professionnelle.
         </p>
         <p class="mt-2.5">
           Nous espérons que notre service vous apportera une certaine clarté et une nouvelle
           perspective sur vos rêves, mais n'oubliez pas que rien ne remplace l'expertise et
-          l'expérience d'un spécialiste.
+          l'expérience d'un spécialist.
         </p>
         <p class="mt-2.5">Bien à vous,<br />L'équipe ONII</p>
       </div>
