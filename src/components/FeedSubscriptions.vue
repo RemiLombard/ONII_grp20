@@ -1,41 +1,45 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { getSubscriptionDreams } from '@/backend'
-import CardDream from '@/components/CardReseau.vue'
+import { ref, onMounted } from 'vue';
+import { getSubscriptionDreams } from '@/backend';
+import CardDream from '@/components/CardReseau.vue';
 
-const dreams = ref([])
-const errorMessage = ref('')
+const dreams = ref([]);
+const errorMessage = ref('');
 
-const fetchSubscriptionDreams = async () => {
+const loadSubscriptionDreams = async () => {
   try {
-    dreams.value = await getSubscriptionDreams()
+    const result = await getSubscriptionDreams();
+    dreams.value = result;
   } catch (error) {
-    errorMessage.value = error.message
+    errorMessage.value = error.message;
+    console.error('Error loading subscription dreams:', error.message);
   }
-}
+};
 
-onMounted(fetchSubscriptionDreams)
+const handleDreamDeleted = (dreamId: string) => {
+  dreams.value = dreams.value.filter(dream => dream.id !== dreamId);
+};
+
+onMounted(() => {
+  loadSubscriptionDreams();
+});
 </script>
 
 <template>
-  <div>
-    <div v-if="errorMessage" class="text-red-500">{{ errorMessage }}</div>
-    <div v-else>
-      <CardDream
-        v-for="dream in dreams"
-        :key="dream.id"
-        :id="dream.id"
-        :title="dream.title"
-        :excerpt="dream.excerpt"
-        :date="dream.date"
-        :user="{ username: dream.expand.userId.username, avatar: dream.expand.userId.avatar }"
-        :likes="dream.likes"
-        :comments="dream.comments"
-      />
-    </div>
+  <div class="">
+    <div v-if="errorMessage">{{ errorMessage }}</div>
+    <CardDream
+      v-for="dream in dreams"
+      :key="dream.id"
+      :id="dream.id"
+      :title="dream.title"
+      :excerpt="dream.excerpt"
+      :date="dream.created"
+      :user="dream.user"
+      :likes="dream.likes || 0"
+      :comments="dream.comments || 0"
+      @deleteDream="handleDreamDeleted"
+    />
   </div>
 </template>
 
-<style scoped>
-/* Ajoutez ici vos styles personnalisés */
-</style>

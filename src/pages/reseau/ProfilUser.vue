@@ -93,7 +93,7 @@ const goBack = () => {
     </button>
   </section>
 
-  <div class="flex justify-center space-x-14 mt-6">
+  <div class="flex justify-center space-x-14 mt-3">
     <button
       class="pb-2.5 flex-grow text-center text-lg font-bold"
       :class="{ 'border-b-4 text-yellow-200 border-yellow-200': activeTab === 'posts' }"
