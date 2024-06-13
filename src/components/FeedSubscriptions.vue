@@ -1,41 +1,89 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { getSubscriptionDreams } from '@/backend'
+import { ref, watch, onMounted } from 'vue'
+import { getSubscriptionDreams, searchSharedDreams, filterSharedDreams } from '@/backend'
+import { debounce } from '@/utils/debounce'
 import CardDream from '@/components/CardReseau.vue'
+
+const props = defineProps({
+  searchQuery: String,
+  filters: Object
+})
 
 const dreams = ref([])
 const errorMessage = ref('')
 
-const fetchSubscriptionDreams = async () => {
+const loadDreams = async () => {
   try {
-    dreams.value = await getSubscriptionDreams()
+    const result = await getSubscriptionDreams()
+    dreams.value = result
   } catch (error) {
     errorMessage.value = error.message
+    console.error('Error loading dreams:', error.message)
   }
 }
 
-onMounted(fetchSubscriptionDreams)
+const searchDreams = debounce(async () => {
+  try {
+    const result = await searchSharedDreams(props.searchQuery)
+    dreams.value = result
+  } catch (error) {
+    errorMessage.value = error.message
+    console.error('Error searching dreams:', error.message)
+  }
+}, 300) // 300ms delay
+
+const filterDreams = debounce(async () => {
+  try {
+    const result = await filterSharedDreams(props.filters)
+    dreams.value = result
+  } catch (error) {
+    errorMessage.value = error.message
+    console.error('Error filtering dreams:', error.message)
+  }
+}, 300) // 300ms delay
+
+const handleDreamDeleted = (dreamId: string) => {
+  dreams.value = dreams.value.filter((dream) => dream.id !== dreamId)
+}
+
+watch(
+  () => props.searchQuery,
+  (newQuery) => {
+    if (newQuery) {
+      searchDreams()
+    } else {
+      loadDreams()
+    }
+  }
+)
+
+watch(
+  () => props.filters,
+  () => {
+    filterDreams()
+  },
+  { deep: true }
+)
+
+onMounted(() => {
+  loadDreams()
+})
 </script>
 
 <template>
-  <div>
-    <div v-if="errorMessage" class="text-red-500">{{ errorMessage }}</div>
-    <div v-else>
-      <CardDream
-        v-for="dream in dreams"
-        :key="dream.id"
-        :id="dream.id"
-        :title="dream.title"
-        :excerpt="dream.excerpt"
-        :date="dream.date"
-        :user="{ username: dream.expand.userId.username, avatar: dream.expand.userId.avatar }"
-        :likes="dream.likes"
-        :comments="dream.comments"
-      />
-    </div>
+  <div class="">
+    <div v-if="errorMessage">{{ errorMessage }}</div>
+    <CardDream
+      v-for="dream in dreams"
+      :key="dream.id"
+      :id="dream.id"
+      :title="dream.title"
+      :excerpt="dream.excerpt"
+      :date="dream.created"
+      :user="dream.user"
+      :likes="dream.likes || 0"
+      :comments="dream.comments || 0"
+      @deleteDream="handleDreamDeleted"
+    />
   </div>
 </template>
-
-<style scoped>
-/* Ajoutez ici vos styles personnalisés */
-</style>

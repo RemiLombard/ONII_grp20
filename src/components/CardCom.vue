@@ -5,6 +5,7 @@ import { pb, deleteComment, blockUser, reportComment } from '@/backend'
 import IconPoints from './icons/IconPoints.vue'
 import ParamsComment from './ParamsComment.vue'
 import defaultAvatar from '/default-avatar.png'
+import { RouterLink } from 'vue-router'
 
 const props = defineProps({
   commentId: {
@@ -43,6 +44,14 @@ const isOwner = computed(() => {
   return pb.authStore.model?.id === props.userId
 })
 
+const userProfileRoute = computed(() => {
+  if (isOwner.value) {
+    return { name: 'profil-user' } // Route vers le profil de l'utilisateur connecté
+  } else {
+    return { name: 'user-profile', params: { userId: props.userId } } // Route vers le profil de l'autre utilisateur
+  }
+})
+
 const handleDelete = async () => {
   try {
     await deleteComment(props.commentId)
@@ -74,10 +83,14 @@ const handleReport = async (reason: string) => {
 
 <template>
   <div class="text-white rounded-[15px] flex items-start">
-    <img :src="userAvatar" alt="avatar" class="w-10 h-10 rounded-full mr-3" />
+    <RouterLink :to="userProfileRoute">
+      <img :src="userAvatar" alt="avatar" class="w-10 h-10 rounded-full mr-3 cursor-pointer" />
+    </RouterLink>
     <div class="flex-1">
       <div class="flex justify-between items-center mb-2">
-        <span class="font-bold">{{ username }}</span>
+        <RouterLink :to="userProfileRoute">
+          <span class="font-bold cursor-pointer">{{ username }}</span>
+        </RouterLink>
         <ParamsComment
           :commentId="props.commentId"
           :isOwner="isOwner"

@@ -1,28 +1,40 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-import IconLogo from './icons/IconLogo.vue'
-import IconAccount from './icons/IconAccount.vue'
-import NavBar from './NavBar.vue'
-import IconTiktok from './icons/IconTiktok.vue'
-import IconInsta from './icons/IconInsta.vue'
-import IconFacebook from './icons/IconFacebook.vue'
-import IconPastille from './icons/IconPastille.vue'
-import IconGroupuser from './icons/IconGroupuser.vue'
-import IconTo from './icons/IconTo.vue'
-import IconAccountSmall from './icons/IconAccountSmall.vue'
-import IconNewsletter from './icons/IconNewsletter.vue'
-import IconAbout from './icons/IconAbout.vue'
-import IconContact from './icons/IconContact.vue'
-import NewsletterToggleButton from './NewsletterToggleButton.vue' // Importer le composant bouton de newsletter
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import IconLogo from './icons/IconLogo.vue';
+import NavBar from './NavBar.vue';
+import IconTiktok from './icons/IconTiktok.vue';
+import IconInsta from './icons/IconInsta.vue';
+import IconFacebook from './icons/IconFacebook.vue';
+import IconPastille from './icons/IconPastille.vue';
+import IconGroupuser from './icons/IconGroupuser.vue';
+import IconTo from './icons/IconTo.vue';
+import IconAccountSmall from './icons/IconAccountSmall.vue';
+import IconNewsletter from './icons/IconNewsletter.vue';
+import IconAbout from './icons/IconAbout.vue';
+import IconContact from './icons/IconContact.vue';
+import NewsletterToggleButton from './NewsletterToggleButton.vue'; // Importer le composant bouton de newsletter
+import { pb } from '@/backend';
+import defaultAvatar from '/default-avatar.png';
+import { userAvatar } from '@/state';  // Importer l'état global
 
-const activeMenu = ref(false)
+const activeMenu = ref(false);
+const route = useRoute();
 
-function closeMenu() {
-  activeMenu.value = false
-}
+const fetchUserAvatar = () => {
+  const user = pb.authStore.model;
+  if (user && user.avatar) {
+    userAvatar.value = `http://127.0.0.1:8090/api/files/${user.collectionId}/${user.id}/${user.avatar}`;
+  }
+};
 
-const route = useRoute()
+const closeMenu = () => {
+  activeMenu.value = false;
+};
+
+onMounted(() => {
+  fetchUserAvatar();
+});
 </script>
 
 <template>
@@ -31,7 +43,7 @@ const route = useRoute()
       <div class="flex justify-between items-center relative p-5">
         <div class="">
           <RouterLink to="/profil">
-            <IconAccount />
+            <img :src="userAvatar" alt="User Avatar" class="w-9 h-9 rounded-full" />
           </RouterLink>
         </div>
         <div class="flex items-center space-x-4">
@@ -58,13 +70,15 @@ const route = useRoute()
               </div>
               <div class="w-full">
                 <div class="bg-violet-950 rounded-[15px] p-2.5 w-full">
-                  <div
+                  <RouterLink
+                    to="/profil"
                     class="flex justify-start items-center box-content self-stretch flex-grow-0 flex-shrink-0 h-6 relative gap-2 border-b border-white border-opacity-50 pb-3.5"
+                    @click="closeMenu"
                   >
                     <IconGroupuser />
                     <p class="flex-grow w-64 font-bold text-left text-white">Profil public</p>
                     <IconTo />
-                  </div>
+                  </RouterLink>
 
                   <RouterLink
                     to="/account"

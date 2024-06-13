@@ -136,8 +136,8 @@ const router = createRouter({
     }
     ,
     { path: '/contact',
-       name: 'contactus',
-       component: () => import('../pages/contact/index.vue') 
+       name: 'contact',
+       component: () => import('../pages/contact.vue') 
     },
     { path: '/profil',
        name: 'profil-user',

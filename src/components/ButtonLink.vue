@@ -29,7 +29,7 @@ const sizeClass = {
   small: 'px-4 py-2.5 text-sm',
   medium: 'px-4 py-3 w-36 text-sm lg:text-base',
   large: 'px-8 py-4 text-base',
-  common: 'px-8 py-2.5 text-sm lg:px-8 lg:py-2.5 lg:text-base'
+  common: 'px-5 py-2.5 lg:px-8 lg:py-2.5 lg:text-base'
 }
 </script>
 

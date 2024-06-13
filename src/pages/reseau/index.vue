@@ -55,7 +55,7 @@ watch(route, () => {
 </script>
 
 <template>
-  <div>
+  <div class="mb-10">
     <section :class="['fixed flex opacity-95 flex-col left-0 right-0 bg-slate-950 justify-between items-center z-10 px-5 transition-transform duration-300', isHeaderVisible ? 'translate-y-0' : '-translate-y-full']">
       <div class="flex items-center w-full justify-between my-8">
         <input
@@ -92,7 +92,7 @@ watch(route, () => {
         <FeedForYou :searchQuery="searchQuery" :filters="filters" />
       </div>
       <div v-else>
-        <FeedSubscriptions />
+        <FeedSubscriptions :searchQuery="searchQuery" :filters="filters" />
       </div>
     </div>
   </div>

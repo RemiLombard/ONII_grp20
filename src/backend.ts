@@ -336,17 +336,22 @@ export async function getSubscriptionDreams() {
             return [];
         }
 
-        const filterString = `userId IN (${followingIds.map(id => `'${id}'`).join(', ')}) && partage = true`;
+        // Construire une chaîne de filtre pour les IDs suivis
+        const filterString = followingIds.map(id => `userId = '${id}'`).join(' || ') + ' && partage = true';
 
         const dreams = await pb.collection(Collections.Reve).getFullList({
             filter: filterString,
-            expand: 'userId',  // Assurez-vous d'inclure les détails de l'utilisateur
+            expand: 'userId',
             sort: '-created'
         });
 
-        return dreams;
+        return dreams.map(dream => {
+            const user = dream.expand?.userId || { username: 'Utilisateur inconnu', avatar: null };
+            return { ...dream, user };
+        });
     } catch (error) {
-        throw new Error('Erreur lors de la récupération des rêves des abonnements: ' + error.message);
+        console.error('Erreur lors de la récupération des rêves des abonnements:', error.message);
+        throw new Error('Unable to fetch subscription dreams at this time.');
     }
 }
 
@@ -691,39 +696,72 @@ export async function fetchLikedDreams() {
     }
 }
 
-// Suivre un utilisateur
-export async function followUser(userIdToFollow: string) {
+// Fonction pour suivre un utilisateur
+export async function followUser(followingId: string) {
     try {
-      const userId = pb.authStore.model?.id
-      if (!userId) throw new Error('Utilisateur non connecté')
-  
-      await pb.collection(Collections.Follows).create({
-        followerId: userId,
-        followingId: userIdToFollow
-      })
+        const userId = pb.authStore.model?.id;
+        if (!userId) throw new Error('Utilisateur non connecté');
+
+        await pb.collection(Collections.Follows).create({
+            followerId: userId,
+            followingId: followingId
+        });
+
+        // Vérifier si les utilisateurs existent
+        const follower = await pb.collection(Collections.Users).getOne(userId);
+        const following = await pb.collection(Collections.Users).getOne(followingId);
+
+        if (follower && following) {
+            await pb.collection(Collections.Users).update(follower.id, {
+                following: (follower.following || 0) + 1
+            });
+            
+            await pb.collection(Collections.Users).update(following.id, {
+                followers: (following.followers || 0) + 1
+            });
+        } else {
+            throw new Error('Utilisateur non trouvé');
+        }
     } catch (error) {
-      console.error('Error following user:', error)
-      throw error
+        console.error('Error following user:', error);
+        throw error;
     }
-  }
-  
+}
+
 // Fonction pour désabonner un utilisateur
 export async function unfollowUser(followingId: string) {
     try {
-      const userId = pb.authStore.model?.id;
-      if (!userId) throw new Error('Utilisateur non connecté');
-  
-      const filter = `followerId = '${userId}' && followingId = '${followingId}'`;
-      const followRecord = await pb.collection(Collections.Follows).getFirstListItem(filter);
-  
-      if (followRecord) {
-        await pb.collection(Collections.Follows).delete(followRecord.id);
-      }
+        const userId = pb.authStore.model?.id;
+        if (!userId) throw new Error('Utilisateur non connecté');
+
+        const filter = `followerId = '${userId}' && followingId = '${followingId}'`;
+        const followRecord = await pb.collection(Collections.Follows).getFirstListItem(filter);
+
+        if (followRecord) {
+            await pb.collection(Collections.Follows).delete(followRecord.id);
+
+            // Vérifier si les utilisateurs existent
+            const follower = await pb.collection(Collections.Users).getOne(userId);
+            const following = await pb.collection(Collections.Users).getOne(followingId);
+
+            if (follower && following) {
+                await pb.collection(Collections.Users).update(follower.id, {
+                    following: Math.max((follower.following || 0) - 1, 0)
+                });
+                
+                await pb.collection(Collections.Users).update(following.id, {
+                    followers: Math.max((following.followers || 0) - 1, 0)
+                });
+            } else {
+                throw new Error('Utilisateur non trouvé');
+            }
+        }
     } catch (error) {
-      console.error('Error unfollowing user:', error);
-      throw error;
+        console.error('Error unfollowing user:', error);
+        throw error;
     }
-  }
+}
+  
   
 // Fonction pour vérifier si l'utilisateur courant suit un autre utilisateur
 export async function checkIfFollowing(followingId) {
@@ -784,3 +822,41 @@ export async function fetchOtherUserSharedDreams(userId) {
       throw error
     }
   }
+
+  // Suppression de compte
+export async function deleteAccount() {
+    try {
+        if (!pb.authStore.isValid) {
+            throw new Error('Utilisateur non connecté');
+        }
+
+        const userId = pb.authStore.model?.id;
+        if (!userId) {
+            throw new Error('ID utilisateur non disponible');
+        }
+
+        // Supprimer tous les rêves de l'utilisateur
+        const dreams = await pb.collection(Collections.Reve).getFullList({
+            filter: `userId = '${userId}'`,
+        });
+        for (const dream of dreams) {
+            await deleteDream(dream.id);
+        }
+
+        // Supprimer tous les commentaires de l'utilisateur
+        const comments = await pb.collection(Collections.Comments).getFullList({
+            filter: `userId = '${userId}'`,
+        });
+        for (const comment of comments) {
+            await pb.collection(Collections.Comments).delete(comment.id);
+        }
+
+        // Supprimer l'utilisateur
+        await pb.collection('users').delete(userId);
+
+        // Déconnecter l'utilisateur et effacer les données locales
+        logOut();
+    } catch (error) {
+        throw new Error('Erreur lors de la suppression du compte: ' + error.message);
+    }
+}

@@ -22,4 +22,7 @@
   nav {
     @apply text-lg font-Quicksand font-bold
   }
+  img {
+    @apply object-cover
+  }
 }

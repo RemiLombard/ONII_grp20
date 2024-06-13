@@ -22,6 +22,7 @@ const isFollowing = ref(false)
 // Fetch user profile details
 const fetchUserProfile = async () => {
   try {
+    console.log(`Fetching profile for user: ${userId.value}`);
     const user = await pb.collection('users').getOne(userId.value)
     userProfile.value = user
     username.value = user.username
@@ -77,7 +78,7 @@ const followOrUnfollowUser = async () => {
     } else {
       await followUser(userId.value)
     }
-    checkFollowingStatus()
+    await fetchUserProfile() // Rafraîchir les informations de profil
   } catch (error) {
     console.error('Error following/unfollowing user:', error)
   }
