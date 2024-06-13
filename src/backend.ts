@@ -99,14 +99,6 @@ export async function updateDream(dreamId: string, updatedData: { title: string;
     }
 }
 
-// Générer extrait rêve
-function generateExcerpt(text: string, charLimit: number): string {
-    if (text.length <= charLimit) {
-        return text;
-    }
-    return text.slice(0, charLimit) + '...';
-}
-
 
 // Générer extrait rêve
 function generateExcerpt(text: string, charLimit: number): string {
