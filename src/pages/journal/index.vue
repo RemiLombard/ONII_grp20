@@ -85,7 +85,7 @@ watch(searchQuery, (newQuery) => {
       type="text"
       placeholder="Rechercher des rêves"
       v-model="searchQuery"
-      class="py-3 px-2.5 bg-nightblue w-full mr-2.5 text-white rounded"
+      class="py-3 px-2.5 bg-nightblue w-full mr-2.5 text-white rounded focus:outline-none focus:ring-1 focus:ring-yellow-200"
     />
     <RouterLink to="/journal/filter" class="ml-2 p-3.5 bg-nightblue text-white rounded">
       <IconFilter />

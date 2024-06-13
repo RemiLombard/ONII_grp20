@@ -257,7 +257,7 @@ onMounted(() => {
         v-model="newComment"
         type="text"
         placeholder="Ajouter un commentaire"
-        class="flex-1 p-2 rounded bg-nightblue text-white mr-2"
+        class="flex-1 p-2 rounded bg-nightblue text-white mr-2 focus:outline-none focus:ring-1 focus:ring-yellow-200"
       />
       <button type="submit" class="p-2 bg-fuchsia-700 text-white rounded">Envoyer</button>
     </form>

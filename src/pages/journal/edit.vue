@@ -35,7 +35,12 @@ const fetchDreamDetails = async () => {
 };
 
 const handleUpdateDream = async () => {
-  isLoading.value = true;
+  if (!dream.value.title || !dream.value.fullText || !dream.value.date || !dream.value.recurrent || !dream.value.lucide || !dream.value.type || !dream.value.categorie) {
+    errorMessage.value = 'Tous les champs doivent être remplis'
+    return
+  }
+
+  isLoading.value = true
   errorMessage.value = '';
   try {
     await updateDream(dream.value.id, {
@@ -89,7 +94,7 @@ onMounted(() => {
           <div class="mb-5">
             <label for="title" class="block text-lg font-bold text-white">Titre du rêve :</label>
             <input
-              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3"
+              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3 focus:outline-none focus:ring-1 focus:ring-yellow-200"
               type="text"
               id="title"
               placeholder="Ajoutez un titre"
@@ -102,7 +107,7 @@ onMounted(() => {
               >Contenu du rêve :</label
             >
             <textarea
-              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full pt-2 pb-32 px-3"
+              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full pt-2 pb-32 px-3 focus:outline-none focus:ring-1 focus:ring-yellow-200"
               id="fullText"
               v-model="dream.fullText"
               placeholder="Décrivez votre rêve"
@@ -116,7 +121,7 @@ onMounted(() => {
           <div class="mb-5">
             <label for="type" class="block text-lg font-bold text-white">Type de rêve :</label>
             <select
-              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3"
+              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3 focus:outline-none focus:ring-1 focus:ring-yellow-200"
               id="type"
               v-model="dream.type"
               required
@@ -128,7 +133,7 @@ onMounted(() => {
           <div class="mb-5">
             <label for="date" class="block text-lg font-bold text-white">Date du rêve :</label>
             <input
-              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3"
+              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3 focus:outline-none focus:ring-1 focus:ring-yellow-200"
               type="date"
               id="date"
               v-model="dream.date"
@@ -138,7 +143,7 @@ onMounted(() => {
           <div class="mb-5">
             <label for="recurrent" class="block text-lg font-bold text-white">Rêve récurrent ? :</label>
             <select
-              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3"
+              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3 focus:outline-none focus:ring-1 focus:ring-yellow-200"
               id="recurrent"
               v-model="dream.recurrent"
               required
@@ -150,7 +155,7 @@ onMounted(() => {
           <div class="mb-5">
             <label for="lucide" class="block text-lg font-bold text-white">Rêve lucide ? :</label>
             <select
-              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3"
+              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3 focus:outline-none focus:ring-1 focus:ring-yellow-200"
               id="lucide"
               v-model="dream.lucide"
               required
@@ -162,7 +167,7 @@ onMounted(() => {
           <div class="mb-5">
             <label for="categorie" class="block text-lg font-bold text-white">Catégorie :</label>
             <select
-              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3"
+              class="text-white bg-nightblue border border-none mt-1 rounded-lg w-full py-2 px-3 focus:outline-none focus:ring-1 focus:ring-yellow-200"
               id="categorie"
               v-model="dream.categorie"
               required

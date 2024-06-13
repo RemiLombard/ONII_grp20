@@ -116,7 +116,14 @@ const goBack = () => {
       <p class="text-white">{{ followingCount }} <span class="text-gray-400">Abonnements</span></p>
       <p class="text-white">{{ followersCount }} <span class="text-gray-400">Abonnés</span></p>
     </div>
-    <button @click="followOrUnfollowUser" class="mt-5 px-4 py-2 bg-fuchsia-700 text-white rounded-full">
+    <button
+      @click="followOrUnfollowUser"
+      :class="{
+        'mt-5 px-4 py-2 rounded-full': true,
+        'bg-blue-200 text-black items-center': isFollowing,
+        'bg-fuchsia-700 text-white items-center': !isFollowing
+      }"
+    >
       {{ isFollowing ? 'Se désabonner' : "S'abonner" }}
     </button>
   </section>
