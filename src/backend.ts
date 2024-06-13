@@ -85,12 +85,28 @@ export async function updateDream(dreamId: string, updatedData: { title: string;
             throw new Error('Utilisateur non connecté');
         }
 
-        const updatedDream = await pb.collection('reve').update(dreamId, updatedData);
+        // Générer un nouvel extrait à partir du nouveau contenu de fullText
+        const excerpt = generateExcerpt(updatedData.fullText, 147);
+
+        const updatedDream = await pb.collection('reve').update(dreamId, {
+            ...updatedData,
+            excerpt: excerpt // Ajouter l'extrait généré aux données mises à jour
+        });
+
         return updatedDream;
     } catch (error) {
         throw error;
     }
 }
+
+// Générer extrait rêve
+function generateExcerpt(text: string, charLimit: number): string {
+    if (text.length <= charLimit) {
+        return text;
+    }
+    return text.slice(0, charLimit) + '...';
+}
+
 
 // Générer extrait rêve
 function generateExcerpt(text: string, charLimit: number): string {
