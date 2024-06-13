@@ -117,6 +117,8 @@ export type ReveRecord = {
 export type UsersRecord = {
 	avatar?: string
 	firstName?: string
+	followers?: number
+	following?: number
 	name?: string
 }
 

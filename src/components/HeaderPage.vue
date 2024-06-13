@@ -14,6 +14,7 @@ import IconAccountSmall from './icons/IconAccountSmall.vue'
 import IconNewsletter from './icons/IconNewsletter.vue'
 import IconAbout from './icons/IconAbout.vue'
 import IconContact from './icons/IconContact.vue'
+import NewsletterToggleButton from './NewsletterToggleButton.vue' // Importer le composant bouton de newsletter
 
 const activeMenu = ref(false)
 
@@ -29,7 +30,7 @@ const route = useRoute()
     <div class="flex flex-col border-b border-white border-opacity-50">
       <div class="flex justify-between items-center relative p-5">
         <div class="">
-          <RouterLink to="/">
+          <RouterLink to="/profil">
             <IconAccount />
           </RouterLink>
         </div>
@@ -81,7 +82,7 @@ const route = useRoute()
                     <p class="flex-grow w-64 font-bold text-left text-white">
                       S'abonner à la Newsletter
                     </p>
-                    <IconTo />
+                    <NewsletterToggleButton class="absolute" />
                   </div>
                 </div>
                 <div class="bg-violet-950 rounded-[15px] p-2.5 mt-8">
@@ -126,5 +127,3 @@ const route = useRoute()
     </div>
   </header>
 </template>
-
-
