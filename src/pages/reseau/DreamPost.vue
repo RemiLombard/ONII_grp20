@@ -10,6 +10,7 @@ import IconCom from '@/components/icons/IconCom.vue'
 import IconPoints from '@/components/icons/IconPoints.vue'
 import CardCom from '@/components/CardCom.vue'
 import ParamsDetail from '@/components/ParamsDetail.vue'
+import { RouterLink } from 'vue-router'
 
 const router = useRouter()
 
@@ -158,6 +159,17 @@ const isOwner = computed(() => {
   return pb.authStore.model?.id === userProfile.value?.id
 })
 
+const userProfileRoute = computed(() => {
+  if (userProfile.value) {
+    if (isOwner.value) {
+      return { name: 'profil-user' } // Route vers le profil de l'utilisateur connecté
+    } else {
+      return { name: 'user-profile', params: { userId: userProfile.value.id } } // Route vers le profil de l'autre utilisateur
+    }
+  }
+  return null
+})
+
 onMounted(() => {
   fetchDreamDetails()
 })
@@ -174,9 +186,13 @@ onMounted(() => {
     <div class="bg-violet-950 text-white p-2.5 rounded-[15px] w-full">
       <div class="flex justify-between items-center mb-5">
         <div class="flex items-center">
-          <img :src="userAvatar" alt="Profile" class="w-10 h-10 rounded-full mr-3" />
+          <RouterLink v-if="userProfileRoute" :to="userProfileRoute">
+            <img :src="userAvatar" alt="Profile" class="w-10 h-10 rounded-full mr-3 cursor-pointer" />
+          </RouterLink>
           <div>
-            <p class="text-lg font-bold">{{ username }}</p>
+            <RouterLink v-if="userProfileRoute" :to="userProfileRoute">
+              <p class="text-lg font-bold cursor-pointer">{{ username }}</p>
+            </RouterLink>
             <p class="text-sm text-gray-400">{{ formattedDate }}</p>
           </div>
         </div>

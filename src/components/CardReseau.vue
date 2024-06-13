@@ -119,18 +119,28 @@ const username = computed(() => {
 const isOwner = computed(() => {
   return pb.authStore.model?.id === props.user?.id
 })
+
+const userProfileRoute = computed(() => {
+  if (isOwner.value) {
+    return { name: 'profil-user' } // Route vers le profil de l'utilisateur connecté
+  } else {
+    return { name: 'user-profile', params: { userId: props.user?.id } } // Route vers le profil de l'autre utilisateur
+  }
+})
 </script>
 
 <template>
   <div class="w-full flex items-center mb-2">
-    <img :src="userAvatar" alt="avatar" class="w-10 h-10 rounded-full mr-3" />
-    <span class="text-white">{{ username }}</span>
+    <RouterLink :to="userProfileRoute">
+      <img :src="userAvatar" alt="avatar" class="w-10 h-10 rounded-full mr-3 cursor-pointer" />
+    </RouterLink>
+    <RouterLink :to="userProfileRoute">
+      <span class="text-white cursor-pointer">{{ username }}</span>
+    </RouterLink>
   </div>
 
   <div class="flex flex-col items-end space-y-[-20px] mb-5">
-    <div
-      class="flex flex-col justify-start items-start w-full gap-5 p-2.5 rounded-[15px] bg-violet-950"
-    >
+    <div class="flex flex-col justify-start items-start w-full gap-5 p-2.5 rounded-[15px] bg-violet-950">
       <div class="flex justify-between items-center w-full">
         <h3 class="text-lg font-bold font-Quicksand text-left text-white">{{ title }}</h3>
         <ParamsReseau :dreamId="props.id" :isOwner="isOwner" @delete="handleDelete" @block="handleBlock" @report="handleReport">
