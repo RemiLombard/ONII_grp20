@@ -27,7 +27,7 @@ const fetchUserProfile = async () => {
     userProfile.value = user
     username.value = user.username
     userAvatar.value = user.avatar
-      ? `http://127.0.0.1:8090/api/files/${user.collectionId}/${user.id}/${user.avatar}`
+      ? `https://onii.remilombard.fr/api/files/${user.collectionId}/${user.id}/${user.avatar}`
       : '/default-avatar.png'
     followingCount.value = user.following || 0
     followersCount.value = user.followers || 0
@@ -116,7 +116,14 @@ const goBack = () => {
       <p class="text-white">{{ followingCount }} <span class="text-gray-400">Abonnements</span></p>
       <p class="text-white">{{ followersCount }} <span class="text-gray-400">Abonnés</span></p>
     </div>
-    <button @click="followOrUnfollowUser" class="mt-5 px-4 py-2 bg-fuchsia-700 text-white rounded-full">
+    <button
+      @click="followOrUnfollowUser"
+      :class="{
+        'mt-5 px-4 py-2 rounded-full': true,
+        'bg-blue-200 text-black items-center': isFollowing,
+        'bg-fuchsia-700 text-white items-center': !isFollowing
+      }"
+    >
       {{ isFollowing ? 'Se désabonner' : "S'abonner" }}
     </button>
   </section>
@@ -140,32 +147,42 @@ const goBack = () => {
 
   <div class="mt-6">
     <div v-if="activeTab === 'posts'">
-      <CardDream
-        v-for="dream in userDreams"
-        :key="dream.id"
-        :id="dream.id"
-        :title="dream.title"
-        :excerpt="dream.excerpt"
-        :date="dream.created"
-        :user="dream.user"
-        :likes="dream.likes || 0"
-        :comments="dream.comments || 0"
-        @deleteDream="fetchUserDreams"
-      />
+      <div v-if="userDreams.length === 0" class="flex items-center justify-center h-96">
+        <p class="text-center text-gray-400">Cet utilisateur n'a pas encore partagé de rêve</p>
+      </div>
+      <div v-else>
+        <CardDream
+          v-for="dream in userDreams"
+          :key="dream.id"
+          :id="dream.id"
+          :title="dream.title"
+          :excerpt="dream.excerpt"
+          :date="dream.created"
+          :user="dream.user"
+          :likes="dream.likes || 0"
+          :comments="dream.comments || 0"
+          @deleteDream="fetchUserDreams"
+        />
+      </div>
     </div>
     <div v-if="activeTab === 'likes'">
-      <CardDream
-        v-for="dream in likedDreams"
-        :key="dream.id"
-        :id="dream.id"
-        :title="dream.title"
-        :excerpt="dream.excerpt"
-        :date="dream.created"
-        :user="dream.user"
-        :likes="dream.likes || 0"
-        :comments="dream.comments || 0"
-        @deleteDream="loadLikedDreams"
-      />
+      <div v-if="likedDreams.length === 0" class="flex items-center justify-center h-96">
+        <p class="text-center text-gray-400">Cet utilisateur n'a pas encore aimé de rêve</p>
+      </div>
+      <div v-else>
+        <CardDream
+          v-for="dream in likedDreams"
+          :key="dream.id"
+          :id="dream.id"
+          :title="dream.title"
+          :excerpt="dream.excerpt"
+          :date="dream.created"
+          :user="dream.user"
+          :likes="dream.likes || 0"
+          :comments="dream.comments || 0"
+          @deleteDream="loadLikedDreams"
+        />
+      </div>
     </div>
   </div>
 </template>

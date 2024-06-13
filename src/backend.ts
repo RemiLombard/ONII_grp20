@@ -2,7 +2,7 @@
 import PocketBase from 'pocketbase';
 import { Collections, type TypedPocketBase } from './pocketbase-types.js';
 
-export const pb = new PocketBase('http://127.0.0.1:8090') as TypedPocketBase;
+export const pb = new PocketBase('https://onii.remilombard.fr:443') as TypedPocketBase;
 
 export { Collections };
 
@@ -85,12 +85,20 @@ export async function updateDream(dreamId: string, updatedData: { title: string;
             throw new Error('Utilisateur non connecté');
         }
 
-        const updatedDream = await pb.collection('reve').update(dreamId, updatedData);
+        // Générer un nouvel extrait à partir du nouveau contenu de fullText
+        const excerpt = generateExcerpt(updatedData.fullText, 147);
+
+        const updatedDream = await pb.collection('reve').update(dreamId, {
+            ...updatedData,
+            excerpt: excerpt // Ajouter l'extrait généré aux données mises à jour
+        });
+
         return updatedDream;
     } catch (error) {
         throw error;
     }
 }
+
 
 // Générer extrait rêve
 function generateExcerpt(text: string, charLimit: number): string {

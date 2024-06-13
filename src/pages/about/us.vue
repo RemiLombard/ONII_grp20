@@ -3,10 +3,12 @@ import { useRouter } from 'vue-router';
 import IconBack from '@/components/icons/IconBack.vue';
 import ButtonLink from '@/components/ButtonLink.vue';
 
+/*
 // Importer les images
 const imgRemi = '/public/imgremi.png';
 const imgAnto = '/public/imganto.png';
 const imgTheo = '/public/imgtheo.png';
+*/ 
 
 const router = useRouter();
 
@@ -26,15 +28,15 @@ const goBack = () => {
   <!-- Ajouter cette section pour les images et les noms -->
   <section class="flex justify-between mb-5">
     <div class="flex flex-col items-center">
-      <img :src="imgRemi" alt="Rémi Lombard" class="w-24 h-24 rounded-full" />
-      <p class="text-white mt-2 text-center w-20">Rémi Lombard</p>
-    </div>
-    <div class="flex flex-col items-center">
-      <img :src="imgAnto" alt="Antoine Dejeux" class="w-24 h-24 rounded-full" />
+      <img src="/public/imganto.png" alt="Rémi Lombard" class="w-24 h-24 rounded-full" />
       <p class="text-white mt-2 text-center w-20">Antoine Dejeux</p>
     </div>
     <div class="flex flex-col items-center">
-      <img :src="imgTheo" alt="Théo Gasner" class="w-24 h-24 rounded-full" />
+      <img src="/public/imgremi.png" alt="Antoine Dejeux" class="w-24 h-24 rounded-full" />
+      <p class="text-white mt-2 text-center w-20">Rémi Lombard</p>
+    </div>
+    <div class="flex flex-col items-center">
+      <img src="/public/imgtheo.png" alt="Théo Gasner" class="w-24 h-24 rounded-full" />
       <p class="text-white mt-2 text-center w-20">Théo Gasner</p>
     </div>
   </section>

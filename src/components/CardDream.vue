@@ -27,7 +27,7 @@
   
   const userAvatar = computed(() => {
     return props.dream.user?.avatar
-      ? `http://127.0.0.1:8090/api/files/_pb_users_auth_/${props.dream.user.id}/${props.dream.user.avatar}`
+      ? `https://onii.remilombard.fr/api/files/_pb_users_auth_/${props.dream.user.id}/${props.dream.user.avatar}`
       : defaultAvatar;
   });
   

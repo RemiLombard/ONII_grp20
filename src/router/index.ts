@@ -28,12 +28,6 @@ const router = createRouter({
       props: true // Assurez-vous que les props sont définies correctement
     },
     {
-      path: '/reseau/test',
-      name: 'test',
-      component: () => import('../pages/reseau/test.vue'),
-      props: true // Assurez-vous que les props sont définies correctement
-    },
-    {
       path: '/journal/stats',
       name: 'stats',
       component: () => import('../pages/journal/stats.vue'),
@@ -154,8 +148,18 @@ const router = createRouter({
       name: 'user-profile',
       component: () => import('../pages/reseau/UserProfile.vue'),
       props: true
-    }
-    
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../pages/[...404].vue')
+    },
+    {
+      path: '/reseau/create',
+      name: 'create-reseau-dream',
+      component: () => import('../pages/reseau/createDream.vue'),
+      props: true
+    },
     
     
     

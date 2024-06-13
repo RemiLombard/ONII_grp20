@@ -26,7 +26,7 @@ const cancel = () => {
         <p>
           Nous tenons à vous rappeler que l'analyse des rêves par le biais de notre intelligence
           artificielle est un service informatif et divertissant. Bien que notre IA soit équipée
-          pour interpréter les rêves, il est important de noter qu'elle n'est pas une substitut à
+          pour interpréter les rêves, il est important de noter qu'elle n'est pas un substitut à
           une consultation professionnelle.
         </p>
         <p class="mt-2.5">

@@ -145,7 +145,7 @@ const formattedDate = computed(() => {
 
 const userAvatar = computed(() => {
   return userProfile.value && userProfile.value.avatar
-    ? `http://127.0.0.1:8090/api/files/${userProfile.value.collectionId}/${userProfile.value.id}/${userProfile.value.avatar}`
+    ? `https://onii.remilombard.fr/api/files/${userProfile.value.collectionId}/${userProfile.value.id}/${userProfile.value.avatar}`
     : defaultAvatar
 })
 
@@ -257,7 +257,7 @@ onMounted(() => {
         v-model="newComment"
         type="text"
         placeholder="Ajouter un commentaire"
-        class="flex-1 p-2 rounded bg-nightblue text-white mr-2"
+        class="flex-1 p-2 rounded bg-nightblue text-white mr-2 focus:outline-none focus:ring-1 focus:ring-yellow-200"
       />
       <button type="submit" class="p-2 bg-fuchsia-700 text-white rounded">Envoyer</button>
     </form>

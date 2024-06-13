@@ -65,11 +65,11 @@
         <form @submit.prevent="updateProfile">
           <div class="mb-4">
             <label for="username" class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
-            <input v-model="username" id="username" type="text" class="mt-1 p-2 block w-full border border-gray-300 rounded-md" required />
+            <input v-model="username" id="username" type="text" class="mt-1 p-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-200" required />
           </div>
           <div class="mb-4">
             <label for="avatar" class="block text-sm font-medium text-gray-700">Avatar</label>
-            <input @change="handleAvatarChange" id="avatar" type="file" class="mt-1 block w-full text-sm text-gray-500" />
+            <input @change="handleAvatarChange" id="avatar" type="file" class="mt-1 block w-full text-sm text-gray-400 focus:outline-none focus:ring-1 focus:ring-yellow-200" />
           </div>
           <div class="flex space-x-4">
             <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Enregistrer</button>

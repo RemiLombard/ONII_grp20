@@ -19,7 +19,7 @@ const fetchUserProfile = async () => {
     const user = await pb.collection('users').getOne(userId);
     username.value = user.username;
     // Charger l'avatar existant
-    avatarPreview.value = user.avatar ? `http://127.0.0.1:8090/api/files/users/${userId}/${user.avatar}` : null;
+    avatarPreview.value = user.avatar ? `https://onii.remilombard.fr/api/files/users/${userId}/${user.avatar}` : null;
   } catch (error) {
     console.error('Error fetching user profile:', error);
     errorMessage.value = 'Erreur lors de la récupération du profil utilisateur';
