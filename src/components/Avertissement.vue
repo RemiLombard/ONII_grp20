@@ -17,7 +17,7 @@ const cancel = () => {
 </script>
 
 <template>
-  <div class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+  <div class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
     <div class="bg-nightblue text-white p-6 rounded-[15px] w-full mx-4">
       <div class="mb-4">
         <p class="text-lg font-bold">Soyez prudent(e) ⚠️</p>

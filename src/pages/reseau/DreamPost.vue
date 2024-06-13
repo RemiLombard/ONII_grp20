@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { pb, Collections, addLike, removeLike, addComment } from '@/backend'
+import { pb, Collections, addLike, removeLike, addComment, deleteDream, reportPost, blockUser } from '@/backend'
 import { ReveResponse, UsersResponse, CommentsResponse } from '@/pocketbase-types'
 import defaultAvatar from '/default-avatar.png'
 import IconBack from '@/components/icons/IconBack.vue'
@@ -9,6 +9,7 @@ import IconLike from '@/components/icons/IconLike.vue'
 import IconCom from '@/components/icons/IconCom.vue'
 import IconPoints from '@/components/icons/IconPoints.vue'
 import CardCom from '@/components/CardCom.vue'
+import ParamsDetail from '@/components/ParamsDetail.vue'
 
 const router = useRouter()
 
@@ -86,12 +87,46 @@ const submitComment = async () => {
   if (newComment.value.trim() === '') return
 
   try {
-    const { comment, newCommentCount } = await addComment(route.params.id as string, newComment.value.trim())
+    const { comment, newCommentCount } = await addComment(
+      route.params.id as string,
+      newComment.value.trim()
+    )
     newComment.value = ''
     comments.value.push(comment) // Ajouter directement le nouveau commentaire
     dream.value.comments = newCommentCount // Mettre à jour le compteur de commentaires
   } catch (error) {
     console.error('Error submitting comment:', error)
+  }
+}
+
+const removeComment = (commentId: string) => {
+  comments.value = comments.value.filter(comment => comment.id !== commentId)
+}
+
+const handleDreamDeleted = async () => {
+  try {
+    if (dream.value) {
+      await deleteDream(dream.value.id)
+      router.push({ name: 'reseau' }) // Redirige vers la page index de la partie réseau
+    }
+  } catch (error) {
+    console.error('Error deleting dream:', error)
+  }
+}
+
+const handleDreamEdited = () => {
+  // Logique pour l'édition du rêve
+}
+
+const handleDreamReported = (reason: string) => {
+  if (dream.value) {
+    reportPost(dream.value.id, reason)
+  }
+}
+
+const handleUserBlocked = () => {
+  if (userProfile.value) {
+    blockUser(userProfile.value.id)
   }
 }
 
@@ -119,6 +154,10 @@ const username = computed(() => {
     : 'Utilisateur inconnu'
 })
 
+const isOwner = computed(() => {
+  return pb.authStore.model?.id === userProfile.value?.id
+})
+
 onMounted(() => {
   fetchDreamDetails()
 })
@@ -131,7 +170,7 @@ onMounted(() => {
       <h1 class="text-white">Post</h1>
     </div>
   </section>
-  <div class="flex flex-col items-end space-y-[-20px] mb-5 w-full">
+  <div class="flex flex-col items-end space-y-[-20px] mb-8 w-full">
     <div class="bg-violet-950 text-white p-2.5 rounded-[15px] w-full">
       <div class="flex justify-between items-center mb-5">
         <div class="flex items-center">
@@ -141,7 +180,16 @@ onMounted(() => {
             <p class="text-sm text-gray-400">{{ formattedDate }}</p>
           </div>
         </div>
-        <IconPoints />
+        <ParamsDetail
+          :dreamId="dream?.id" 
+          :isOwner="isOwner"
+          @delete="handleDreamDeleted"
+          @edit="handleDreamEdited"
+          @report="handleDreamReported"
+          @block="handleUserBlocked"
+        >
+          <IconPoints />
+        </ParamsDetail>
       </div>
       <h3 class="font-bold">{{ dream?.title }}</h3>
       <p class="text-base mt-4">{{ dream?.fullText }}</p>
@@ -175,25 +223,27 @@ onMounted(() => {
     </div>
   </div>
 
-  <div class="mt-6 w-full">
-    <h2 class="text-white text-lg mb-4">Commentaires</h2>
-    <form @submit.prevent="submitComment" class="mb-4 flex gap-2.5 align-">
+  <div class="mt-6 mb-24 w-full">
+    <div class="flex-1 overflow-auto">
+      <div v-for="comment in comments" :key="comment.id" class="mb-5">
+        <CardCom
+          :commentId="comment.id"
+          :userId="comment.userId"
+          :username="comment.expand.userId.username"
+          :avatar="comment.expand.userId.avatar"
+          :content="comment.content"
+          @deleteComment="removeComment"
+        />
+      </div>
+    </div>
+    <form @submit.prevent="submitComment" class="fixed bottom-0 left-0 w-full bg-slate-950 flex p-5 items-center rounded-tl-[15px] rounded-tr-[15px] border-t border-t-gray-400">
       <input
         v-model="newComment"
         type="text"
         placeholder="Ajouter un commentaire"
-        class="w-full p-2 rounded bg-nightblue"
+        class="flex-1 p-2 rounded bg-nightblue text-white mr-2"
       />
-      <button type="submit" class="mt-2 p-2 bg-fuchsia-700 text-white rounded">Envoyer</button>
+      <button type="submit" class="p-2 bg-fuchsia-700 text-white rounded">Envoyer</button>
     </form>
-    <div v-for="comment in comments" :key="comment.id" class="mb-4">
-      <CardCom
-        v-if="comment.expand && comment.expand.userId"
-        :username="comment.expand.userId.username"
-        :avatar="comment.expand.userId.avatar"
-        :userId="comment.expand.userId.id"
-        :content="comment.content"
-      />
-    </div>
   </div>
 </template>

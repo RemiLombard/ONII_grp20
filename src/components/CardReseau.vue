@@ -31,6 +31,8 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['deleteDream'])
+
 const liked = ref(false)
 const totalLikes = ref(props.likes)
 
@@ -71,7 +73,7 @@ const handleLike = async () => {
 const handleDelete = async () => {
   try {
     await deleteDream(props.id)
-    // Add any additional logic you need after deleting the dream
+    emit('deleteDream', props.id) // Émettre l'événement de suppression
   } catch (error) {
     console.error('Error deleting dream:', error)
   }
@@ -80,7 +82,7 @@ const handleDelete = async () => {
 const handleBlock = async () => {
   try {
     await blockUser(props.user.id)
-    // Add any additional logic you need after blocking the user
+    // Ajouter toute logique supplémentaire après avoir bloqué l'utilisateur
   } catch (error) {
     console.error('Error blocking user:', error)
   }
@@ -89,7 +91,7 @@ const handleBlock = async () => {
 const handleReport = async (reason: string) => {
   try {
     await reportPost(props.id, reason)
-    // Add any additional logic you need after reporting the post
+    // Ajouter toute logique supplémentaire après avoir signalé le post
   } catch (error) {
     console.error('Error reporting post:', error)
   }
