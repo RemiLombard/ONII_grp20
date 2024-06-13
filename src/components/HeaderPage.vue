@@ -24,7 +24,7 @@ const route = useRoute();
 const fetchUserAvatar = () => {
   const user = pb.authStore.model;
   if (user && user.avatar) {
-    userAvatar.value = `http://127.0.0.1:8090/api/files/${user.collectionId}/${user.id}/${user.avatar}`;
+    userAvatar.value = `https://onii.remilombard.fr/api/files/${user.collectionId}/${user.id}/${user.avatar}`;
   }
 };
 

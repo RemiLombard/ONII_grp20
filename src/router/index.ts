@@ -28,12 +28,6 @@ const router = createRouter({
       props: true // Assurez-vous que les props sont définies correctement
     },
     {
-      path: '/reseau/test',
-      name: 'test',
-      component: () => import('../pages/reseau/test.vue'),
-      props: true // Assurez-vous que les props sont définies correctement
-    },
-    {
       path: '/journal/stats',
       name: 'stats',
       component: () => import('../pages/journal/stats.vue'),

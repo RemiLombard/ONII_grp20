@@ -25,7 +25,7 @@ const fetchUserProfile = async () => {
     userProfile.value = user
     username.value = user.username
     userAvatar.value = user.avatar
-      ? `http://127.0.0.1:8090/api/files/${user.collectionId}/${user.id}/${user.avatar}`
+      ? `https://onii.remilombard.fr/api/files/${user.collectionId}/${user.id}/${user.avatar}`
       : '/default-avatar.png'
     followingCount.value = user.following || 0
     followersCount.value = user.followers || 0
