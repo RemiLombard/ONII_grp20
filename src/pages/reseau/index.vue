@@ -56,6 +56,12 @@ watch(route, () => {
 </script>
 
 <template>
+  <head>
+      <title>Explorez les Rêves Partagés - Réseau</title>
+      <meta name="description" content="Découvrez et explorez les rêves partagés par la communauté. Recherchez, filtrez et trouvez des inspirations oniriques." />
+      <meta name="keywords" content="réseau de rêves, rêves partagés, communauté onirique, exploration de rêves" />
+      <meta name="author" content="Votre Nom" />
+    </head>
   <div class="mb-10">
     <section :class="['fixed flex opacity-95 flex-col left-0 right-0 bg-slate-950 justify-between items-center z-10 px-5 transition-transform duration-300', isHeaderVisible ? 'translate-y-0' : '-translate-y-full']">
       <div class="flex items-center w-full justify-between my-8">
