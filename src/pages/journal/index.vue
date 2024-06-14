@@ -74,48 +74,57 @@ watch(searchQuery, (newQuery) => {
 </script>
 
 <template>
-  <div class="flex justify-between w-full items-center">
-    <h1 class="text-4xl">Vos rêves</h1>
-    <RouterLink to="/journal/stats" class="text-white">
-      <ButtonStat />
-    </RouterLink>
-  </div>
-  <div class="flex items-center justify-between mb-8">
-    <input
-      type="text"
-      placeholder="Rechercher des rêves"
-      v-model="searchQuery"
-      class="py-3 px-2.5 bg-nightblue w-full mr-2.5 text-white rounded focus:outline-none focus:ring-1 focus:ring-yellow-200"
-    />
-    <RouterLink to="/journal/filter" class="ml-2 p-3.5 bg-nightblue text-white rounded">
-      <IconFilter />
-    </RouterLink>
-  </div>
-  <section class="mb-8 flex flex-col gap-5">
-    <div v-if="dreams.length === 0" class="flex items-center justify-center h-96">
-      <p class="text-center text-gray-400">Vous n'avez pas encore de rêve enregistré dans votre journal.</p>
+  <div>
+    <head>
+      <title>Vos rêves - Journal</title>
+      <meta name="description" content="Consultez et gérez vos rêves enregistrés dans votre journal. Recherchez, filtrez et explorez vos souvenirs oniriques." />
+      <meta name="keywords" content="journal de rêves, rêves, souvenirs oniriques, gestion de rêves" />
+      <meta name="author" content="Votre Nom" />
+    </head>
+    <header class="flex justify-between w-full items-center">
+      <h1 class="text-4xl">Vos rêves</h1>
+      <RouterLink to="/journal/stats" class="text-white">
+        <ButtonStat />
+      </RouterLink>
+    </header>
+    <div class="flex items-center justify-between mb-8">
+      <input
+        type="text"
+        placeholder="Rechercher des rêves"
+        v-model="searchQuery"
+        class="py-3 px-2.5 bg-nightblue w-full mr-2.5 text-white rounded focus:outline-none focus:ring-1 focus:ring-yellow-200"
+        aria-label="Rechercher des rêves"
+      />
+      <RouterLink to="/journal/filter" class="ml-2 p-3.5 bg-nightblue text-white rounded">
+        <IconFilter />
+      </RouterLink>
     </div>
-    <div v-else>
-      <div v-for="(dreams, monthYear) in groupedDreams" :key="monthYear" class="mb-10">
-        <p class="text-sm italic font-light mb-5 text-gray-400">{{ monthYear }}</p>
-        <article v-for="dream in dreams" :key="dream.id" class="mb-5">
-          <CardDiary
-            :id="dream.id"
-            :title="dream.title"
-            :excerpt="dream.excerpt"
-            :date="dream.date"
-            :categorie="dream.categorie"
-            @deleteDream="handleDeleteDream"
-          />
-        </article>
+    <section class="mb-8 flex flex-col gap-5">
+      <div v-if="dreams.length === 0" class="flex items-center justify-center h-96">
+        <p class="text-center text-gray-400">Vous n'avez pas encore de rêve enregistré dans votre journal.</p>
       </div>
-    </div>
-  </section>
-  <RouterLink to="/journal/create">
-    <button
-      class="fixed bottom-4 right-4 p-3 bg-blue-200 text-black rounded-[500px]"
-    >
-      <IconNew />
-    </button>
-  </RouterLink>
+      <div v-else>
+        <div v-for="(dreams, monthYear) in groupedDreams" :key="monthYear" class="mb-10">
+          <p class="text-sm italic font-light mb-5 text-gray-400">{{ monthYear }}</p>
+          <article v-for="dream in dreams" :key="dream.id" class="mb-5">
+            <CardDiary
+              :id="dream.id"
+              :title="dream.title"
+              :excerpt="dream.excerpt"
+              :date="dream.date"
+              :categorie="dream.categorie"
+              @deleteDream="handleDeleteDream"
+            />
+          </article>
+        </div>
+      </div>
+    </section>
+    <RouterLink to="/journal/create" aria-label="Créer un nouveau rêve">
+      <button
+        class="fixed bottom-4 right-4 p-3 bg-blue-200 text-black rounded-[500px]"
+      >
+        <IconNew />
+      </button>
+    </RouterLink>
+  </div>
 </template>
